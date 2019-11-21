@@ -13,10 +13,10 @@ notifications:
 install:
   - npm ci # faster, goes only from package-lock
 before_script:
-  - psql -c 'create database "grace_coco-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
+  - psql -c 'create database "plant_go_test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
 script:
   - npm run test             # test the code
-  - npm run build-client # make the bundle
+  - npm run build-watch # make the bundle
 
 # before_deploy:
 #   - rm -rf node_modules # omit from the tarball, since we skip cleanup
