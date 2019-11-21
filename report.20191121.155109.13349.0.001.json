@@ -1,0 +1,486 @@
+{
+  "header": {
+    "reportVersion": 1,
+    "event": "Allocation failed - JavaScript heap out of memory",
+    "trigger": "FatalError",
+    "filename": "report.20191121.155109.13349.0.001.json",
+    "dumpEventTime": "2019-11-21T15:51:09Z",
+    "dumpEventTimeStamp": "1574373069307",
+    "processId": 13349,
+    "cwd": "/home/randy/Fullstack/Projects/Capstone",
+    "commandLine": [
+      "node",
+      "/home/randy/Fullstack/Projects/Capstone/node_modules/.bin/prettier",
+      "--write",
+      "/home/randy/Fullstack/Projects/Capstone/package.json",
+      "/home/randy/Fullstack/Projects/Capstone/package-lock.json",
+      "/home/randy/Fullstack/Projects/Capstone/dist/style.e308ff8e.css",
+      "/home/randy/Fullstack/Projects/Capstone/.eslintrc.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/ff/fdc997182c26d49acac98f692d1948.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/fd/b3218fdb4ec8ad914a2defb14f6dd8.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/fc/aad5a7428c033c5b3813dc9dd5edd7.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/fa/8aab9d30a7cee94e749cda3bbbd191.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/f9/82299ae084f164c2a87da74eb6062b.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/f7/6714037bdec01ce74fd0a6c9ba8d46.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/f2/a791e25bf919769f1d815c123b28c6.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/f0/9a563efe94f397baa59cb036a23729.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/ee/c440900cf4a91cfcdc46f9118fcc8b.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/eb/9538a6e1bc88f08f309f82765f16ae.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/ea/1f61c32ecc0da3d0cd587a74b2e4c4.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/e8/9699c7afa28621a4bc408abd90c2a9.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/e7/640c37dc90faffab538c6282ac0457.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/e4/0a05a7fe9b421117cc8d3c2be7cb98.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/e3/c1d59912ad693a0dd1183940a0a6c5.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/e0/32f0495d092daba723ff6ed4bd0a29.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/d0/fc2e3e1fc4af13d0b7ece7d83f0e0f.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/cd/3286bca8962f20386a2cc86e541445.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/ca/24c42248e12b65f9d9263d024776ce.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/c1/8b6e2d792571628fb6c1a66c3c4537.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/bf/50bbe0da5195bbac0deae1734b4f1b.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/be/6180719bcb79c84e9e7428e5609b9d.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/b6/3b0f17f29ad0995012a33f6788849b.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/b5/9029822474d3b9d455937f0961dc45.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/b5/880d60392523fc58736b547d09436d.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/b4/da810c407aa3d78fdb4eece8328b50.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/b3/dc2e2401a33ba86a6ef339c39fd717.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/af/fa494a00c1c304425568d42130ae4a.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/af/9c34dda0a381faa081381ffd507fc8.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/ab/fa6df7fd3a77981607e86a70626198.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/a6/64724ef88c2501d1fec2ce487436b1.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/a6/19ee2df80b8601e2ea5e4ff4ee52b1.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/a1/fcc2b02a979e74eb632814ba9e73c5.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/9f/fcafe8fae10a7ca4f2743fd9766a1b.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/9f/52738ba618d455ed160c97339970a2.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/9e/5b3f1c31b801699decf9d568633288.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/9c/e9c018b75c84b2a6a289550a31700b.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/9c/93539ea31225c05c4b35c4048797a1.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/98/1ec579ea0c8d88ce4970b31b7c97b1.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/94/f40d6535d98d66aaf801194b522742.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/94/be4259552a9785a34187c220e579d3.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/90/172bc0aaeea4bf2c3672b797b4266d.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/8f/96ed4068551b017cc856673af779b7.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/8d/fcccacb9a5911a80089155db47977f.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/8c/a23f1adcdbc182d8625f254aab55b8.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/82/95466b2d2c65f25e8cdb2dcee109b8.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/7c/ea63d62159861250e782e56bba1a74.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/7c/c5a57a67283cc761c3552577a579e1.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/77/4230eef092bfcfc66120c29861800d.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/76/13e860cd05c0b5e5e6081c50c133fe.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/75/9b635a3eb0e47d0a8f418864463cd1.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/73/5380230990cab02a97aca9a2bd2b22.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/72/fabee659c30c9e027fdf5f4a9d85c7.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/71/e529dc05f3822474540919537498c7.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/70/c977a50279f766a3bc419c7d839741.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/70/244ae7098fbaf505396024302bf18b.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/6c/80f2e0f305edebb5dcb6dc49fe1a8f.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/6a/464c6207a0d82374c0a014f6175cf9.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/64/9a2da8814dfa9c30972279a0b840a2.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/64/7fb7f4e481596f8f083fad8ca19d71.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/5f/119ccf338ce093f40d826d69475b4a.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/5d/226fbabe7c24c18505fd7eacfbe28f.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/5c/576980c561e18510676556b7c50fd2.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/5b/5bd1861824a6abb181fd12cc8540ab.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/5a/81d9e9f417bf1dd959254463d5f549.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/58/8c671122ac3999cb56be73b87fb8cf.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/57/9ede688c78e2e84d58ad07cdc2daaf.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/55/b1afc44287d34872f22ad518167a59.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/55/b00303b93f745f896420770e95fda4.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/4a/de26156d28b2bf54cc41d509488367.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/4a/6a6c48a4d598688a70a916469e17bd.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/49/ab184407a8b24191397f18671250ff.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/46/4929dfd99615d62d7fa563977b1b98.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/44/1272ca0aca5d4cd8b7789988038a37.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/42/28e5ab38b619c10e4f6e1e87488f4f.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/3d/3e2abcfe604ab75fee02cedac01327.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/3b/5067c63a5fc5944a64cbc7d9a2ed7d.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/3a/da63be7a64e8d3fafc9573f3799a17.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/33/8805f95985e91d68b5ae68907bdd82.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/2e/dfa128c9904518987166523764c3d2.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/29/fb8de4578a4e58dead5494ee732a55.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/28/fdf60b4cec909549c6e7b22967dde1.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/27/b04005259199fa7bb3c61bde1b689f.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/25/d479ccf5b1a14dcd661f7510db0dea.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/24/71991920f906c9533d3fcd12656bd8.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/22/a69b796c583116bc417e05a5bd083e.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/20/7b0bb78316ecb13d3b3f6f5d0f7c74.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/20/554ba03f0e84b2241f4533d8071b62.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/1c/3aeb133c87b6e71642a803dd91e69f.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/19/bc2147a23314a67a464ec7e5ca7f16.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/18/60faa88162847d8f8380cc3fb9fc84.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/15/747194db682797c8defee50b91fce2.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/13/f4be76a138444d25a73c859dffddc9.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/12/07827ece1516ab57db4b83c3361e67.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/0c/e83300b25f4f88790ed8bb36973296.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/09/29779159a36141bafc7cab8fb00a74.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/07/f25a90b8172709a031aea01ca3df17.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/07/c1d31d2d930301bbfb450e4d6d6e16.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/04/5d425f94a285a0a5c916618970803b.json",
+      "/home/randy/Fullstack/Projects/Capstone/.cache/04/5be59b4db07ef48a4a7a950d83e0c5.json"
+    ],
+    "nodejsVersion": "v12.7.0",
+    "glibcVersionRuntime": "2.27",
+    "glibcVersionCompiler": "2.17",
+    "wordSize": 64,
+    "arch": "x64",
+    "platform": "linux",
+    "componentVersions": {
+      "node": "12.7.0",
+      "v8": "7.5.288.22-node.16",
+      "uv": "1.30.1",
+      "zlib": "1.2.11",
+      "brotli": "1.0.7",
+      "ares": "1.15.0",
+      "modules": "72",
+      "nghttp2": "1.39.1",
+      "napi": "4",
+      "llhttp": "1.1.4",
+      "http_parser": "2.8.0",
+      "openssl": "1.1.1c",
+      "cldr": "35.1",
+      "icu": "64.2",
+      "tz": "2019a",
+      "unicode": "12.1"
+    },
+    "release": {
+      "name": "node",
+      "headersUrl":
+        "https://nodejs.org/download/release/v12.7.0/node-v12.7.0-headers.tar.gz",
+      "sourceUrl":
+        "https://nodejs.org/download/release/v12.7.0/node-v12.7.0.tar.gz"
+    },
+    "osName": "Linux",
+    "osRelease": "5.0.0-36-generic",
+    "osVersion": "#39~18.04.1-Ubuntu SMP Tue Nov 12 11:09:50 UTC 2019",
+    "osMachine": "x86_64",
+    "cpus": [
+      {
+        "model": "Intel(R) Core(TM) i5-8300H CPU @ 2.30GHz",
+        "speed": 2304,
+        "user": 15171100,
+        "nice": 156800,
+        "sys": 3430100,
+        "idle": 43799100,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-8300H CPU @ 2.30GHz",
+        "speed": 2304,
+        "user": 15171100,
+        "nice": 156800,
+        "sys": 3430100,
+        "idle": 43799100,
+        "irq": 0
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-8300H CPU @ 2.30GHz",
+        "speed": 2304,
+        "user": 15171100,
+        "nice": 156800,
+        "sys": 3430100,
+        "idle": 43799100,
+        "irq": 0
+      }
+    ],
+    "host": "randy-VirtualBox"
+  },
+  "javascriptStack": {
+    "message": "No stack.",
+    "stack": ["Unavailable."]
+  },
+  "nativeStack": [
+    {
+      "pc": "0x0000000000ad0835",
+      "symbol":
+        "report::TriggerNodeReport(v8::Isolate*, node::Environment*, char const*, char const*, std::string const&, v8::Local<v8::String>) [node]"
+    },
+    {
+      "pc": "0x00000000009b10d3",
+      "symbol": "node::OnFatalError(char const*, char const*) [node]"
+    },
+    {
+      "pc": "0x0000000000b09f1e",
+      "symbol":
+        "v8::Utils::ReportOOMFailure(v8::internal::Isolate*, char const*, bool) [node]"
+    },
+    {
+      "pc": "0x0000000000b0a299",
+      "symbol":
+        "v8::internal::V8::FatalProcessOutOfMemory(v8::internal::Isolate*, char const*, bool) [node]"
+    },
+    {
+      "pc": "0x0000000000ce71a5",
+      "symbol": " [node]"
+    },
+    {
+      "pc": "0x0000000000cf29eb",
+      "symbol":
+        "v8::internal::Heap::PerformGarbageCollection(v8::internal::GarbageCollector, v8::GCCallbackFlags) [node]"
+    },
+    {
+      "pc": "0x0000000000cf3707",
+      "symbol":
+        "v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags) [node]"
+    },
+    {
+      "pc": "0x0000000000cf6238",
+      "symbol":
+        "v8::internal::Heap::AllocateRawWithRetryOrFail(int, v8::internal::AllocationType, v8::internal::AllocationAlignment) [node]"
+    },
+    {
+      "pc": "0x0000000000cbfb47",
+      "symbol":
+        "v8::internal::Factory::NewFillerObject(int, bool, v8::internal::AllocationType) [node]"
+    },
+    {
+      "pc": "0x0000000000f96708",
+      "symbol":
+        "v8::internal::Runtime_AllocateInYoungGeneration(int, unsigned long*, v8::internal::Isolate*) [node]"
+    },
+    {
+      "pc": "0x0000000001318979",
+      "symbol": " [node]"
+    }
+  ],
+  "javascriptHeap": {
+    "totalMemory": 2152747008,
+    "totalCommittedMemory": 2151191168,
+    "usedMemory": 2147155992,
+    "availableMemory": 47566648,
+    "memoryLimit": 2197815296,
+    "heapSpaces": {
+      "read_only_space": {
+        "memorySize": 262144,
+        "committedMemory": 32272,
+        "capacity": 261832,
+        "used": 31960,
+        "available": 229872
+      },
+      "new_space": {
+        "memorySize": 2097152,
+        "committedMemory": 1282312,
+        "capacity": 1047328,
+        "used": 265040,
+        "available": 782288
+      },
+      "old_space": {
+        "memorySize": 2040410112,
+        "committedMemory": 2040059192,
+        "capacity": 2037882336,
+        "used": 2037443464,
+        "available": 438872
+      },
+      "code_space": {
+        "memorySize": 688128,
+        "committedMemory": 616640,
+        "capacity": 545344,
+        "used": 545344,
+        "available": 0
+      },
+      "map_space": {
+        "memorySize": 790528,
+        "committedMemory": 701808,
+        "capacity": 451200,
+        "used": 451200,
+        "available": 0
+      },
+      "large_object_space": {
+        "memorySize": 108449792,
+        "committedMemory": 108449792,
+        "capacity": 108415528,
+        "used": 108415528,
+        "available": 0
+      },
+      "code_large_object_space": {
+        "memorySize": 49152,
+        "committedMemory": 49152,
+        "capacity": 3456,
+        "used": 3456,
+        "available": 0
+      },
+      "new_large_object_space": {
+        "memorySize": 0,
+        "committedMemory": 0,
+        "capacity": 1047328,
+        "used": 0,
+        "available": 1047328
+      }
+    }
+  },
+  "resourceUsage": {
+    "userCpuSeconds": 264.682,
+    "kernelCpuSeconds": 14.5712,
+    "cpuConsumptionPercent": 134.257,
+    "maxRss": 2218459136,
+    "pageFaults": {
+      "IORequired": 65,
+      "IONotRequired": 845850
+    },
+    "fsActivity": {
+      "reads": 57080,
+      "writes": 11232
+    }
+  },
+  "uvthreadResourceUsage": {
+    "userCpuSeconds": 146.545,
+    "kernelCpuSeconds": 7.67061,
+    "cpuConsumptionPercent": 74.1422,
+    "fsActivity": {
+      "reads": 56032,
+      "writes": 11232
+    }
+  },
+  "libuv": [],
+  "environmentVariables": {
+    "PROFILEHOME": "",
+    "GJS_DEBUG_TOPICS": "JS ERROR;JS LOG",
+    "LESSOPEN": "| /usr/bin/lesspipe %s",
+    "CONDA_PROMPT_MODIFIER": "(base) ",
+    "USER": "randy",
+    "LANGUAGE": "",
+    "GIT_AUTHOR_EMAIL": "randydxp@gmail.com",
+    "GIT_EDITOR": ":",
+    "TEXTDOMAIN": "im-config",
+    "XDG_SEAT": "seat0",
+    "SSH_AGENT_PID": "1353",
+    "XDG_SESSION_TYPE": "x11",
+    "ROS_PACKAGE_PATH": "/opt/ros/melodic/share",
+    "LD_LIBRARY_PATH": "/opt/ros/melodic/lib",
+    "ROS_ETC_DIR": "/opt/ros/melodic/etc/ros",
+    "SHLVL": "2",
+    "CONDA_SHLVL": "1",
+    "OLDPWD": "/home/randy/Fullstack/Projects/Capstone/python",
+    "QT4_IM_MODULE": "xim",
+    "HOME": "/home/randy",
+    "GIT_AUTHOR_DATE": "@1574372857 -0600",
+    "DESKTOP_SESSION": "ubuntu",
+    "NVM_BIN": "/home/randy/.nvm/versions/node/v12.7.0/bin",
+    "GIO_LAUNCHED_DESKTOP_FILE":
+      "/usr/share/applications/org.kde.yakuake.desktop",
+    "SHELL_SESSION_ID": "4e42ad0c0f794506ad39efb01f402c5b",
+    "GNOME_SHELL_SESSION_MODE": "ubuntu",
+    "GTK_MODULES": "gail:atk-bridge",
+    "GIT_AUTHOR_NAME": "randy",
+    "ROS_PYTHON_VERSION": "2",
+    "GIT_PREFIX": "",
+    "KONSOLE_DBUS_SESSION": "/Sessions/2",
+    "DBUS_SESSION_BUS_ADDRESS": "unix:path=/run/user/1000/bus",
+    "COLORTERM": "truecolor",
+    "GIO_LAUNCHED_DESKTOP_FILE_PID": "1890",
+    "_CE_M": "",
+    "NVM_DIR": "/home/randy/.nvm",
+    "MANDATORY_PATH": "/usr/share/gconf/ubuntu.mandatory.path",
+    "IM_CONFIG_PHASE": "2",
+    "ROS_DISTRO": "melodic",
+    "LOGNAME": "randy",
+    "GTK_IM_MODULE": "ibus",
+    "WINDOWID": "44040198",
+    "_": "/home/randy/.nvm/versions/node/v12.7.0/bin/node",
+    "DEFAULTS_PATH": "/usr/share/gconf/ubuntu.default.path",
+    "ROS_VERSION": "1",
+    "KONSOLE_PROFILE_NAME": "Default",
+    "COLORFGBG": "15;0",
+    "PKG_CONFIG_PATH": "/opt/ros/melodic/lib/pkgconfig",
+    "USERNAME": "randy",
+    "XDG_SESSION_ID": "1",
+    "TERM": "xterm-256color",
+    "_CE_CONDA": "",
+    "GNOME_DESKTOP_SESSION_ID": "this-is-deprecated",
+    "WINDOWPATH": "1",
+    "PATH":
+      "/home/randy/Fullstack/Projects/Capstone/node_modules/.bin:/home/randy/Fullstack/Projects/node_modules/.bin:/home/randy/Fullstack/node_modules/.bin:/home/randy/node_modules/.bin:/home/node_modules/.bin:/node_modules/.bin:/home/randy/.nvm/versions/node/v12.7.0/bin:/home/randy/Fullstack/Projects/Capstone/node_modules/.bin:/home/randy/Fullstack/Projects/node_modules/.bin:/home/randy/Fullstack/node_modules/.bin:/home/randy/node_modules/.bin:/home/node_modules/.bin:/node_modules/.bin:/home/randy/.nvm/versions/node/v12.7.0/bin:/usr/lib/git-core:/home/randy/anaconda3/bin:/home/randy/anaconda3/condabin:/opt/ros/melodic/bin:/home/randy/.nvm/versions/node/v12.7.0/bin:/home/randy/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin",
+    "SESSION_MANAGER":
+      "local/randy-VirtualBox:@/tmp/.ICE-unix/1209,unix/randy-VirtualBox:/tmp/.ICE-unix/1209",
+    "XDG_MENU_PREFIX": "gnome-",
+    "S_COLORS": "auto",
+    "XDG_RUNTIME_DIR": "/run/user/1000",
+    "DISPLAY": ":0",
+    "LANG": "en_US.UTF-8",
+    "XDG_CURRENT_DESKTOP": "ubuntu:GNOME",
+    "LS_COLORS":
+      "rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:",
+    "XDG_SESSION_DESKTOP": "ubuntu",
+    "ROS_ROOT": "/opt/ros/melodic/share/ros",
+    "XMODIFIERS": "@im=ibus",
+    "ROSLISP_PACKAGE_DIRECTORIES": "",
+    "XAUTHORITY": "/run/user/1000/gdm/Xauthority",
+    "SSH_AUTH_SOCK": "/run/user/1000/keyring/ssh",
+    "CONDA_PYTHON_EXE": "/home/randy/anaconda3/bin/python",
+    "SHELL": "/bin/bash",
+    "QT_ACCESSIBILITY": "1",
+    "ROS_MASTER_URI": "http://localhost:11311",
+    "GDMSESSION": "ubuntu",
+    "LESSCLOSE": "/usr/bin/lesspipe %s %s",
+    "CONDA_DEFAULT_ENV": "base",
+    "KONSOLE_DBUS_SERVICE": ":1.81",
+    "TEXTDOMAINDIR": "/usr/share/locale/",
+    "GJS_DEBUG_OUTPUT": "stderr",
+    "GPG_AGENT_INFO": "/run/user/1000/gnupg/S.gpg-agent:0:1",
+    "XDG_VTNR": "1",
+    "QT_IM_MODULE": "ibus",
+    "PWD": "/home/randy/Fullstack/Projects/Capstone",
+    "CLUTTER_IM_MODULE": "xim",
+    "CONDA_EXE": "/home/randy/anaconda3/bin/conda",
+    "NVM_CD_FLAGS": "",
+    "XDG_DATA_DIRS":
+      "/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop",
+    "GIT_INDEX_FILE": ".git/index",
+    "XDG_CONFIG_DIRS": "/etc/xdg/xdg-ubuntu:/etc/xdg",
+    "PYTHONPATH": "/opt/ros/melodic/lib/python2.7/dist-packages",
+    "CONDA_PREFIX": "/home/randy/anaconda3",
+    "CMAKE_PREFIX_PATH": "/opt/ros/melodic",
+    "FORCE_COLOR": "1"
+  },
+  "userLimits": {
+    "core_file_size_blocks": {
+      "soft": 0,
+      "hard": "unlimited"
+    },
+    "data_seg_size_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "file_size_blocks": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_locked_memory_bytes": {
+      "soft": 16777216,
+      "hard": 16777216
+    },
+    "max_memory_size_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "open_files": {
+      "soft": 1048576,
+      "hard": 1048576
+    },
+    "stack_size_bytes": {
+      "soft": 8388608,
+      "hard": "unlimited"
+    },
+    "cpu_time_seconds": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    },
+    "max_user_processes": {
+      "soft": 18009,
+      "hard": 18009
+    },
+    "virtual_memory_kbytes": {
+      "soft": "unlimited",
+      "hard": "unlimited"
+    }
+  },
+  "sharedObjects": [
+    "linux-vdso.so.1",
+    "/lib/x86_64-linux-gnu/libdl.so.2",
+    "/lib/x86_64-linux-gnu/librt.so.1",
+    "/usr/lib/x86_64-linux-gnu/libstdc++.so.6",
+    "/lib/x86_64-linux-gnu/libm.so.6",
+    "/lib/x86_64-linux-gnu/libgcc_s.so.1",
+    "/lib/x86_64-linux-gnu/libpthread.so.0",
+    "/lib/x86_64-linux-gnu/libc.so.6",
+    "/lib64/ld-linux-x86-64.so.2"
+  ]
+}
