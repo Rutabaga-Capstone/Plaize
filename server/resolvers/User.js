@@ -1,8 +1,7 @@
-function links(parent, args, context) {
-  // plants
-  return context.prisma.user({id: parent.id}).links()
+function plants(parent, args, context) {
+  return context.apollo.user({id: parent.id}).links()
 }
 
 module.exports = {
-  links
+  plants
 }

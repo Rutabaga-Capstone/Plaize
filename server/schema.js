@@ -2,12 +2,16 @@ const {gql} = require('apollo-server')
 
 const typeDefs = gql`
   type Query {
-    info: String!
-    feed: [Link!]!
+    user(id: ID!): User
   }
 
   type Mutation {
-    post(url: String!, description: String!): Link!
+    createPin(
+      user: User
+      plants: [Plant!]!
+      location: Location!
+      notes: [Note]
+    ): Pin!
   }
 
   type Location {
@@ -44,9 +48,8 @@ const typeDefs = gql`
   type Note {
     id: ID!
     plant: Plant
-    user: User.username!
+    user: User
     pin: Pin
   }
-
 `
 module.exports = {typeDefs}

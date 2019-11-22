@@ -1,10 +1,23 @@
 const path = require('path')
+const {ApolloServer} = require('apollo-server-express')
 const express = require('express')
 const morgan = require('morgan')
 const compression = require('compression')
+const typeDefs = require('./schema')
+const Query = require('./resolvers/Query')
+const Mutation = require('./resolvers/Mutation')
+const Subscription = require('./resolvers/Subscription')
+const User = require('./resolvers/User')
 const PORT = process.env.PORT || 1234
 const app = express()
 module.exports = app
+
+const resolvers = {
+  Query,
+  Mutation,
+  Subscription,
+  User
+}
 
 const createApp = () => {
   // logging middleware
@@ -17,9 +30,6 @@ const createApp = () => {
   // compression middleware
   app.use(compression())
 
-  // static file-serving middleware
-  app.use(express.static(path.join(__dirname, '..', 'dist')))
-
   // any remaining requests with an extension (.js, .css, etc.) send 404
   app.use((req, res, next) => {
     if (path.extname(req.path).length) {
@@ -31,10 +41,7 @@ const createApp = () => {
     }
   })
 
-  // sends index.html
-  app.use('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'dist/index.html'))
-  })
+  server.applyMiddleware({app})
 
   // error handling endware
   app.use((err, req, res) => {
