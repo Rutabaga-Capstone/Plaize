@@ -11,10 +11,13 @@ const resolvers = {
   Query,
   Mutation,
   Subscription,
-  User,
-  Link,
-  Vote
+  User
 }
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers
+})
 
 server.listen().then(({url}) => {
   console.log('GraphQL Apollo Server running at ' + url)
