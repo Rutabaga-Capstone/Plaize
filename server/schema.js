@@ -12,6 +12,7 @@ const typeDefs = gql`
       location: Location!
       notes: [Note]
     ): Pin!
+    user(id: ID): User!
   }
 
   type Location {

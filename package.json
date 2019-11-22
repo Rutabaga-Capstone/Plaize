@@ -4,12 +4,7 @@
   "description": "_Good things come in pairs_",
   "main": "index.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "eject": "expo eject",
-    "test": "jest --watchAll",
+    "test": "echo 'testing'",
     "start-server": "nodemon server",
     "build-watch": "parcel watch ./public/index.html",
     "seed": "node script/seed.js",
