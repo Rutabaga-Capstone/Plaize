@@ -4,7 +4,7 @@
   "description": "_Good things come in pairs_",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll",
+    "test": "echo 'testing'",
     "start-server": "nodemon server",
     "build-watch": "parcel watch ./public/index.html",
     "seed": "node script/seed.js",
