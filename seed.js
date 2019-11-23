@@ -9,6 +9,4 @@ const poisonIvy = {
   notes: []
 }
 
-const note1 = {id: 1, user: 'Randy', plant: poisonIvy}
-
-// const poisonIvy =
+// this will be updated for proper graphql querying

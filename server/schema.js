@@ -1,12 +1,19 @@
+const {neo4jgraphql} = require('neo4j-graphql-js')
 const {gql} = require('apollo-server')
+
+// type Mutation {
+//   createPin(
+//     user: User
+//     plants: [Plant!]!
+//     location: Location!
+//     notes: [Note]
+//   ): Pin!
+//   user(id: ID): User!
+// }
 
 const typeDefs = gql`
   type Query {
-    info: String!
-  }
-
-  type Mutation {
-    user(id: ID): User!
+    user(id: ID!): User
   }
 
   type Location {
@@ -20,7 +27,7 @@ const typeDefs = gql`
     scientificName: String!
     imageURL: String!
     description: String!
-    poisonous: Bool!
+    poisonous: Boolean!
     notes: [Note!]!
   }
 
@@ -47,4 +54,11 @@ const typeDefs = gql`
     pin: Pin
   }
 `
-module.exports = {typeDefs}
+
+const resolvers = {
+  Query: {
+    user: neo4jgraphql
+  }
+}
+
+module.exports = {typeDefs, resolvers}
