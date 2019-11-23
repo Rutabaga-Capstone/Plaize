@@ -51,6 +51,9 @@ const createApp = () => {
   // applies graphql query as middleware and defines api endpoint as /graphql
   server.applyMiddleware({app, graphqlPath})
 
+  // needs to server a file from the server... but which file?
+  // app.use(something, path.join(path__, something))
+
   // any remaining requests with an extension (.js, .css, etc.) send 404
   app.use((req, res, next) => {
     if (path.extname(req.path).length) {
