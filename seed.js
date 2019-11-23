@@ -9,8 +9,4 @@ const poisonIvy = {
   notes: []
 }
 
-const note1 = {id: 1, user: 'Randy', plant: poisonIvy}
-
-const note2 = {id: 2, user: 'Jerry', plant: poisonIvy}
-
-poisonIvy.notes.push(note1, note2)
+// this will be updated for proper graphql querying
