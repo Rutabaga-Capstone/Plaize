@@ -6,10 +6,8 @@ const compression = require('compression')
 const {typeDefs, resolvers} = require('./schema')
 const neo4j = require('neo4j-driver').v1
 const {augmentSchema} = require('neo4j-graphql-js')
-const Query = require('./resolvers/Query')
-const User = require('./resolvers/User')
 const PORT = process.env.PORT || 1234
-const GRAPHQL_PORT = process.env.GRAPHQL_PORT || 4000
+const GRAPHQL_PORT = process.env.GRAPHQL_PORT || 7687
 const app = express()
 module.exports = app
 
@@ -28,7 +26,7 @@ const driver = neo4j.driver(
 )
 
 const server = new ApolloServer({
-  schema,
+  schema: augmentedSchema,
   context: {driver},
   introspection: true,
   playground: true
