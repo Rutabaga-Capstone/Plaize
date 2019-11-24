@@ -11,6 +11,7 @@ import {
 } from 'react-native'
 
 import {MonoText} from '../components/StyledText'
+import SnapScreen from './SnapScreen'
 
 export default function HomeScreen() {
   return (
@@ -19,6 +20,9 @@ export default function HomeScreen() {
         style={styles.container}
         contentContainerStyle={styles.contentContainer}
       >
+        <View>
+          <SnapScreen />
+        </View>
         <View style={styles.welcomeContainer}>
           <Image
             source={
