@@ -11,67 +11,27 @@ import {
   Animated
 } from 'react-native'
 
+import * as Font from 'expo-font'
 import {MonoText} from '../components/StyledText'
 import {LinearGradient} from 'expo-linear-gradient'
 
 export default function HomeScreen() {
   return (
     <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
-      <LinearGradient colors={['#6CC7BD', '#A5D38F']}>
-        <ScrollView
-          // style={styles.container}
-          contentContainerStyle={styles.contentContainer}
-        >
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/logo-transparent.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            />
-          </View>
-
-          {/* <View style={styles.getStartedContainer}>
-            <DevelopmentModeNotice />
-
-            <Text style={styles.getStartedText}>helloWorld</Text>
-
-            <View
-              style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
-            >
-              <MonoText>screens/HomeScreen.js</MonoText>
-            </View>
-
-            <Text style={styles.getStartedText}>
-              Change this text and your app will automatically reload.
-            </Text>
-          </View> */}
-
-          {/* <View style={styles.helpContainer}>
-            <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
-              <Text style={styles.helpLinkText}>
-                Help, it didn’t automatically reload!
-              </Text>
-            </TouchableOpacity>
-          </View> */}
-        </ScrollView>
-
-        {/* <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>
-            This is a tab bar. You can edit it in:
-          </Text>
-
-          <View
-            style={[styles.codeHighlightContainer, styles.navigationFilename]}
-          >
-            <MonoText style={styles.codeHighlightText}>
-              navigation/MainTabNavigator.js
-            </MonoText>
-          </View>
-        </View> */}
-      </LinearGradient>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+        <View style={styles.welcomeContainer}>
+          <Image
+            source={
+              __DEV__
+                ? require('../assets/images/logo-gradient.png')
+                : require('../assets/images/robot-prod.png')
+            }
+            style={styles.welcomeImage}
+          />
+          <Text style={styles.title}>Plaze</Text>
+          <Text style={styles.subtitle}>Identify Poisonous Plants</Text>
+        </View>
+      </ScrollView>
     </View>
   )
 }
@@ -116,6 +76,17 @@ function handleHelpPress() {
 }
 
 const styles = StyleSheet.create({
+  title: {
+    marginTop: 30,
+    color: '#000000',
+    textAlign: 'center',
+    fontSize: 30,
+    fontFamily: 'yorkten'
+  },
+  subtitle: {
+    color: '#C7CAD4',
+    textAlign: 'center'
+  },
   container: {
     alignSelf: 'stretch'
   },
@@ -129,27 +100,18 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 30,
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     marginHorizontal: 80
   },
   welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
+    marginTop: 30,
     marginHorizontal: 50
   },
   welcomeImage: {
-    width: 150,
-    height: 150,
+    width: 100,
+    height: 100,
     resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: 20
+    marginLeft: 15
   },
-  /* getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50
-  }, */
   homeScreenFilename: {
     marginVertical: 7
   },
