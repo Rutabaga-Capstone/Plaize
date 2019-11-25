@@ -4,7 +4,7 @@ public/bundle.js.map
 secrets.js
 .DS_Store
 python
-.js
 downloads
 dist
 .cache
+.env
