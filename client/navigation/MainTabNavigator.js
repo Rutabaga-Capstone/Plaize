@@ -6,7 +6,7 @@ import TabBarIcon from '../components/TabBarIcon'
 import HomeScreen from '../screens/HomeScreen'
 import CreateAccountScreen from '../screens/CreateAccount'
 import LinksScreen from '../screens/LinksScreen'
-import SettingsScreen from '../screens/SettingsScreen'
+import SettingsScreen from '../screens/MapScreen'
 
 const config = Platform.select({
   web: {headerMode: 'screen'},
@@ -65,7 +65,7 @@ const SettingsStack = createStackNavigator(
 )
 
 SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
+  tabBarLabel: 'Map',
   tabBarIcon: ({focused}) => (
     <TabBarIcon
       focused={focused}
