@@ -7,8 +7,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
-  Animated
+  View
 } from 'react-native'
 
 import {MonoText} from '../components/StyledText'
@@ -16,10 +15,10 @@ import {LinearGradient} from 'expo-linear-gradient'
 
 export default function HomeScreen() {
   return (
-    <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <LinearGradient colors={['#6CC7BD', '#A5D38F']}>
         <ScrollView
-          // style={styles.container}
+          style={styles.container}
           contentContainerStyle={styles.contentContainer}
         >
           <View style={styles.welcomeContainer}>
@@ -33,10 +32,10 @@ export default function HomeScreen() {
             />
           </View>
 
-          {/* <View style={styles.getStartedContainer}>
+          <View style={styles.getStartedContainer}>
             <DevelopmentModeNotice />
 
-            <Text style={styles.getStartedText}>helloWorld</Text>
+            <Text style={styles.getStartedText}>loginScreen</Text>
 
             <View
               style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
@@ -47,18 +46,18 @@ export default function HomeScreen() {
             <Text style={styles.getStartedText}>
               Change this text and your app will automatically reload.
             </Text>
-          </View> */}
+          </View>
 
-          {/* <View style={styles.helpContainer}>
+          <View style={styles.helpContainer}>
             <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
               <Text style={styles.helpLinkText}>
                 Help, it didn’t automatically reload!
               </Text>
             </TouchableOpacity>
-          </View> */}
+          </View>
         </ScrollView>
 
-        {/* <View style={styles.tabBarInfoContainer}>
+        <View style={styles.tabBarInfoContainer}>
           <Text style={styles.tabBarInfoText}>
             This is a tab bar. You can edit it in:
           </Text>
@@ -70,7 +69,7 @@ export default function HomeScreen() {
               navigation/MainTabNavigator.js
             </MonoText>
           </View>
-        </View> */}
+        </View>
       </LinearGradient>
     </View>
   )
@@ -116,9 +115,11 @@ function handleHelpPress() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    alignSelf: 'stretch'
-  },
+  /* container: {
+    // flex: 1,
+    // backgroundColor: 'red'
+    height: 100%
+  }, */
   developmentModeText: {
     marginBottom: 20,
     color: 'rgba(0,0,0,0.4)',
@@ -127,29 +128,24 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   contentContainer: {
-    paddingTop: 30,
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginHorizontal: 80
+    paddingTop: 30
   },
   welcomeContainer: {
     alignItems: 'center',
     marginTop: 10,
-    marginBottom: 20,
-    marginHorizontal: 50
+    marginBottom: 20
   },
   welcomeImage: {
     width: 150,
     height: 150,
     resizeMode: 'contain',
     marginTop: 3,
-    marginLeft: 20
+    marginLeft: 10
   },
-  /* getStartedContainer: {
+  getStartedContainer: {
     alignItems: 'center',
     marginHorizontal: 50
-  }, */
+  },
   homeScreenFilename: {
     marginVertical: 7
   },
