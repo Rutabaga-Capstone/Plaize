@@ -9,9 +9,9 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "splash": {
-      "image": "./assets/images/logo-gradient.png",
+      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#6CC7BD"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
