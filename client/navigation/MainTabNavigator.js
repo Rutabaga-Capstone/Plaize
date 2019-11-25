@@ -4,6 +4,7 @@ import {createStackNavigator, createBottomTabNavigator} from 'react-navigation'
 
 import TabBarIcon from '../components/TabBarIcon'
 import HomeScreen from '../screens/HomeScreen'
+import CreateAccountScreen from '../screens/CreateAccount'
 import LinksScreen from '../screens/LinksScreen'
 import SettingsScreen from '../screens/SettingsScreen'
 
@@ -12,9 +13,11 @@ const config = Platform.select({
   default: {}
 })
 
+//all screens should be included here
 const HomeStack = createStackNavigator(
   {
-    Home: HomeScreen
+    Home: HomeScreen,
+    CreateAccount: CreateAccountScreen
   },
   config
 )

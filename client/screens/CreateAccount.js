@@ -17,7 +17,6 @@ import {MonoText} from '../components/StyledText'
 import GradientButton from 'react-native-gradient-buttons'
 
 export default function HomeScreen(props) {
-  const {navigate} = props.navigation
   return (
     <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -31,7 +30,7 @@ export default function HomeScreen(props) {
             style={styles.welcomeImage}
           />
           <Text style={styles.title}>Plaze</Text>
-          <Text style={styles.subtitle}>Identify Poisonous Plants</Text>
+          <Text style={styles.subtitle}>CREATE ACCOUNT</Text>
 
           <Input style={styles.label} placeholder="username or email" />
           <Input style={styles.label} placeholder="password" />
@@ -51,7 +50,7 @@ export default function HomeScreen(props) {
             height={50}
             width={200}
             radius={0}
-            onPressAction={() => alert('You pressed me in login!')}
+            onPressAction={() => alert('You pressed me in create account!')}
           >
             Login
           </GradientButton>
@@ -66,7 +65,7 @@ export default function HomeScreen(props) {
               marginTop: 30,
               textAlign: 'center'
             }}
-            onPressAction={() => navigate('CreateAccount')}
+            onPress={() => navigate('Profile', {name: 'Jane'})}
             textStyle={{fontSize: 18}}
             gradientBegin="#6CC7BD"
             gradientEnd="#A5D38F"
@@ -74,10 +73,10 @@ export default function HomeScreen(props) {
             height={50}
             width={200}
             radius={0}
+            onPressAction={() => alert('Pressed in create account!')}
           >
             Create Account
           </GradientButton>
-
           <Text style={styles.screenText}>Create Account With</Text>
           <Text style={styles.socialLinks}>Facebook</Text>
           <Text style={styles.socialLinks}>Google</Text>
