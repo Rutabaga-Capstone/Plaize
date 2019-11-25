@@ -6,12 +6,11 @@ const compression = require('compression')
 const {typeDefs} = require('./schema')
 const neo4j = require('neo4j-driver').v1
 const {augmentSchema} = require('neo4j-graphql-js')
-const PORT = process.env.PORT || 1234
-const GRAPHQL_PORT = process.env.GRAPHQL_PORT || 7687
+require('dotenv').config()
+const PORT = process.env.PORT
+const GRAPHQL_PORT = process.env.GRAPHQL_PORT
 const app = express()
 module.exports = app
-
-require('dotenv').config()
 
 const graphqlPath = '/graphql'
 
