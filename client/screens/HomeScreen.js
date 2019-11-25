@@ -32,16 +32,13 @@ export default function HomeScreen(props) {
           />
           <Text style={styles.title}>Plaze</Text>
           <Text style={styles.subtitle}>Identify Poisonous Plants</Text>
-
           <Input style={styles.label} placeholder="username or email" />
           <Input style={styles.label} placeholder="password" />
 
           <GradientButton
             style={{
-              marginVertical: 5,
-              marginRight: 0,
-              marginLeft: 50,
-              marginTop: 30,
+              marginTop: 20,
+              marginBottom: 20,
               textAlign: 'center'
             }}
             textStyle={{fontSize: 18}}
@@ -53,17 +50,15 @@ export default function HomeScreen(props) {
             radius={0}
             onPressAction={() => alert('You pressed me in login!')}
           >
-            Login
+            login
           </GradientButton>
           <Text style={styles.screenText}>I forgot my password</Text>
           <Text style={styles.title}>New to Plaze?</Text>
 
           <GradientButton
             style={{
-              marginVertical: 5,
-              marginRight: 0,
-              marginLeft: 50,
-              marginTop: 30,
+              marginTop: 20,
+              marginBottom: 20,
               textAlign: 'center'
             }}
             onPressAction={() => navigate('CreateAccount')}
@@ -75,12 +70,19 @@ export default function HomeScreen(props) {
             width={200}
             radius={0}
           >
-            Create Account
+            create account
           </GradientButton>
 
           <Text style={styles.screenText}>Create Account With</Text>
-          <Text style={styles.socialLinks}>Facebook</Text>
-          <Text style={styles.socialLinks}>Google</Text>
+
+          <View style={styles.socialContainer}>
+            <View>
+              <Text>Facebook</Text>
+            </View>
+            <View>
+              <Text>Google</Text>
+            </View>
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -126,6 +128,18 @@ function handleHelpPress() {
 }
 
 const styles = StyleSheet.create({
+  welcomeContainer: {
+    marginTop: 30,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  welcomeImage: {
+    width: 100,
+    height: 100,
+    resizeMode: 'contain',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   title: {
     marginTop: 30,
     color: '#000000',
@@ -149,6 +163,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center'
   },
+  socialContainer: {},
+  socialColumn: {
+    width: '50%' // 50% of container width
+  },
   socialLinks: {
     color: '#6CC7BD',
     fontSize: 18
@@ -160,12 +178,6 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#6CC7BD'
-  },
-  welcomeImage: {
-    width: 100,
-    height: 100,
-    resizeMode: 'contain',
-    marginLeft: 38
   },
   container: {
     alignSelf: 'stretch'
@@ -180,10 +192,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 30,
     flex: 1,
-    marginHorizontal: 80
-  },
-  welcomeContainer: {
-    marginTop: 30
+    textAlign: 'center'
   },
   homeScreenFilename: {
     marginVertical: 7

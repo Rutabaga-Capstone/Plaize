@@ -30,17 +30,26 @@ export default function HomeScreen(props) {
             style={styles.welcomeImage}
           />
           <Text style={styles.title}>Plaze</Text>
-          <Text style={styles.subtitle}>CREATE ACCOUNT</Text>
+          <Text style={styles.subtitle}>create an account</Text>
 
-          <Input style={styles.label} placeholder="username or email" />
-          <Input style={styles.label} placeholder="password" />
+          <Input style={styles.label} placeholder="First name" />
+          <Input style={styles.label} placeholder="Middle Name / Initial" />
+          <Input style={styles.label} placeholder="Last Name" />
+          <Input style={styles.label} placeholder="Email Address" />
+          <Input style={styles.label} placeholder="Password" />
+          <Input style={styles.label} placeholder="Confirm Password" />
+
+          <Text style={styles.screenText}>
+            *By tapping Register, you acknowledge that you have read the Privacy
+            Policy and agree to the Terms of Service. We'll send you a message
+            to verify this number. Messaging rates may apply. Remember, you
+            plant reviews are public.
+          </Text>
 
           <GradientButton
             style={{
-              marginVertical: 5,
-              marginRight: 0,
-              marginLeft: 50,
-              marginTop: 30,
+              marginTop: 20,
+              marginBottom: 20,
               textAlign: 'center'
             }}
             textStyle={{fontSize: 18}}
@@ -52,34 +61,8 @@ export default function HomeScreen(props) {
             radius={0}
             onPressAction={() => alert('You pressed me in create account!')}
           >
-            Login
+            register
           </GradientButton>
-          <Text style={styles.screenText}>I forgot my password</Text>
-          <Text style={styles.title}>New to Plaze?</Text>
-
-          <GradientButton
-            style={{
-              marginVertical: 5,
-              marginRight: 0,
-              marginLeft: 50,
-              marginTop: 30,
-              textAlign: 'center'
-            }}
-            onPress={() => navigate('Profile', {name: 'Jane'})}
-            textStyle={{fontSize: 18}}
-            gradientBegin="#6CC7BD"
-            gradientEnd="#A5D38F"
-            gradientDirection="diagonal"
-            height={50}
-            width={200}
-            radius={0}
-            onPressAction={() => alert('Pressed in create account!')}
-          >
-            Create Account
-          </GradientButton>
-          <Text style={styles.screenText}>Create Account With</Text>
-          <Text style={styles.socialLinks}>Facebook</Text>
-          <Text style={styles.socialLinks}>Google</Text>
         </View>
       </ScrollView>
     </View>
@@ -143,10 +126,11 @@ const styles = StyleSheet.create({
     marginBottom: 15
   },
   screenText: {
+    marginTop: 15,
     color: '#000000',
     fontFamily: 'yorkten',
-    fontSize: 18,
-    textAlign: 'center'
+    fontSize: 12,
+    justifyContent: 'center'
   },
   socialLinks: {
     color: '#6CC7BD',
@@ -163,8 +147,8 @@ const styles = StyleSheet.create({
   welcomeImage: {
     width: 100,
     height: 100,
-    resizeMode: 'contain',
-    marginLeft: 38
+    resizeMode: 'contain'
+    // marginLeft: 38
   },
   container: {
     alignSelf: 'stretch'
@@ -182,7 +166,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 80
   },
   welcomeContainer: {
-    marginTop: 30
+    marginTop: 30,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   homeScreenFilename: {
     marginVertical: 7
