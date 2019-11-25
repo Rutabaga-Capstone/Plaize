@@ -11,15 +11,15 @@ const {gql} = require('apollo-server')
 //   user(id: ID): User!
 // }
 
-const typeDefs = gql`
+const typeDefs = `
   type Query {
-    user(id: ID, username: String): User
+    user(id: ID, name: String): User
     location(lat: Float!, lng: Float!): Location
+    plant(id: ID, commonName: String): Plant
   }
 
   type Location {
-    lat: Float!
-    lng: Float!
+    point: Point
   }
 
   type Plant {
@@ -33,23 +33,26 @@ const typeDefs = gql`
 
   type User {
     id: ID!
-    username: String!
-    plants: [Plant!]!
+    name: String!
+    plants: [Plant!]! @relation(name: "FOUND", direction: "OUT")
     location: Location
-    pins: [Pin!]
+    pins: [Pin!] @relation(name: "CREATED", direction: "OUT")
   }
 
   type Pin {
     id: ID!
     location: Location!
-    plants: [Plant!]!
+    users: [User!]! @relation(name: "CREATED", direction: "IN")
+    plants: [Plant!]! @relation(name: "HAS_PLANTS", direction: "OUT")
   }
 `
 
-// const resolvers = {
-//   Query: {
-//     user: neo4jgraphql
-//   }
-// }
+const resolvers = {
+  Query: {
+    User(object, params, ctx, resolveInfo) {
+      return neo4jgraphql(object, params, ctx, resolveInfo)
+    }
+  }
+}
 
 module.exports = {typeDefs}

@@ -3,9 +3,9 @@ const {ApolloServer, makeExecutableSchema} = require('apollo-server-express')
 const express = require('express')
 const morgan = require('morgan')
 const compression = require('compression')
-const {typeDefs} = require('./schema')
+const {typeDefs, resolvers} = require('./schema')
 const neo4j = require('neo4j-driver').v1
-const {augmentSchema} = require('neo4j-graphql-js')
+const {augmentSchema, makeAugmentedSchema} = require('neo4j-graphql-js')
 require('dotenv').config()
 const PORT = process.env.PORT
 const GRAPHQL_PORT = process.env.GRAPHQL_PORT
@@ -14,9 +14,14 @@ module.exports = app
 
 const graphqlPath = '/graphql'
 
-const schema = makeExecutableSchema({typeDefs})
+// const schema = makeExecutableSchema({typeDefs})
+//
+// const augmentedSchema = augmentSchema(schema)
 
-const augmentedSchema = augmentSchema(schema)
+const schema = makeAugmentedSchema({
+  typeDefs,
+  resolvers
+})
 
 const driver = neo4j.driver(
   process.env.NEO4J_URI,
@@ -24,7 +29,7 @@ const driver = neo4j.driver(
 )
 
 const server = new ApolloServer({
-  schema: augmentedSchema,
+  schema,
   context: {driver},
   introspection: true,
   playground: true
