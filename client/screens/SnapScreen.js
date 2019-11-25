@@ -1,35 +1,75 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import * as tf from '@tensorflow/tfjs'
-import { fetch } from '@tensorflow/tfjs-react-native'
+import React from 'react';
+import { Text, View, TouchableOpacity } from 'react-native';
+import * as Permissions from 'expo-permissions';
+import { Camera } from 'expo-camera';
+import * as FileSystem from 'expo-file-system';
 
 
-class SnapScreen extends React.Component {
-  state = {
-    isTfReady: false
-  }
-  async componentDidMount() {
-    await tf.ready()
-    this.setState({
-      isTfReady: true
-    })
-    //Output in Expo console
-    console.log(this.state.isTfReady)
-  }
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text>TFJS ready? {this.state.isTfReady ? <Text>Yes</Text> : ''}</Text>
-      </View>
-    )
-  }
+export default class CameraExample extends React.Component {
+    state = {
+        hasCameraPermission: null,
+        type: Camera.Constants.Type.back,
+    };
+
+    async componentDidMount() {
+        const { status } = await Permissions.askAsync(Permissions.CAMERA);
+        this.setState({ hasCameraPermission: status === 'granted' });
+        FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos').catch(e => {
+            console.log(e, 'Directory exists');
+        });
+
+    }
+
+    takePicture = () => {
+        console.log(this.camera)
+        if (this.camera) {
+            this.camera.takePictureAsync({ onPictureSaved: this.onPictureSaved });
+            console.log("Pic taken")
+        }
+    };
+
+
+    onPictureSaved = async photo => {
+        await FileSystem.moveAsync({
+            from: photo.uri,
+            to: `${FileSystem.documentDirectory}photos/${Date.now()}.jpg`,
+        });
+        this.setState({ newPhotos: true });
+    }
+
+
+    render() {
+        const { hasCameraPermission } = this.state;
+        if (hasCameraPermission === null) {
+            return <View />;
+        } else if (hasCameraPermission === false) {
+            return <Text>No access to camera</Text>;
+        } else {
+            return (
+                <View style={{ flex: 1 }}>
+                    <Camera style={{ flex: 1 }} type={this.state.type}>
+                        <View
+                            style={{
+                                flex: 1,
+                                backgroundColor: 'transparent',
+                                flexDirection: 'row',
+                            }}>
+                            <TouchableOpacity
+                                style={{
+                                    flex: 0.1,
+                                    alignSelf: 'flex-end',
+                                    alignItems: 'center',
+                                }}
+                                onPress={() => {
+                                    console.log(this.camera)
+                                    this.takePicture
+                                }}>
+                                <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}> Take Picture! </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </Camera>
+                </View>
+            );
+        }
+    }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-})
-export default SnapScreen
