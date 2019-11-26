@@ -18,10 +18,10 @@ const schema = makeExecutableSchema({typeDefs, resolvers})
 const augmentedSchema = augmentSchema(schema)
 
 const driver = neo4j.driver(
-  process.env.NEO4J_URI || 'bolt://localhost:7687',
+  process.env.NEO4J_URI || 'bolt://localhost:11004',
   neo4j.auth.basic(
     process.env.NEO4J_USER || 'neo4j',
-    process.env.NEO4J_PASSWORD || 'neo4j'
+    process.env.NEO4J_PASSWORD || 'rubataga'
   )
 )
 
