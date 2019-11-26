@@ -53,6 +53,8 @@ const typeDefs = `
     plants: [Plant!]! @relation(name: "FOUND", direction: "OUT")
     location: Location
     pins: [Pin!] @relation(name: "CREATED", direction: "OUT")
+    deviceIds: [String!]
+    isLoggedIn: Boolean
   }
 
   type Pin {
@@ -61,7 +63,7 @@ const typeDefs = `
     plants: [Plant!]! @relation(name: "HAS_PLANTS", direction: "OUT")
     point: Point @cypher (statement: "MATCH (p:Pin { lat: location.lat, long: location.long point: point({latitude: location.lat, longitude: location.long}) MATCH (n {name: user.name}) CREATE (n)-[r:CREATED {dateCreated: date()}]->(p)")
     lat: Float!
-    long: Float!
+    lng: Float!
   }
 `
 
