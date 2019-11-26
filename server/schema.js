@@ -47,6 +47,7 @@ const typeDefs = `
 
   type User {
     id: ID!
+<<<<<<< HEAD
     name: String!
     email: String!
     password: String!
@@ -78,5 +79,11 @@ const resolvers = {
   //   }
   // }
 }
+
+// const resolvers = {
+//   Query: {
+//     user: neo4jgraphql
+//   }
+// }
 
 module.exports = {typeDefs}
