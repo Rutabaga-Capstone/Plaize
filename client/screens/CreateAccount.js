@@ -17,7 +17,6 @@ import {MonoText} from '../components/StyledText'
 import GradientButton from 'react-native-gradient-buttons'
 
 export default function HomeScreen(props) {
-  const {navigate} = props.navigation
   return (
     <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
       <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -31,9 +30,21 @@ export default function HomeScreen(props) {
             style={styles.welcomeImage}
           />
           <Text style={styles.title}>Plaze</Text>
-          <Text style={styles.subtitle}>Identify Poisonous Plants</Text>
-          <Input style={styles.label} placeholder="username or email" />
-          <Input style={styles.label} placeholder="password" />
+          <Text style={styles.subtitle}>create an account</Text>
+
+          <Input style={styles.label} placeholder="First name" />
+          <Input style={styles.label} placeholder="Middle Name / Initial" />
+          <Input style={styles.label} placeholder="Last Name" />
+          <Input style={styles.label} placeholder="Email Address" />
+          <Input style={styles.label} placeholder="Password" />
+          <Input style={styles.label} placeholder="Confirm Password" />
+
+          <Text style={styles.screenText}>
+            *By tapping Register, you acknowledge that you have read the Privacy
+            Policy and agree to the Terms of Service. We'll send you a message
+            to verify this number. Messaging rates may apply. Remember, you
+            plant reviews are public.
+          </Text>
 
           <GradientButton
             style={{
@@ -48,41 +59,10 @@ export default function HomeScreen(props) {
             height={50}
             width={200}
             radius={0}
-            onPressAction={() => alert('You pressed me in login!')}
+            onPressAction={() => alert('You pressed me in create account!')}
           >
-            login
+            register
           </GradientButton>
-          <Text style={styles.screenText}>I forgot my password</Text>
-          <Text style={styles.title}>New to Plaze?</Text>
-
-          <GradientButton
-            style={{
-              marginTop: 20,
-              marginBottom: 20,
-              textAlign: 'center'
-            }}
-            onPressAction={() => navigate('CreateAccount')}
-            textStyle={{fontSize: 18}}
-            gradientBegin="#6CC7BD"
-            gradientEnd="#A5D38F"
-            gradientDirection="diagonal"
-            height={50}
-            width={200}
-            radius={0}
-          >
-            create account
-          </GradientButton>
-
-          <Text style={styles.screenText}>Create Account With</Text>
-
-          <View style={styles.socialContainer}>
-            <View>
-              <Text>Facebook</Text>
-            </View>
-            <View>
-              <Text>Google</Text>
-            </View>
-          </View>
         </View>
       </ScrollView>
     </View>
@@ -128,18 +108,6 @@ function handleHelpPress() {
 }
 
 const styles = StyleSheet.create({
-  welcomeContainer: {
-    marginTop: 30,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  welcomeImage: {
-    width: 100,
-    height: 100,
-    resizeMode: 'contain',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
   title: {
     marginTop: 30,
     color: '#000000',
@@ -158,14 +126,11 @@ const styles = StyleSheet.create({
     marginBottom: 15
   },
   screenText: {
+    marginTop: 15,
     color: '#000000',
     fontFamily: 'yorkten',
-    fontSize: 18,
-    textAlign: 'center'
-  },
-  socialContainer: {},
-  socialColumn: {
-    width: '50%' // 50% of container width
+    fontSize: 12,
+    justifyContent: 'center'
   },
   socialLinks: {
     color: '#6CC7BD',
@@ -178,6 +143,12 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#6CC7BD'
+  },
+  welcomeImage: {
+    width: 100,
+    height: 100,
+    resizeMode: 'contain'
+    // marginLeft: 38
   },
   container: {
     alignSelf: 'stretch'
@@ -192,7 +163,12 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 30,
     flex: 1,
-    textAlign: 'center'
+    marginHorizontal: 80
+  },
+  welcomeContainer: {
+    marginTop: 30,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   homeScreenFilename: {
     marginVertical: 7
