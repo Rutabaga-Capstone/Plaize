@@ -15,6 +15,7 @@ import {Button, ThemeProvider, Input} from 'react-native-elements'
 import * as Font from 'expo-font'
 import {MonoText} from '../components/StyledText'
 import GradientButton from 'react-native-gradient-buttons'
+import {FontAwesome} from '@expo/vector-icons'
 
 export default function HomeScreen(props) {
   return (
