@@ -20,6 +20,8 @@ const typeDefs = `
 
   type Location {
     point: Point
+    lat: Float!
+    long: Float!
   }
 
   type Plant {
@@ -49,8 +51,13 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
-    User(object, params, ctx, resolveInfo) {
-      return neo4jgraphql(object, params, ctx, resolveInfo)
+    User(parent, args, ctx, info) {
+      return neo4jgraphql(parent, args, ctx, info)
+    }
+  },
+  Mutation: {
+    CreatePin(parent, args, ctx, info) {
+      return neo4jgraphql(parent, args, ctx, inf0)
     }
   }
 }
