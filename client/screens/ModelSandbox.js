@@ -4,7 +4,6 @@ import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-react-native';
 import { bundleResourceIO } from '@tensorflow/tfjs-react-native';
 import * as jpeg from 'jpeg-js'
-// import * as mobilenet from '@tensorflow-models/mobilenet'
 
 
 export default class CameraExample extends React.Component {
