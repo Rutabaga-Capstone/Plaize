@@ -11,40 +11,75 @@ const {gql} = require('apollo-server')
 //   user(id: ID): User!
 // }
 
-const typeDefs = gql`
+const typeDefs = `
   type Query {
-    user(id: ID, username: String): User
+    user(id: ID, name: String, email: String): User
     location(lat: Float!, lng: Float!): Location
+    plant(id: ID, commonName: String): Plant
   }
 
   type Location {
+    id: ID!
+    pin: Pin
+    point: Point @cypher (statement: "MATCH (p:Pin { lat: location.lat, long: location.long point: point({latitude: location.lat, longitude: location.long}) MATCH (n {name: user.name}) CREATE (n)-[r:CREATED {dateCreated: date()}]->(p)")
     lat: Float!
-    lng: Float!
+    long: Float!
+  }
+
+  type Mutation {
+    createPin(
+      username: String!
+      plantCommonName: String!
+      lat: Float!
+      long: Float!
+    ): Pin!
   }
 
   type Plant {
-    id: ID!
-    commonName: String
-    scientificName: String!
-    imageURL: String!
-    description: String!
-    poisonous: Boolean!
+    id: ID
+    commonName: String!
+    scientificName: String
+    imageURL: String
+    description: String
+    poisonous: Boolean
+    user: User @relation(name: "FOUND", direction: "IN")
   }
 
   type User {
-    id: ID!
-    username: String!
-    plants: [Plant!]!
+    id: ID
+    name: String!
+    email: String!
+    password: String!
+    plants: [Plant!]! @relation(name: "FOUND", direction: "OUT")
     location: Location
-    pins: [Pin!]
+    pins: [Pin!] @relation(name: "CREATED", direction: "OUT")
   }
 
   type Pin {
     id: ID!
-    location: Location!
-    plants: [Plant!]!
+    user: User! @relation(name: "CREATED", direction: "IN")
+    plants: [Plant!]! @relation(name: "HAS_PLANTS", direction: "OUT")
+    point: Point @cypher (statement: "MATCH (p:Pin { lat: location.lat, long: location.long point: point({latitude: location.lat, longitude: location.long}) MATCH (n {name: user.name}) CREATE (n)-[r:CREATED {dateCreated: date()}]->(p)")
+    lat: Float!
+    long: Float!
   }
 `
+
+const resolvers = {
+  Query: {
+    User(parent, args, ctx, info) {
+      return neo4jgraphql(parent, args, ctx, info)
+    }
+  }
+  // Mutation: {
+  //   createPin(parent, args, ctx, info) {
+  //     return neo4jgraphql(parent, args, ctx, info)
+  //   }
+  //   createPlant(parent, args, ctx, info) {
+  //     return neo4jgraphql(parent, args, ctx, info)
+  //   }
+  // }
+}
 
 // const resolvers = {
 //   Query: {
