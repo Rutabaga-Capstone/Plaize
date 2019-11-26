@@ -36,7 +36,7 @@ const typeDefs = `
   }
 
   type Plant {
-    id: ID!
+    id: ID
     commonName: String!
     scientificName: String
     imageURL: String
@@ -46,8 +46,7 @@ const typeDefs = `
   }
 
   type User {
-    id: ID!
-<<<<<<< HEAD
+    id: ID
     name: String!
     email: String!
     password: String!
@@ -58,9 +57,11 @@ const typeDefs = `
 
   type Pin {
     id: ID!
-    location: Location!
-    users: [User!]! @relation(name: "CREATED", direction: "IN")
+    user: User! @relation(name: "CREATED", direction: "IN")
     plants: [Plant!]! @relation(name: "HAS_PLANTS", direction: "OUT")
+    point: Point @cypher (statement: "MATCH (p:Pin { lat: location.lat, long: location.long point: point({latitude: location.lat, longitude: location.long}) MATCH (n {name: user.name}) CREATE (n)-[r:CREATED {dateCreated: date()}]->(p)")
+    lat: Float!
+    long: Float!
   }
 `
 
