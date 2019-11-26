@@ -1,7 +1,6 @@
 import React from 'react'
 import {View, Text, StyleSheet, Dimensions} from 'react-native'
 import MapView, {Marker, Circle} from 'react-native-maps'
-import * as geolib from 'geolib'
 
 const styles = StyleSheet.create({
   container: {
@@ -17,40 +16,6 @@ const styles = StyleSheet.create({
 })
 
 export default class Map extends React.Component {
-  renderMarkers(pins) {
-    const radiusFromCenter = this.props.radius
-    const radiusCenter = {
-      latitude: this.props.center.coords.latitude,
-      longitude: this.props.center.coords.longitude
-    }
-
-    return pins
-      .filter((pin, i) => {
-        let pinCoord = {
-          latitude: pin.coordinate.latitude,
-          longitude: pin.coordinate.longitude
-        }
-        if (
-          geolib.isPointWithinRadius(
-            pinCoord,
-            radiusCenter,
-            radiusFromCenter
-          ) === true
-        ) {
-          return pin
-        }
-      })
-      .map((pin, i) => (
-        <Marker
-          key={i}
-          title={pin.title}
-          coordinate={pin.coordinate}
-          pinColor={pin.hasPoisonousPlants ? 'red' : 'green'}
-          description={pin.description}
-        />
-      ))
-  }
-
   render() {
     return (
       <View>
@@ -61,8 +26,15 @@ export default class Map extends React.Component {
             showsUserLocation={true}
             showsMyLocationButton={true}
           >
-            {this.renderMarkers(this.props.pins)}
-            {/* {this.renderCircle()} */}
+            {this.props.pins.map((pin, i) => (
+              <Marker
+                key={i}
+                title={pin.title}
+                coordinate={pin.coordinate}
+                pinColor={pin.hasPoisonousPlants ? 'red' : 'green'}
+                description={pin.description}
+              />
+            ))}
             <Circle
               radius={this.props.radius}
               center={this.props.center.coords}
