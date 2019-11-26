@@ -42,7 +42,8 @@ export default class MapScreen extends React.Component {
     region: null,
     pins: [],
     location: null,
-    errorMessage: null
+    errorMessage: null,
+    center: null
   }
 
   componentWillMount() {
@@ -65,8 +66,10 @@ export default class MapScreen extends React.Component {
     }
 
     let location = await Location.getCurrentPositionAsync({})
-    console.log('location: ', location)
-    this.setState({location})
+    this.setState({
+      location: location,
+      center: location
+    })
   }
 
   render() {
@@ -82,8 +85,8 @@ export default class MapScreen extends React.Component {
         <Map
           region={region}
           pins={pins}
-          showsUserLocation={true}
-          showsMyLocationButton={true}
+          location={this.state.location}
+          center={this.state.center}
         />
       </SafeAreaView>
     )

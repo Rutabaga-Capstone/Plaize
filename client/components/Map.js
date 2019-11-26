@@ -30,7 +30,12 @@ export default class Map extends React.Component {
 
   render() {
     return (
-      <MapView style={styles.mapStyle} region={this.props.region}>
+      <MapView
+        style={styles.mapStyle}
+        region={this.props.region}
+        showsUserLocation={true}
+        showsMyLocationButton={true}
+      >
         {this.renderMarkers()}
         <Circle
           radius={500}
