@@ -18,39 +18,35 @@ const typeDefs = `
     plant(id: ID, commonName: String): Plant
   }
 
-  type Mutation {
-    createPin(
-      users: User! @relation(name: "CREATED", direction: "IN")
-      plants: [Plant!]!
-      location: Location! @cypher (statement: "CREATE (p:Pin { lat: location.lat, long: location.long point: point({latitude: location.lat, longitude: location.long}) MATCH (n {name: user.name}) CREATE (n)-[r:CREATED {dateCreated: date()}]->(p)")
-
-    )
-  }
-
   type Location {
-    point: Point
+    id: ID!
+    pin: Pin
+    point: Point @cypher (statement: "MATCH (p:Pin { lat: location.lat, long: location.long point: point({latitude: location.lat, longitude: location.long}) MATCH (n {name: user.name}) CREATE (n)-[r:CREATED {dateCreated: date()}]->(p)")
     lat: Float!
     long: Float!
   }
 
+  type Mutation {
+    createPin(
+      username: String!
+      plantCommonName: String!
+      lat: Float!
+      long: Float!
+    ): Pin!
+  }
+
   type Plant {
-    id: ID! @unique
-    commonName: String
-    scientificName: String!
-    imageURL: String!
-    description: String!
-    poisonous: Boolean!
-    user: User @relation(name: "FOUND", switch (expression) {
-      case expression:
-
-        break;
-      default:
-
-    })
+    id: ID!
+    commonName: String!
+    scientificName: String
+    imageURL: String
+    description: String
+    poisonous: Boolean
+    user: User @relation(name: "FOUND", direction: "IN")
   }
 
   type User {
-    id: ID! @unique
+    id: ID!
     name: String!
     email: String!
     password: String!
@@ -60,7 +56,7 @@ const typeDefs = `
   }
 
   type Pin {
-    id: ID! @unique
+    id: ID!
     location: Location!
     users: [User!]! @relation(name: "CREATED", direction: "IN")
     plants: [Plant!]! @relation(name: "HAS_PLANTS", direction: "OUT")
@@ -72,10 +68,15 @@ const resolvers = {
     User(parent, args, ctx, info) {
       return neo4jgraphql(parent, args, ctx, info)
     }
-  },
-  Mutation: {
-    CreatePin(parent, args, ctx, info) {}
   }
+  // Mutation: {
+  //   createPin(parent, args, ctx, info) {
+  //     return neo4jgraphql(parent, args, ctx, info)
+  //   }
+  //   createPlant(parent, args, ctx, info) {
+  //     return neo4jgraphql(parent, args, ctx, info)
+  //   }
+  // }
 }
 
 module.exports = {typeDefs}
