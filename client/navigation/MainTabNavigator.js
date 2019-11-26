@@ -6,7 +6,8 @@ import TabBarIcon from '../components/TabBarIcon'
 import HomeScreen from '../screens/HomeScreen'
 import CreateAccountScreen from '../screens/CreateAccount'
 import LinksScreen from '../screens/LinksScreen'
-import SettingsScreen from '../screens/SettingsScreen'
+import SettingsScreen from '../screens/MapScreen'
+import SnapScreen from '../screens/SnapScreen'
 
 const config = Platform.select({
   web: {headerMode: 'screen'},
@@ -65,7 +66,7 @@ const SettingsStack = createStackNavigator(
 )
 
 SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
+  tabBarLabel: 'Map',
   tabBarIcon: ({focused}) => (
     <TabBarIcon
       focused={focused}
@@ -76,11 +77,31 @@ SettingsStack.navigationOptions = {
 
 SettingsStack.path = ''
 
+const SnapStack = createStackNavigator(
+  {
+    Snap: SnapScreen
+  },
+  config
+)
+
+SnapStack.navigationOptions = {
+  tabBarLabel: 'Snap',
+  tabBarIcon: ({focused}) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-camera' : 'md-camera'}
+    />
+  )
+}
+
+
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
   LinksStack,
-  SettingsStack
+  SettingsStack,
+  SnapStack
 })
+
 
 tabNavigator.path = ''
 

@@ -3,26 +3,24 @@ const {ApolloServer, makeExecutableSchema} = require('apollo-server-express')
 const express = require('express')
 const morgan = require('morgan')
 const compression = require('compression')
-const {typeDefs, resolvers} = require('./schema')
+const {typeDefs} = require('./schema')
 const neo4j = require('neo4j-driver').v1
 const {augmentSchema} = require('neo4j-graphql-js')
-const PORT = process.env.PORT || 1234
-const GRAPHQL_PORT = process.env.GRAPHQL_PORT || 7687
+require('dotenv').config()
+const PORT = process.env.PORT
+const GRAPHQL_PORT = process.env.GRAPHQL_PORT
 const app = express()
 module.exports = app
 
 const graphqlPath = '/graphql'
 
-const schema = makeExecutableSchema({typeDefs, resolvers})
+const schema = makeExecutableSchema({typeDefs})
 
 const augmentedSchema = augmentSchema(schema)
 
 const driver = neo4j.driver(
-  process.env.NEO4J_URI || 'bolt://localhost:11004',
-  neo4j.auth.basic(
-    process.env.NEO4J_USER || 'neo4j',
-    process.env.NEO4J_PASSWORD || 'rubataga'
-  )
+  process.env.NEO4J_URI,
+  neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PASSWORD)
 )
 
 const server = new ApolloServer({
@@ -66,7 +64,7 @@ const createApp = () => {
   })
 
   // error handling endware
-  app.use((err, req, res) => {
+  app.use((req, res, next, err) => {
     console.error(err)
     console.error(err.stack)
     res.status(err.status || 500).send(err.message || 'Internal server error.')
