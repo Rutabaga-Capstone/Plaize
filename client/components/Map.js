@@ -1,6 +1,6 @@
 import React from 'react'
 import {View, Text, StyleSheet, Dimensions} from 'react-native'
-import MapView from 'react-native-maps'
+import MapView, {Marker, Circle} from 'react-native-maps'
 
 const styles = StyleSheet.create({
   container: {
@@ -11,57 +11,38 @@ const styles = StyleSheet.create({
   },
   mapStyle: {
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height
+    height: Dimensions.get('window').height / 2
   }
 })
 
 export default class Map extends React.Component {
+  renderMarkers() {
+    return this.props.pins.map((pin, i) => (
+      <Marker
+        key={i}
+        title={pin.title}
+        coordinate={pin.coordinate}
+        pinColor={pin.isPoisonous ? 'yellow' : 'green'}
+        description={pin.description}
+      />
+    ))
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <MapView
-          style={styles.mapStyle}
-          initialRegion={{
-            latitude: 41.89541,
-            longitude: -87.639024,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421
-          }}
+      <MapView
+        style={styles.mapStyle}
+        region={this.props.region}
+        showsUserLocation={true}
+        showsMyLocationButton={true}
+      >
+        {this.renderMarkers()}
+        <Circle
+          radius={500}
+          center={this.props.region}
+          fillColor={'rgba(123,239,178,.25)'}
         />
-      </View>
+      </MapView>
     )
   }
 }
-
-// console.log('hi')
-// console.log(MapView)
-// const Marker = MapView.Marker
-
-// const styles = {
-//   container: {
-//     width: '100%',
-//     height: '80%'
-//   }
-// }
-
-// export default class Map extends Component {
-//   renderMarkers() {
-//     return this.props.places.map((place, i) => (
-//       <Marker key={i} title={place.name} coordinate={place.coords} />
-//     ))
-//   }
-
-//   render() {
-//     const {region} = this.props
-//     return (
-//       <MapView
-//         style={styles.container}
-//         region={region}
-//         showsUserLocation
-//         showsMyLocationButton
-//       >
-//         {this.renderMarkers()}
-//       </MapView>
-//     )
-//   }
-// }
