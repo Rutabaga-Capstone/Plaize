@@ -15,8 +15,8 @@ module.exports = {
     },
     resolver: {
         // Change 2 (add 'bin' to assetExts)
-        assetExts: ['bin', 'txt', 'jpg', 'png', 'ttf'],
-        sourceExts: ['js', 'json', 'ts', 'tsx', 'jsx'],
+        assetExts: ['bin', 'txt', 'jpg', 'png', 'ttf', 'json', 'jpeg'],
+        sourceExts: ['js', 'json', 'ts', 'tsx', 'jsx', 'bin'],
         // Change 3 (add platform_node to blacklist)
         blacklistRE: blacklist([/platform_node/])
     },

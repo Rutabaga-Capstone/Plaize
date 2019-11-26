@@ -7,6 +7,7 @@ import HomeScreen from '../screens/HomeScreen'
 import LinksScreen from '../screens/LinksScreen'
 import SettingsScreen from '../screens/SettingsScreen'
 import SnapScreen from '../screens/SnapScreen'
+import ModelSandbox from '../screens/ModelSandbox'
 
 const config = Platform.select({
   web: {headerMode: 'screen'},
@@ -91,12 +92,30 @@ SnapStack.navigationOptions = {
   )
 }
 
+const ModelSandboxStack = createStackNavigator(
+  {
+    ModelSandbox: ModelSandbox
+  },
+  config
+)
+
+ModelSandboxStack.navigationOptions = {
+  tabBarLabel: 'ModelSandbox',
+  tabBarIcon: ({focused}) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-camera' : 'md-camera'}
+    />
+  )
+}
+
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
   LinksStack,
   SettingsStack,
-  SnapStack
+  SnapStack,
+  ModelSandbox
 })
 
 tabNavigator.path = ''
