@@ -55,6 +55,7 @@ const typeDefs = `
     pins: [Pin!] @relation(name: "CREATED", direction: "OUT")
     deviceIds: [String!]
     isLoggedIn: Boolean
+    leaves: Int!
   }
 
   type Pin {
