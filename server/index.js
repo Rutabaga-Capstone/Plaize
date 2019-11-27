@@ -53,6 +53,8 @@ const createApp = server => {
   // compression middleware
   app.use(compression())
 
+  app.use('/image', require('./image'))
+
   // applies graphql query as middleware and defines api endpoint as /graphql
   server.applyMiddleware({app, graphqlPath})
 
