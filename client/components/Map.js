@@ -1,6 +1,12 @@
 import React from 'react'
-import {View, Text, StyleSheet, Dimensions} from 'react-native'
-import MapView, {Marker, Circle} from 'react-native-maps'
+import {View, Button, Text, StyleSheet, Dimensions} from 'react-native'
+import MapView, {
+  Marker,
+  Circle,
+  AnimatedRegion,
+  Animated
+} from 'react-native-maps'
+import GradientButton from 'react-native-gradient-buttons'
 
 const styles = StyleSheet.create({
   container: {
@@ -19,30 +25,56 @@ export default class Map extends React.Component {
   render() {
     return (
       <View>
-        {this.props.center && (
-          <MapView
-            style={styles.mapStyle}
-            region={this.props.region}
-            showsUserLocation={true}
-            showsMyLocationButton={true}
-          >
-            {this.props.pins.map((pin, i) => (
-              <Marker
-                key={i}
-                title={pin.title}
-                coordinate={pin.coordinate}
-                pinColor={pin.hasPoisonousPlants ? 'red' : 'green'}
-                description={pin.description}
+        {this.props.center &&
+          this.props.location && (
+            <MapView
+              style={styles.mapStyle}
+              region={this.props.region}
+              showsUserLocation={true}
+              showsMyLocationButton={true}
+            >
+              {this.props.pins.map((pin, i) => (
+                <Marker
+                  key={i}
+                  title={pin.title}
+                  coordinate={pin.coordinate}
+                  pinColor={pin.hasPoisonousPlants ? 'red' : 'green'}
+                  description={pin.description}
+                />
+              ))}
+              <Circle
+                radius={this.props.radius}
+                center={this.props.center.coords}
+                fillColor={'rgba(123,239,178,.65)'}
+                strokeColor="transparent"
               />
-            ))}
-            <Circle
-              radius={this.props.radius}
-              center={this.props.center.coords}
-              fillColor={'rgba(123,239,178,.65)'}
-              strokeColor="transparent"
-            />
-          </MapView>
-        )}
+            </MapView>
+          )}
+        <View
+          style={{
+            position: 'absolute', //use absolute position to show button on top of the map
+            top: '80%', //for center align
+            alignSelf: 'flex-end' //for align to right
+          }}
+        >
+          <GradientButton
+            style={{
+              marginTop: 20,
+              marginBottom: 20,
+              textAlign: 'center'
+            }}
+            onPressAction={() => console.log('hi')}
+            textStyle={{fontSize: 18}}
+            gradientBegin="red"
+            gradientEnd="red"
+            gradientDirection="diagonal"
+            height={40}
+            width={100}
+            radius={4}
+          >
+            poisonous
+          </GradientButton>
+        </View>
       </View>
     )
   }

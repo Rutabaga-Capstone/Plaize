@@ -6,15 +6,14 @@ import * as Location from 'expo-location'
 import Constants from 'expo-constants'
 import * as geolib from 'geolib'
 import Plants from '../components/Plants'
+import MapView, {
+  Marker,
+  Circle,
+  AnimatedRegion,
+  Animated
+} from 'react-native-maps'
 
-// A placeholder location until we get our own location and pins until we fetch them from the db
-
-const region = {
-  latitude: 41.895506,
-  longitude: -87.639014,
-  latitudeDelta: 0.0922,
-  longitudeDelta: 0.0421
-}
+// Sample pins with plans until we fetch them from the db
 
 const pins = [
   {
@@ -91,7 +90,7 @@ export default class MapScreen extends React.Component {
     location: null,
     errorMessage: null,
     center: null,
-    radius: 900,
+    radius: 1000,
     selectedPin: {},
     pins: [],
     plants: [],
@@ -120,7 +119,13 @@ export default class MapScreen extends React.Component {
     let location = await Location.getCurrentPositionAsync({})
     this.setState({
       location: location,
-      center: location
+      center: location,
+      region: {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421
+      }
     })
   }
 
@@ -145,6 +150,10 @@ export default class MapScreen extends React.Component {
     })
   }
 
+  onRegionChange(region) {
+    this.setState({region})
+  }
+
   render() {
     let text = 'Waiting..'
     if (this.state.errorMessage) {
@@ -159,11 +168,12 @@ export default class MapScreen extends React.Component {
           this.state.center && (
             <SafeAreaView style={styles.container}>
               <Map
-                region={region}
+                region={this.state.region}
                 pins={this.filterMarkers(pins)}
                 location={this.state.location}
                 center={this.state.center}
                 radius={this.state.radius}
+                onRegionChange={this.state.onRegionChange}
               />
               <Plants pins={this.filterMarkers(pins)} />
             </SafeAreaView>

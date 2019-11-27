@@ -2,7 +2,6 @@ import React from 'react'
 import {View, Text} from 'react-native'
 
 export default function Plants(props) {
-  console.log('props:', props)
   return (
     <View>
       {props.pins.map((pin, i) => (
