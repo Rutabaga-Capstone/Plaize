@@ -84,6 +84,7 @@ class CreateAccount extends React.Component {
   }
 
   render() {
+    const {navigate} = this.props.navigation
     return (
       <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -165,7 +166,7 @@ class CreateAccount extends React.Component {
               color: '#6CC7BD',
               textAlign: 'center'
             }}
-            onPressAction={() => navigate('Home')}
+            onClick={() => navigate('Home')}
           >
             Login
           </Text>
