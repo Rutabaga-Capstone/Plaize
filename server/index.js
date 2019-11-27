@@ -1,46 +1,48 @@
+require('dotenv').config()
 const path = require('path')
-const {ApolloServer, makeExecutableSchema} = require('apollo-server-express')
+const {ApolloServer} = require('apollo-server-express')
 const express = require('express')
 const morgan = require('morgan')
 const compression = require('compression')
-const {typeDefs, resolvers} = require('./schema')
 const neo4j = require('neo4j-driver').v1
-const {augmentSchema, makeAugmentedSchema} = require('neo4j-graphql-js')
-require('dotenv').config()
-const PORT = process.env.PORT
-const GRAPHQL_PORT = process.env.GRAPHQL_PORT
-const app = express()
-module.exports = app
+const {makeAugmentedSchema, inferSchema} = require('neo4j-graphql-js')
 
+const PORT = process.env.PORT
+const app = express()
 const graphqlPath = '/graphql'
 
-// const schema = makeExecutableSchema({typeDefs})
-//
-// const augmentedSchema = augmentSchema(schema)
+const inferAugmentedSchema = driver => {
+  return inferSchema(driver, {alwaysIncludeRelationships: false}).then(
+    result => {
+      console.log('Inferred TypeDefs are:')
+      console.log(result.typeDefs)
 
-const schema = makeAugmentedSchema({
-  typeDefs,
-  resolvers
-})
+      return makeAugmentedSchema({
+        typeDefs: result.typeDefs
+      })
+    }
+  )
+}
 
 const driver = neo4j.driver(
   process.env.NEO4J_URI,
   neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PASSWORD)
 )
 
-const server = new ApolloServer({
-  schema,
-  context: {driver},
-  introspection: true,
-  playground: true
-})
+const createServer = augmentedSchema =>
+  new ApolloServer({
+    schema: augmentedSchema,
+    // inject the request object into the context to support middleware
+    // inject the Neo4j driver instance to handle database call
+    context: ({req}) => {
+      return {
+        driver,
+        req
+      }
+    }
+  })
 
-// const resolvers = {
-//   Query,
-//   User
-// }
-
-const createApp = () => {
+const createApp = server => {
   // logging middleware
   app.use(morgan('dev'))
 
@@ -83,9 +85,16 @@ const startListening = () => {
   )
 }
 
-async function bootApp() {
-  await createApp()
+async function bootApp(server) {
+  await createApp(server)
   await startListening()
 }
 
-bootApp()
+inferAugmentedSchema(driver)
+  .then(createServer)
+  .then(server => {
+    bootApp(server)
+  })
+  .catch(err => console.error(err))
+
+module.exports = app
