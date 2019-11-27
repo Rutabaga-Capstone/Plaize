@@ -1,19 +1,19 @@
 import React from 'react'
 import {Platform, Text, View, SafeAreaView} from 'react-native'
 import Map from '../components/Map'
-import Plants from '../components/Plants'
 import * as Permissions from 'expo-permissions'
 import * as Location from 'expo-location'
 import Constants from 'expo-constants'
+import * as geolib from 'geolib'
+import Plants from '../components/Plants'
+import MapView, {
+  Marker,
+  Circle,
+  AnimatedRegion,
+  Animated
+} from 'react-native-maps'
 
-// A placeholder location until we get our own location and pins until we fetch them from the db
-
-const region = {
-  latitude: 41.895506,
-  longitude: -87.639014,
-  latitudeDelta: 0.0922,
-  longitudeDelta: 0.0421
-}
+// Sample pins with plans until we fetch them from the db
 
 const pins = [
   {
@@ -22,7 +22,7 @@ const pins = [
     title: 'Fullstack Academy',
     hasPoisonousPlants: true,
     description: 'Best coding academy ever',
-    plant: [
+    plants: [
       {
         commonName: 'Poison Oak',
         scientificName: 'A scientific name....',
@@ -47,7 +47,7 @@ const pins = [
     title: 'Starbucks',
     hasPoisonousPlants: false,
     description: 'Fancy coffee shop',
-    plant: [
+    plants: [
       {
         commonName: 'Aloe Vera',
         scientificName: 'A scientific name....',
@@ -64,7 +64,7 @@ const pins = [
     title: 'Chiropractor',
     hasPoisonousPlants: false,
     description: 'Get your bones cracked here',
-    plant: [
+    plants: [
       {
         commonName: 'Aloe Vera',
         scientificName: 'A scientific name....',
@@ -74,41 +74,6 @@ const pins = [
         }
       }
     ]
-  }
-]
-
-const plants = [
-  {
-    commonName: 'Poison Oak',
-    scientificName: 'A scientific name....',
-    isPoisonous: true,
-    pin: {
-      id: 1
-    }
-  },
-  {
-    commonName: 'Poison Ivy',
-    scientificName: 'A scientific name....',
-    isPoisonous: true,
-    pin: {
-      id: 1
-    }
-  },
-  {
-    commonName: 'Aloe Vera',
-    scientificName: 'A scientific name....',
-    isPoisonous: false,
-    pin: {
-      id: 2
-    }
-  },
-  {
-    commonName: 'Aloe Vera',
-    scientificName: 'A scientific name....',
-    isPoisonous: false,
-    pin: {
-      id: 3
-    }
   }
 ]
 
@@ -154,8 +119,39 @@ export default class MapScreen extends React.Component {
     let location = await Location.getCurrentPositionAsync({})
     this.setState({
       location: location,
-      center: location
+      center: location,
+      region: {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421
+      }
     })
+  }
+
+  filterMarkers(pins) {
+    const radiusFromCenter = this.state.radius
+    const radiusCenter = {
+      latitude: this.state.center.coords.latitude,
+      longitude: this.state.center.coords.longitude
+    }
+
+    return pins.filter((pin, i) => {
+      let pinCoord = {
+        latitude: pin.coordinate.latitude,
+        longitude: pin.coordinate.longitude
+      }
+      if (
+        geolib.isPointWithinRadius(pinCoord, radiusCenter, radiusFromCenter) ===
+        true
+      ) {
+        return pin
+      }
+    })
+  }
+
+  onRegionChange(region) {
+    this.setState({region})
   }
 
   render() {
@@ -168,17 +164,20 @@ export default class MapScreen extends React.Component {
 
     return (
       <View>
-        <SafeAreaView style={styles.container}>
-          <Map
-            region={region}
-            pins={pins}
-            location={this.state.location}
-            center={this.state.center}
-            radius={this.state.radius}
-          />
-        </SafeAreaView>
-
-        <Plants plants={plants} />
+        {this.state.location &&
+          this.state.center && (
+            <SafeAreaView style={styles.container}>
+              <Map
+                region={this.state.region}
+                pins={this.filterMarkers(pins)}
+                location={this.state.location}
+                center={this.state.center}
+                radius={this.state.radius}
+                onRegionChange={this.state.onRegionChange}
+              />
+              <Plants pins={this.filterMarkers(pins)} />
+            </SafeAreaView>
+          )}
       </View>
     )
   }

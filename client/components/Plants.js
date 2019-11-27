@@ -4,12 +4,11 @@ import {View, Text} from 'react-native'
 export default function Plants(props) {
   return (
     <View>
-      {props.plants.map((plant, i) => (
+      {props.pins.map((pin, i) => (
         <Text key={i}>
-          Common Name={plant.commonName}
-          Scientific Name={plant.scientificName}
-          Poisonous or Nonpoisonous={plant.isPoisonous}
-          Pin Id={plant.pin.id}
+          Common Name={pin.plants.commonName}
+          Scientific Name={pin.plants.scientificName}
+          Poisonous or Nonpoisonous={pin.isPoisonous}
         </Text>
       ))}
     </View>
