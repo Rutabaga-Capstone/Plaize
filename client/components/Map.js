@@ -1,20 +1,7 @@
 import React from 'react'
-import {
-  View,
-  Button,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  Dimensions
-} from 'react-native'
-import MapView, {
-  Marker,
-  Circle,
-  AnimatedRegion,
-  Animated
-} from 'react-native-maps'
+import {View, Text, StyleSheet, Dimensions} from 'react-native'
+import MapView, {Marker, Circle} from 'react-native-maps'
 import SwitchSelector from 'react-native-switch-selector'
-import poison from './poisonous.png'
 
 const styles = StyleSheet.create({
   container: {

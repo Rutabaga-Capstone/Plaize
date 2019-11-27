@@ -6,9 +6,9 @@ import * as Location from 'expo-location'
 import Constants from 'expo-constants'
 import * as geolib from 'geolib'
 import Plants from '../components/Plants'
+import {Slider} from 'react-native-elements'
 
 // Sample pins with plants until we fetch them from the db
-
 const pins = [
   {
     id: 1,
@@ -84,7 +84,7 @@ export default class MapScreen extends React.Component {
     location: null,
     errorMessage: null,
     center: null,
-    radius: 1000,
+    radius: 700,
     selectedPin: {},
     pins: [],
     plants: [],
@@ -171,6 +171,28 @@ export default class MapScreen extends React.Component {
                 onRegionChange={this.state.onRegionChange}
               />
               <Plants pins={this.filterMarkers(pins)} />
+              <View
+                style={{
+                  position: 'absolute',
+                  flex: 2,
+                  alignItems: 'stretch',
+                  justifyContent: 'flex-end',
+                  top: '75%',
+                  width: 360,
+                  alignSelf: 'center'
+                }}
+              >
+                <Slider
+                  value={this.state.radius}
+                  mainimumValue={100}
+                  maximumValue={1000}
+                  step={100}
+                  onValueChange={value => this.setState({radius: value})}
+                  thumbTintColor={'black'}
+                  animateTransitions={true}
+                />
+                <Text>Meters: {this.state.radius}</Text>
+              </View>
             </SafeAreaView>
           )}
       </View>
