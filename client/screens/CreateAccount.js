@@ -166,7 +166,7 @@ class CreateAccount extends React.Component {
               color: '#6CC7BD',
               textAlign: 'center'
             }}
-            onClick={() => navigate('Home')}
+            onPress={() => navigate('Home')}
           >
             Login
           </Text>
