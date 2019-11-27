@@ -117,7 +117,6 @@ export default class MapScreen extends React.Component {
     }
 
     let location = await Location.getCurrentPositionAsync({})
-    console.log('location:', location)
     this.setState({
       location: location,
       center: location,

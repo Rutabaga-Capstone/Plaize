@@ -1,11 +1,12 @@
 import React from 'react'
-import {View, Text, StyleSheet, Dimensions} from 'react-native'
+import {View, Button, Text, StyleSheet, Dimensions} from 'react-native'
 import MapView, {
   Marker,
   Circle,
   AnimatedRegion,
   Animated
 } from 'react-native-maps'
+import GradientButton from 'react-native-gradient-buttons'
 
 const styles = StyleSheet.create({
   container: {
@@ -49,6 +50,31 @@ export default class Map extends React.Component {
               />
             </MapView>
           )}
+        <View
+          style={{
+            position: 'absolute', //use absolute position to show button on top of the map
+            top: '80%', //for center align
+            alignSelf: 'flex-end' //for align to right
+          }}
+        >
+          <GradientButton
+            style={{
+              marginTop: 20,
+              marginBottom: 20,
+              textAlign: 'center'
+            }}
+            onPressAction={() => console.log('hi')}
+            textStyle={{fontSize: 18}}
+            gradientBegin="red"
+            gradientEnd="red"
+            gradientDirection="diagonal"
+            height={40}
+            width={100}
+            radius={4}
+          >
+            poisonous
+          </GradientButton>
+        </View>
       </View>
     )
   }
