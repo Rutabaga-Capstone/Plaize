@@ -13,8 +13,6 @@ const config = Platform.select({
   web: {headerMode: 'screen'},
   default: {}
 })
-
-//all screens should be included here
 const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
@@ -94,14 +92,12 @@ SnapStack.navigationOptions = {
   )
 }
 
-
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
   LinksStack,
   SettingsStack,
   SnapStack
 })
-
 
 tabNavigator.path = ''
 
