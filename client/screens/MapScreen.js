@@ -1,20 +1,14 @@
 import React from 'react'
-import {Platform, Text, View, SafeAreaView} from 'react-native'
+import {Platform, Text, View, SafeAreaView, ScrollView} from 'react-native'
 import Map from '../components/Map'
 import * as Permissions from 'expo-permissions'
 import * as Location from 'expo-location'
 import Constants from 'expo-constants'
 import * as geolib from 'geolib'
 import Plants from '../components/Plants'
-import MapView, {
-  Marker,
-  Circle,
-  AnimatedRegion,
-  Animated
-} from 'react-native-maps'
+import {Slider} from 'react-native-elements'
 
-// Sample pins with plans until we fetch them from the db
-
+// Sample pins with plants until we fetch them from the db
 const pins = [
   {
     id: 1,
@@ -90,18 +84,19 @@ export default class MapScreen extends React.Component {
     location: null,
     errorMessage: null,
     center: null,
-    radius: 1000,
+    radius: 700,
     selectedPin: {},
     pins: [],
     plants: [],
-    selectedPlant: {}
+    selectedPlant: {},
+    pinFilter: null
   }
 
   componentDidMount() {
     if (Platform.OS === 'android' && !Constants.isDevice) {
       this.setState({
         errorMessage:
-          'Oops, this will not work on Sketch in an Android emulator. Try it on your device!'
+          'Oops, this will not work in an Android emulator. Try it on your device!'
       })
     } else {
       this._getLocationAsync()
@@ -163,22 +158,46 @@ export default class MapScreen extends React.Component {
     }
 
     return (
-      <View>
-        {this.state.location &&
-          this.state.center && (
-            <SafeAreaView style={styles.container}>
-              <Map
-                region={this.state.region}
-                pins={this.filterMarkers(pins)}
-                location={this.state.location}
-                center={this.state.center}
-                radius={this.state.radius}
-                onRegionChange={this.state.onRegionChange}
+      this.state.location &&
+      this.state.center && (
+        <View>
+          <SafeAreaView style={styles.container}>
+            <Map
+              region={this.state.region}
+              pins={this.filterMarkers(pins)}
+              location={this.state.location}
+              center={this.state.center}
+              radius={this.state.radius}
+              onRegionChange={this.state.onRegionChange}
+            />
+            <View
+              style={{
+                position: 'absolute',
+                alignItems: 'stretch',
+                top: '60%',
+                width: 360,
+                alignSelf: 'center'
+              }}
+            >
+              <Slider
+                value={this.state.radius}
+                mainimumValue={100}
+                maximumValue={1000}
+                step={100}
+                onValueChange={value => this.setState({radius: value})}
+                thumbTintColor={'black'}
+                animateTransitions={true}
               />
-              <Plants pins={this.filterMarkers(pins)} />
-            </SafeAreaView>
-          )}
-      </View>
+              <Text style={{fontSize: 12}}>
+                Radius in meters: {this.state.radius}
+              </Text>
+            </View>
+          </SafeAreaView>
+          <ScrollView>
+            <Plants pins={this.filterMarkers(pins)} />
+          </ScrollView>
+        </View>
+      )
     )
   }
 }
