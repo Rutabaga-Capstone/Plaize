@@ -1,6 +1,11 @@
 import React from 'react'
 import {View, Text, StyleSheet, Dimensions} from 'react-native'
-import MapView, {Marker, Circle} from 'react-native-maps'
+import MapView, {
+  Marker,
+  Circle,
+  AnimatedRegion,
+  Animated
+} from 'react-native-maps'
 
 const styles = StyleSheet.create({
   container: {
@@ -19,30 +24,31 @@ export default class Map extends React.Component {
   render() {
     return (
       <View>
-        {this.props.center && (
-          <MapView
-            style={styles.mapStyle}
-            region={this.props.region}
-            showsUserLocation={true}
-            showsMyLocationButton={true}
-          >
-            {this.props.pins.map((pin, i) => (
-              <Marker
-                key={i}
-                title={pin.title}
-                coordinate={pin.coordinate}
-                pinColor={pin.hasPoisonousPlants ? 'red' : 'green'}
-                description={pin.description}
+        {this.props.center &&
+          this.props.location && (
+            <MapView
+              style={styles.mapStyle}
+              region={this.props.region}
+              showsUserLocation={true}
+              showsMyLocationButton={true}
+            >
+              {this.props.pins.map((pin, i) => (
+                <Marker
+                  key={i}
+                  title={pin.title}
+                  coordinate={pin.coordinate}
+                  pinColor={pin.hasPoisonousPlants ? 'red' : 'green'}
+                  description={pin.description}
+                />
+              ))}
+              <Circle
+                radius={this.props.radius}
+                center={this.props.center.coords}
+                fillColor={'rgba(123,239,178,.65)'}
+                strokeColor="transparent"
               />
-            ))}
-            <Circle
-              radius={this.props.radius}
-              center={this.props.center.coords}
-              fillColor={'rgba(123,239,178,.65)'}
-              strokeColor="transparent"
-            />
-          </MapView>
-        )}
+            </MapView>
+          )}
       </View>
     )
   }
