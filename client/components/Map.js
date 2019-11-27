@@ -48,10 +48,9 @@ export default class Map extends React.Component {
         <View
           style={{
             position: 'absolute',
-            top: '5%',
+            height: 500,
             width: 360,
-            alignSelf: 'center',
-            flex: 1
+            alignSelf: 'center'
           }}
         >
           <SwitchSelector

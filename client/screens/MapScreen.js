@@ -1,5 +1,5 @@
 import React from 'react'
-import {Platform, Text, View, SafeAreaView} from 'react-native'
+import {Platform, Text, View, SafeAreaView, ScrollView} from 'react-native'
 import Map from '../components/Map'
 import * as Permissions from 'expo-permissions'
 import * as Location from 'expo-location'
@@ -158,44 +158,46 @@ export default class MapScreen extends React.Component {
     }
 
     return (
-      <View>
-        {this.state.location &&
-          this.state.center && (
-            <SafeAreaView style={styles.container}>
-              <Map
-                region={this.state.region}
-                pins={this.filterMarkers(pins)}
-                location={this.state.location}
-                center={this.state.center}
-                radius={this.state.radius}
-                onRegionChange={this.state.onRegionChange}
+      this.state.location &&
+      this.state.center && (
+        <View>
+          <SafeAreaView style={styles.container}>
+            <Map
+              region={this.state.region}
+              pins={this.filterMarkers(pins)}
+              location={this.state.location}
+              center={this.state.center}
+              radius={this.state.radius}
+              onRegionChange={this.state.onRegionChange}
+            />
+            <View
+              style={{
+                position: 'absolute',
+                alignItems: 'stretch',
+                top: '60%',
+                width: 360,
+                alignSelf: 'center'
+              }}
+            >
+              <Slider
+                value={this.state.radius}
+                mainimumValue={100}
+                maximumValue={1000}
+                step={100}
+                onValueChange={value => this.setState({radius: value})}
+                thumbTintColor={'black'}
+                animateTransitions={true}
               />
-              <Plants pins={this.filterMarkers(pins)} />
-              <View
-                style={{
-                  position: 'absolute',
-                  flex: 2,
-                  alignItems: 'stretch',
-                  justifyContent: 'flex-end',
-                  top: '75%',
-                  width: 360,
-                  alignSelf: 'center'
-                }}
-              >
-                <Slider
-                  value={this.state.radius}
-                  mainimumValue={100}
-                  maximumValue={1000}
-                  step={100}
-                  onValueChange={value => this.setState({radius: value})}
-                  thumbTintColor={'black'}
-                  animateTransitions={true}
-                />
-                <Text>Meters: {this.state.radius}</Text>
-              </View>
-            </SafeAreaView>
-          )}
-      </View>
+              <Text style={{fontSize: 12}}>
+                Radius in meters: {this.state.radius}
+              </Text>
+            </View>
+          </SafeAreaView>
+          <ScrollView>
+            <Plants pins={this.filterMarkers(pins)} />
+          </ScrollView>
+        </View>
+      )
     )
   }
 }
