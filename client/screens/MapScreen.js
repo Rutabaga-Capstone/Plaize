@@ -6,14 +6,8 @@ import * as Location from 'expo-location'
 import Constants from 'expo-constants'
 import * as geolib from 'geolib'
 import Plants from '../components/Plants'
-import MapView, {
-  Marker,
-  Circle,
-  AnimatedRegion,
-  Animated
-} from 'react-native-maps'
 
-// Sample pins with plans until we fetch them from the db
+// Sample pins with plants until we fetch them from the db
 
 const pins = [
   {
@@ -94,14 +88,15 @@ export default class MapScreen extends React.Component {
     selectedPin: {},
     pins: [],
     plants: [],
-    selectedPlant: {}
+    selectedPlant: {},
+    pinFilter: null
   }
 
   componentDidMount() {
     if (Platform.OS === 'android' && !Constants.isDevice) {
       this.setState({
         errorMessage:
-          'Oops, this will not work on Sketch in an Android emulator. Try it on your device!'
+          'Oops, this will not work in an Android emulator. Try it on your device!'
       })
     } else {
       this._getLocationAsync()

@@ -1,12 +1,20 @@
 import React from 'react'
-import {View, Button, Text, StyleSheet, Dimensions} from 'react-native'
+import {
+  View,
+  Button,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  Dimensions
+} from 'react-native'
 import MapView, {
   Marker,
   Circle,
   AnimatedRegion,
   Animated
 } from 'react-native-maps'
-import GradientButton from 'react-native-gradient-buttons'
+import SwitchSelector from 'react-native-switch-selector'
+import poison from './poisonous.png'
 
 const styles = StyleSheet.create({
   container: {
@@ -52,28 +60,41 @@ export default class Map extends React.Component {
           )}
         <View
           style={{
-            position: 'absolute', //use absolute position to show button on top of the map
-            top: '80%', //for center align
-            alignSelf: 'flex-end' //for align to right
+            position: 'absolute',
+            top: '5%',
+            width: 360,
+            alignSelf: 'center',
+            flex: 1
           }}
         >
-          <GradientButton
+          <SwitchSelector
+            initial={2}
+            onPress={value => this.setState({pinFilter: value})}
+            textColor={'#000'}
+            selectedColor={'#fff'}
+            buttonColor={'#000'}
+            borderColor={'lightgrey'}
+            fontSize={12}
+            height={30}
+            alignSelf={'center'}
+            hasPadding
+            options={[
+              {
+                label: 'poisonous',
+                value: 'poisonous',
+                activeColor: 'red'
+              },
+              {
+                label: 'nonpoisonous',
+                value: 'nonpoisonous',
+                activeColor: 'green'
+              },
+              {label: 'all', value: 'all', activeColor: 'black'}
+            ]}
             style={{
-              marginTop: 20,
-              marginBottom: 20,
-              textAlign: 'center'
+              alignSelf: 'center'
             }}
-            onPressAction={() => console.log('hi')}
-            textStyle={{fontSize: 18}}
-            gradientBegin="red"
-            gradientEnd="red"
-            gradientDirection="diagonal"
-            height={40}
-            width={100}
-            radius={4}
-          >
-            poisonous
-          </GradientButton>
+          />
         </View>
       </View>
     )
