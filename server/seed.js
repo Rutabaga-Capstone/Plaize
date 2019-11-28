@@ -1,21 +1,21 @@
 module.exports = `
   mutation {
-    u1:CreateUser(id: 1, name: "Randy", email: "randydxp@gmail.com", password: "1234") {
+    u1:CreateUser(id: 1, name: "Randy", email: "randydxp@gmail.com", password: "1234", leaves: 0) {
       id
       name
       email
     }
-    u2:CreateUser(id: 2, name: "Fernando", email: "fer@innovaresip.com", password: "1234") {
+    u2:CreateUser(id: 2, name: "Fernando", email: "fer@innovaresip.com", password: "1234", leaves: 0) {
       id
       name
       email
     }
-    u3:CreateUser(id: 3, name: "Sean", email: "gatewaywebdesign18@gmail.com", password: "1234") {
+    u3:CreateUser(id: 3, name: "Sean", email: "gatewaywebdesign18@gmail.com", password: "1234", leaves: 0) {
       id
       name
       email
     }
-    u4:CreateUser(id: 4, name: "Pawel", email: "pawel3ala@gmail.com", password: "1234") {
+    u4:CreateUser(id: 4, name: "Pawel", email: "pawel3ala@gmail.com", password: "1234", leaves: 0) {
       id
       name
       email
