@@ -1,36 +1,51 @@
 import {AppLoading} from 'expo'
 import {Asset} from 'expo-asset'
 import * as Font from 'expo-font'
-import React, {useState} from 'react'
-import {Platform, StatusBar, StyleSheet, View} from 'react-native'
+import React, {useState, useEffect} from 'react'
+import {
+  Platform,
+  StatusBar,
+  StyleSheet,
+  View,
+  AsyncStorage,
+  Text
+} from 'react-native'
 import {Ionicons} from '@expo/vector-icons'
 import {ApolloProvider} from 'react-apollo'
 import ApolloClient from 'apollo-boost'
+import AppNavigator from './navigation/AppNavigator'
 
 const client = new ApolloClient({uri: 'http://localhost:1234/graphql'})
 
-import AppNavigator from './navigation/AppNavigator'
-
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false)
+  const [loggedInUser, setLoggedInUser] = useState('')
+  useEffect(async () => {
+    setLoggedInUser(await AsyncStorage.getItem('LOGGED_IN_USER'))
+  }, [])
 
-  if (!isLoadingComplete && !props.skipLoadingScreen) {
-    return (
-      <AppLoading
-        startAsync={loadResourcesAsync}
-        onError={handleLoadingError}
-        onFinish={() => handleFinishLoading(setLoadingComplete)}
-      />
-    )
-  } else {
-    return (
-      <ApolloProvider client={client}>
-        <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator />
-        </View>
-      </ApolloProvider>
-    )
+  try {
+    if (!isLoadingComplete && !props.skipLoadingScreen) {
+      return (
+        <AppLoading
+          startAsync={loadResourcesAsync}
+          onError={handleLoadingError}
+          onFinish={() => handleFinishLoading(setLoadingComplete)}
+        />
+      )
+    } else {
+      return (
+        <ApolloProvider client={client}>
+          <View style={styles.container}>
+            {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+            <AppNavigator />
+          </View>
+        </ApolloProvider>
+      )
+    }
+  } catch (err) {
+    alert(JSON.stringify(err))
+    return <Text>Error Checking Auth</Text>
   }
 }
 

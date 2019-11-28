@@ -6,89 +6,138 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
-  Animated
+  AsyncStorage
 } from 'react-native'
-import {Button, ThemeProvider, Input} from 'react-native-elements'
-
-import * as Font from 'expo-font'
-import {MonoText} from '../components/StyledText'
+import {Input} from 'react-native-elements'
 import GradientButton from 'react-native-gradient-buttons'
-import {Table, TableWrapper, Row, Cell} from 'react-native-table-component'
+import {withApollo} from 'react-apollo'
+import {gql} from 'apollo-boost'
 
-export default function HomeScreen(props) {
-  const {navigate} = props.navigation
-  return (
-    <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
-      <ScrollView contentContainerStyle={styles.contentContainer}>
-        <View style={styles.welcomeContainer}>
-          <Image
-            source={
-              __DEV__
-                ? require('../assets/images/logo-gradient.png')
-                : require('../assets/images/logo-gradient.png')
+class HomeScreen extends React.Component {
+  state = {
+    email: '',
+    password: ''
+  }
+
+  loginUser = async () => {
+    if (Object.values(this.state).every(i => i.trim())) {
+      const {client, navigation} = this.props
+      const {email, password} = this.state
+      try {
+        const result = await client.query({
+          query: gql`
+            query LoginUser($email: String!, $password: String!) {
+              User(email: $email, password: $password) {
+                _id
+                firstName
+                middleName
+                lastName
+                email
+              }
             }
-            style={styles.welcomeImage}
-          />
-          <Text style={styles.title}>Plaze</Text>
-          <Text style={styles.subtitle}>Identify Poisonous Plants</Text>
-          <Input style={styles.label} placeholder="username or email" />
-          <Input style={styles.label} placeholder="password" />
+          `,
+          variables: {
+            email,
+            password
+          }
+        })
+        const userData = result.data.User[0]
+        await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
+        navigation.navigate('Snap', userData)
+      } catch (error) {
+        alert(JSON.stringify(error))
+      }
+    } else {
+      alert('All fields are required!')
+    }
+  }
 
-          <GradientButton
-            style={{
-              marginTop: 20,
-              marginBottom: 20,
-              textAlign: 'center'
-            }}
-            textStyle={{fontSize: 18}}
-            gradientBegin="#6CC7BD"
-            gradientEnd="#A5D38F"
-            gradientDirection="diagonal"
-            height={50}
-            width={200}
-            radius={0}
-            onPressAction={() => alert('You pressed me in login!')}
-          >
-            login
-          </GradientButton>
-          <Text style={styles.screenText}>I forgot my password</Text>
-          <Text style={styles.title}>New to Plaze?</Text>
+  render() {
+    const {navigate} = this.props.navigation
+    return (
+      <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
+        <ScrollView contentContainerStyle={styles.contentContainer}>
+          <View style={styles.welcomeContainer}>
+            <Image
+              source={
+                __DEV__
+                  ? require('../assets/images/logo-gradient.png')
+                  : require('../assets/images/logo-gradient.png')
+              }
+              style={styles.welcomeImage}
+            />
+            <Text style={styles.title}>Plaze</Text>
+            <Text style={styles.subtitle}>Identify Poisonous Plants</Text>
+            <Input
+              autoCompleteType="email"
+              onChangeText={v => this.setState({email: v})}
+              style={styles.label}
+              placeholder="Email Address"
+              autoCapitalize="none"
+            />
+            <Input
+              secureTextEntry={true}
+              onChangeText={v => this.setState({password: v})}
+              style={styles.label}
+              placeholder="password"
+              autoCapitalize="none"
+            />
 
-          <GradientButton
-            style={{
-              marginTop: 20,
-              marginBottom: 20,
-              textAlign: 'center'
-            }}
-            onPressAction={() => navigate('CreateAccount')}
-            textStyle={{fontSize: 18}}
-            gradientBegin="#6CC7BD"
-            gradientEnd="#A5D38F"
-            gradientDirection="diagonal"
-            height={50}
-            width={200}
-            radius={0}
-          >
-            create account
-          </GradientButton>
-
-          <Text style={styles.screenText}>Create Account With</Text>
-          <View style={{flex: 1, flexDirection: 'row'}}>
-            <View
-              style={{width: 100, height: 50, marginTop: 15, marginLeft: 36}}
+            <GradientButton
+              style={{
+                marginTop: 20,
+                marginBottom: 20,
+                textAlign: 'center'
+              }}
+              textStyle={{fontSize: 18}}
+              gradientBegin="#6CC7BD"
+              gradientEnd="#A5D38F"
+              gradientDirection="diagonal"
+              height={50}
+              width={200}
+              radius={0}
+              onPressAction={this.loginUser}
             >
-              <Text style={{fontSize: 18, color: '#6CC7BD'}}>Facebook</Text>
-            </View>
-            <View style={{width: 100, height: 50, marginTop: 15}}>
-              <Text style={{fontSize: 18, color: '#6CC7BD'}}>Google</Text>
+              login
+            </GradientButton>
+            <Text style={styles.screenText}>I forgot my password</Text>
+            <Text style={styles.titleTwo}>New to Plaze?</Text>
+
+            <GradientButton
+              style={{
+                marginTop: 20,
+                marginBottom: 20,
+                textAlign: 'center'
+              }}
+              onPressAction={() => navigate('CreateAccount')}
+              textStyle={{fontSize: 18}}
+              gradientBegin="#6CC7BD"
+              gradientEnd="#A5D38F"
+              gradientDirection="diagonal"
+              height={50}
+              width={200}
+              radius={0}
+            >
+              create account
+            </GradientButton>
+
+            <Text style={styles.screenText}>Create Account With</Text>
+            <View style={{flex: 1, flexDirection: 'row'}}>
+              <View
+                style={{width: 100, height: 50, marginTop: 15, marginLeft: 36}}
+              >
+                <Text style={{fontSize: 18, color: '#6CC7BD'}}>Facebook</Text>
+              </View>
+              <View style={{width: 100, height: 50, marginTop: 15}}>
+                <Text style={{fontSize: 18, color: '#6CC7BD'}}>Google</Text>
+              </View>
             </View>
           </View>
-        </View>
-      </ScrollView>
-    </View>
-  )
+        </ScrollView>
+      </View>
+    )
+  }
 }
 
 HomeScreen.navigationOptions = {
@@ -130,6 +179,9 @@ function handleHelpPress() {
 }
 
 const styles = StyleSheet.create({
+  alert: {
+    backgroundColor: 'grey'
+  },
   welcomeContainer: {
     marginTop: 30,
     justifyContent: 'center',
@@ -138,15 +190,24 @@ const styles = StyleSheet.create({
   welcomeImage: {
     width: 100,
     height: 100,
+    marginLeft: 10,
     resizeMode: 'contain',
     alignItems: 'center',
     justifyContent: 'center'
   },
   title: {
     marginTop: 30,
+    marginBottom: 5,
     color: '#000000',
     textAlign: 'center',
     fontSize: 40,
+    fontFamily: 'yorkten'
+  },
+  titleTwo: {
+    marginTop: 30,
+    color: '#000000',
+    textAlign: 'center',
+    fontSize: 35,
     fontFamily: 'yorkten'
   },
   subtitle: {
@@ -157,7 +218,7 @@ const styles = StyleSheet.create({
     marginLeft: 0,
     marginTop: 5,
     fontSize: 20,
-    marginBottom: 15
+    marginBottom: 35
   },
   screenText: {
     color: '#000000',
@@ -253,3 +314,5 @@ const styles = StyleSheet.create({
     color: '#2e78b7'
   }
 })
+
+export default withApollo(HomeScreen)

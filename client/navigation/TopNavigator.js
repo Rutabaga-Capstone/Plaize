@@ -1,6 +1,9 @@
 import React from 'react'
 import {Platform} from 'react-native'
-import {createStackNavigator, createBottomTabNavigator} from 'react-navigation'
+import {
+  createStackNavigator,
+  createMaterialTopTabNavigator
+} from 'react-navigation'
 
 import TabBarIcon from '../components/TabBarIcon'
 import HomeScreen from '../screens/HomeScreen'
@@ -99,43 +102,12 @@ SnapStack.navigationOptions = {
   )
 }
 
-const tabNavigator = createBottomTabNavigator({
+const tabNavigator = createMaterialTopTabNavigator({
   HomeStack,
   SnapStack,
   SettingsStack
 })
 
 tabNavigator.path = ''
-
-//CUTOFF HERE ------- TRYING TO ADD TOP NAV
-
-// const ProfileStack = createStackNavigator(
-//   {
-//     Home: HomeScreen,
-//     CreateAccount: CreateAccountScreen
-//   },
-//   config
-// )
-
-// ProfileStack.navigationOptions = {
-//   tabBarLabel: 'Profile',
-//   tabBarOptions: {
-//     activeTintColor: '#6CC7BD',
-//     inactiveTintColor: '#CCCCCC',
-//   },
-//   tabBarIcon: ({activeTintColor}) => (
-//     <TabBarIcon
-//       activeTintColor={activeTintColor}
-//       name={
-//         Platform.OS === 'ios'
-//           ? `ios-information-circle${activeTintColor ? '' : '-outline'}`
-//           : 'md-information-circle'
-//       }
-//       color={tintColor}
-//     />
-//   )
-// }
-
-// ProfileStack.path = ''
 
 export default tabNavigator

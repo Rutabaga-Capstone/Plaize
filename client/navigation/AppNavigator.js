@@ -1,7 +1,17 @@
 import React from 'react'
-import {createAppContainer, createSwitchNavigator} from 'react-navigation'
+import {
+  createAppContainer,
+  createStackNavigator,
+  createSwitchNavigator
+} from 'react-navigation'
 
 import MainTabNavigator from './MainTabNavigator'
+import TopNavigator from './TopNavigator'
+
+const FinalStack = createStackNavigator({
+  Top: TopNavigator,
+  Bottom: MainTabNavigator
+})
 
 export default createAppContainer(
   createSwitchNavigator({
