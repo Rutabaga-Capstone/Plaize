@@ -11,77 +11,172 @@ import {
   Animated
 } from 'react-native'
 import {Button, ThemeProvider, Input} from 'react-native-elements'
-
 import * as Font from 'expo-font'
 import {MonoText} from '../components/StyledText'
+import {withApollo} from 'react-apollo'
+import {gql} from 'apollo-boost'
 import GradientButton from 'react-native-gradient-buttons'
 
-export default function HomeScreen(props) {
-  return (
-    <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
-      <ScrollView contentContainerStyle={styles.contentContainer}>
-        <View style={styles.welcomeContainer}>
-          <Image
-            source={
-              __DEV__
-                ? require('../assets/images/logo-gradient.png')
-                : require('../assets/images/logo-gradient.png')
+class CreateAccount extends React.Component {
+  state = {
+    firstName: '',
+    lastName: '',
+    middleName: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  }
+
+  createUser = () => {
+    const {client, navigation} = this.props
+    const {navigate} = navigation
+    const {
+      firstName,
+      lastName,
+      middleName,
+      email,
+      password,
+      confirmPassword
+    } = this.state
+    if (password === confirmPassword) {
+      client
+        .mutate({
+          mutation: gql`
+            mutation CreateUser(
+              $firstName: String!
+              $lastName: String!
+              $middleName: String!
+              $email: String!
+              $password: String!
+            ) {
+              CreateUser(
+                firstName: $firstName
+                lastName: $lastName
+                middleName: $middleName
+                email: $email
+                password: $password
+              ) {
+                _id
+                firstName
+                middleName
+                lastName
+                email
+                password
+              }
             }
-            style={styles.welcomeImage}
-          />
-          <Text style={styles.title}>Plaze</Text>
-          <Text style={styles.subtitle}>create an account</Text>
+          `,
+          variables: {
+            firstName,
+            lastName,
+            middleName,
+            email,
+            password
+          }
+        })
+        .then(result => {
+          const userData = result.data.CreateUser
+          navigate('Snap', userData)
+        })
+        .catch(err => alert(JSON.stringify(err)))
+    } else {
+      alert('Passwords must match!')
+    }
+  }
 
-          <Input style={styles.label} placeholder="First name" />
-          <Input style={styles.label} placeholder="Middle Name / Initial" />
-          <Input style={styles.label} placeholder="Last Name" />
-          <Input style={styles.label} placeholder="Email Address" />
-          <Input style={styles.label} placeholder="Password" />
-          <Input style={styles.label} placeholder="Confirm Password" />
+  render() {
+    const {navigate} = this.props.navigation
+    return (
+      <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
+        <ScrollView contentContainerStyle={styles.contentContainer}>
+          <View style={styles.welcomeContainer}>
+            <Image
+              source={
+                __DEV__
+                  ? require('../assets/images/logo-gradient.png')
+                  : require('../assets/images/logo-gradient.png')
+              }
+              style={styles.welcomeImage}
+            />
+            <Text style={styles.title}>Plaze</Text>
+            <Text style={styles.subtitle}>create an account</Text>
 
-          <Text style={styles.screenText}>
-            *By tapping Register, you acknowledge that you have read the Privacy
-            Policy and agree to the Terms of Service. We'll send you a message
-            to verify this number. Messaging rates may apply. Remember, you
-            plant reviews are public.
-          </Text>
+            <Input
+              style={styles.label}
+              onChangeText={v => this.setState({firstName: v})}
+              placeholder="First name"
+            />
+            <Input
+              style={styles.label}
+              onChangeText={v => this.setState({middleName: v})}
+              placeholder="Middle Name / Initial"
+            />
+            <Input
+              style={styles.label}
+              onChangeText={v => this.setState({lastName: v})}
+              placeholder="Last Name"
+            />
+            <Input
+              style={styles.label}
+              onChangeText={v => this.setState({email: v})}
+              placeholder="Email Address"
+            />
+            <Input
+              secureTextEntry={true}
+              style={styles.label}
+              onChangeText={v => this.setState({password: v})}
+              placeholder="Password"
+            />
+            <Input
+              secureTextEntry={true}
+              style={styles.label}
+              onChangeText={v => this.setState({confirmPassword: v})}
+              placeholder="Confirm Password"
+            />
 
-          <GradientButton
+            <Text style={styles.screenText}>
+              *By tapping Register, you acknowledge that you have read the
+              Privacy Policy and agree to the Terms of Service. We'll send you a
+              message to verify this number. Messaging rates may apply.
+              Remember, you plant reviews are public.
+            </Text>
+
+            <GradientButton
+              style={{
+                marginTop: 20,
+                textAlign: 'center',
+                marginBottom: 20
+              }}
+              textStyle={{fontSize: 18}}
+              gradientBegin="#6CC7BD"
+              gradientEnd="#A5D38F"
+              gradientDirection="diagonal"
+              height={50}
+              width={200}
+              radius={0}
+              onPressAction={this.createUser}
+            >
+              register
+            </GradientButton>
+          </View>
+          <Text style={styles.login}>Already have an account?</Text>
+          <Text
             style={{
-              marginTop: 20,
-              textAlign: 'center',
-              marginBottom: 20
+              marginTop: 10,
+              fontSize: 18,
+              color: '#6CC7BD',
+              textAlign: 'center'
             }}
-            textStyle={{fontSize: 18}}
-            gradientBegin="#6CC7BD"
-            gradientEnd="#A5D38F"
-            gradientDirection="diagonal"
-            height={50}
-            width={200}
-            radius={0}
-            onPressAction={() => alert('You pressed me in create account!')}
+            onPress={() => navigate('Home')}
           >
-            register
-          </GradientButton>
-        </View>
-        <Text style={styles.login}>Already have an account?</Text>
-        <Text
-          style={{
-            marginTop: 10,
-            fontSize: 18,
-            color: '#6CC7BD',
-            textAlign: 'center'
-          }}
-          onPressAction={() => navigate('Home')}
-        >
-          Login
-        </Text>
-      </ScrollView>
-    </View>
-  )
+            Login
+          </Text>
+        </ScrollView>
+      </View>
+    )
+  }
 }
 
-HomeScreen.navigationOptions = {
+CreateAccount.navigationOptions = {
   header: null
 }
 
@@ -242,3 +337,5 @@ const styles = StyleSheet.create({
     color: '#2e78b7'
   }
 })
+
+export default withApollo(CreateAccount)
