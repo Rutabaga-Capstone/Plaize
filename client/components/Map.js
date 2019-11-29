@@ -1,7 +1,6 @@
 import React from 'react'
 import {View, Text, StyleSheet, Dimensions} from 'react-native'
 import MapView, {Marker, Circle} from 'react-native-maps'
-import SwitchSelector from 'react-native-switch-selector'
 
 const styles = StyleSheet.create({
   container: {
@@ -21,7 +20,8 @@ export default class Map extends React.Component {
     return (
       <View>
         {this.props.center &&
-          this.props.location && (
+          this.props.location &&
+          this.props.pins && (
             <MapView
               style={styles.mapStyle}
               region={this.props.region}
@@ -52,36 +52,7 @@ export default class Map extends React.Component {
             width: 360,
             alignSelf: 'center'
           }}
-        >
-          <SwitchSelector
-            initial={2}
-            onPress={value => this.setState({pinFilter: value})}
-            textColor={'#000'}
-            selectedColor={'#fff'}
-            buttonColor={'#000'}
-            borderColor={'lightgrey'}
-            fontSize={12}
-            height={30}
-            alignSelf={'center'}
-            hasPadding
-            options={[
-              {
-                label: 'poisonous',
-                value: 'poisonous',
-                activeColor: 'red'
-              },
-              {
-                label: 'nonpoisonous',
-                value: 'nonpoisonous',
-                activeColor: 'green'
-              },
-              {label: 'all', value: 'all', activeColor: 'black'}
-            ]}
-            style={{
-              alignSelf: 'center'
-            }}
-          />
-        </View>
+        />
       </View>
     )
   }

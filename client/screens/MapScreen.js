@@ -1,5 +1,13 @@
 import React from 'react'
-import {Platform, Text, View, SafeAreaView, ScrollView} from 'react-native'
+import {
+  Platform,
+  Text,
+  View,
+  SafeAreaView,
+  ScrollView,
+  Button,
+  StyleSheet
+} from 'react-native'
 import Map from '../components/Map'
 import * as Permissions from 'expo-permissions'
 import * as Location from 'expo-location'
@@ -7,9 +15,11 @@ import Constants from 'expo-constants'
 import * as geolib from 'geolib'
 import Plants from '../components/Plants'
 import {Slider} from 'react-native-elements'
+import SwitchSelector from 'react-native-switch-selector'
+import {TagSelect} from 'react-native-tag-select'
 
 // Sample pins with plants until we fetch them from the db
-const pins = [
+const PINS = [
   {
     id: 1,
     coordinate: {latitude: 41.895506, longitude: -87.639014},
@@ -78,26 +88,60 @@ const styles = {
   }
 }
 
+const styles2 = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    marginTop: 400,
+    marginLeft: 190,
+    position: 'absolute'
+  },
+  buttonContainer: {
+    padding: 5
+  },
+  buttonInner: {
+    marginBottom: 10
+  },
+  labelText: {
+    color: '#333',
+    fontSize: 12,
+    fontWeight: '500',
+    marginBottom: 15
+  },
+  item: {
+    borderWidth: 1,
+    borderColor: '#333',
+    backgroundColor: '#FFF'
+  },
+  label: {
+    color: '#333'
+  },
+  itemSelected: {
+    backgroundColor: '#333'
+  },
+  labelSelected: {
+    color: '#FFF'
+  }
+})
+
 export default class MapScreen extends React.Component {
   state = {
     region: null,
     location: null,
-    errorMessage: null,
     center: null,
-    radius: 700,
+    radius: 700, //in meters
     selectedPin: {},
-    pins: [],
+    pins: PINS,
     plants: [],
     selectedPlant: {},
-    pinFilter: null
+    tagsSelected: []
   }
 
   componentDidMount() {
     if (Platform.OS === 'android' && !Constants.isDevice) {
-      this.setState({
-        errorMessage:
-          'Oops, this will not work in an Android emulator. Try it on your device!'
-      })
+      let errorMessage =
+        'Oops, this will not work in an Android emulator. Try it on your device!'
+      console.log(errorMessage)
     } else {
       this._getLocationAsync()
     }
@@ -106,9 +150,8 @@ export default class MapScreen extends React.Component {
   _getLocationAsync = async () => {
     let {status} = await Permissions.askAsync(Permissions.LOCATION)
     if (status !== 'granted') {
-      this.setState({
-        errorMessage: 'Permission to access location was denied'
-      })
+      let errorMessage = 'Permission to access location was denied'
+      console.log(errorMessage)
     }
 
     let location = await Location.getCurrentPositionAsync({})
@@ -124,25 +167,48 @@ export default class MapScreen extends React.Component {
     })
   }
 
-  filterMarkers(pins) {
-    const radiusFromCenter = this.state.radius
+  filterMarkers(currentPins, tagsSelected, radius) {
+    const radiusFromCenter = radius
     const radiusCenter = {
       latitude: this.state.center.coords.latitude,
       longitude: this.state.center.coords.longitude
     }
 
-    return pins.filter((pin, i) => {
+    const filteredPins = PINS.filter((pin, i) => {
       let pinCoord = {
         latitude: pin.coordinate.latitude,
         longitude: pin.coordinate.longitude
       }
       if (
         geolib.isPointWithinRadius(pinCoord, radiusCenter, radiusFromCenter) ===
-        true
+          true &&
+        tagsSelected.length &&
+        pin.isPoisonous === false
       ) {
         return pin
+      } else if (
+        geolib.isPointWithinRadius(pinCoord, radiusCenter, radiusFromCenter) ===
+          true &&
+        tagsSelected.length &&
+        pin.isPoisonous === true
+      ) {
+        return pin
+      } else if (
+        geolib.isPointWithinRadius(pinCoord, radiusCenter, radiusFromCenter) ===
+          true &&
+        !tagsSelected.length
+      ) {
+        return pin
+      } else {
+        return null
       }
     })
+    this.setState({
+      pins: filteredPins,
+      tagsSelected,
+      radius: radius
+    })
+    console.log('this.state in Map comp:', this.state)
   }
 
   onRegionChange(region) {
@@ -157,25 +223,48 @@ export default class MapScreen extends React.Component {
       text = JSON.stringify(this.state.location)
     }
 
+    const data = [{id: 1, label: 'Poisonous'}, {id: 2, label: 'Nonpoisonous'}]
+
     return (
+      this.state.pins &&
       this.state.location &&
       this.state.center && (
         <View>
           <SafeAreaView style={styles.container}>
             <Map
               region={this.state.region}
-              pins={this.filterMarkers(pins)}
+              pins={this.state.pins}
               location={this.state.location}
               center={this.state.center}
               radius={this.state.radius}
-              onRegionChange={this.state.onRegionChange}
+              onRegionChange={region => this.onRegionChange(region)}
+              tagsSelected={this.state.tagsSelected}
             />
+            <View style={styles2.container}>
+              <TagSelect
+                ref={tag => {
+                  this.tag = tag
+                }}
+                data={data}
+                itemStyle={styles2.item}
+                itemLabelStyle={styles2.label}
+                itemStyleSelected={styles2.itemSelected}
+                itemLabelStyleSelected={styles2.labelSelected}
+                onItemPress={() =>
+                  this.filterMarkers(
+                    this.state.pins,
+                    this.tag.itemsSelected,
+                    this.state.radius
+                  )
+                }
+              />
+            </View>
             <View
               style={{
                 position: 'absolute',
                 alignItems: 'stretch',
-                top: '60%',
-                width: 360,
+                top: 350,
+                width: 320,
                 alignSelf: 'center'
               }}
             >
@@ -184,7 +273,13 @@ export default class MapScreen extends React.Component {
                 mainimumValue={100}
                 maximumValue={1000}
                 step={100}
-                onValueChange={value => this.setState({radius: value})}
+                onValueChange={radius =>
+                  this.filterMarkers(
+                    this.state.pins,
+                    this.state.tagsSelected,
+                    radius
+                  )
+                }
                 thumbTintColor={'black'}
                 animateTransitions={true}
               />
@@ -194,7 +289,7 @@ export default class MapScreen extends React.Component {
             </View>
           </SafeAreaView>
           <ScrollView>
-            <Plants pins={this.filterMarkers(pins)} />
+            <Plants pins={this.state.pins} />
           </ScrollView>
         </View>
       )
