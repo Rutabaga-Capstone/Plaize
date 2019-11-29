@@ -7,7 +7,8 @@ import {
   StyleSheet,
   Text,
   View,
-  AsyncStorage
+  AsyncStorage,
+  TouchableOpacity
 } from 'react-native'
 import {Input} from 'react-native-elements'
 import {withApollo} from 'react-apollo'
@@ -169,17 +170,18 @@ class CreateAccount extends React.Component {
             </GradientButton>
           </View>
           <Text style={styles.login}>Already have an account?</Text>
-          <Text
-            style={{
-              marginTop: 10,
-              fontSize: 18,
-              color: '#6CC7BD',
-              textAlign: 'center'
-            }}
-            onPressAction={() => navigate('Home')}
-          >
-            Login
-          </Text>
+          <TouchableOpacity onPress={() => navigate('Home')}>
+            <Text
+              style={{
+                marginTop: 10,
+                fontSize: 18,
+                color: '#6CC7BD',
+                textAlign: 'center'
+              }}
+            >
+              Login
+            </Text>
+          </TouchableOpacity>
         </ScrollView>
       </View>
     )

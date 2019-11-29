@@ -19,10 +19,6 @@ const client = new ApolloClient({uri: 'http://localhost:1234/graphql'})
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false)
-  const [loggedInUser, setLoggedInUser] = useState('')
-  useEffect(async () => {
-    setLoggedInUser(await AsyncStorage.getItem('LOGGED_IN_USER'))
-  }, [])
 
   try {
     if (!isLoadingComplete && !props.skipLoadingScreen) {
