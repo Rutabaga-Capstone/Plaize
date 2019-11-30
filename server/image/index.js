@@ -14,7 +14,6 @@ const upload = multer({
   dest: './server/uploads/',
   limits: {fieldSize: 25 * 1024 * 1024}
 })
-module.exports = router
 
 async function predict(filePath) {
   // Get the full path of the model.
@@ -46,38 +45,30 @@ async function predict(filePath) {
   return returnedPayload
 }
 
-router.post(
-  '/',
-  () => {
-    console.log('HIT1')
-  },
-  upload.single('formKeyName'),
-  async (req, res, next) => {
-    console.log('HIT2')
-    console.log(req.file)
-    if (req.file) {
-      console.log('HI3')
-      try {
-        const response = {}
-        const filePath = path.join(__dirname, '../..', req.file.path)
-        let prediction = await predict(filePath)
-        response.commonName = prediction.displayName
-          .split(' ')
-          .map(el => {
-            return el[0].toUpperCase() + el.slice(1)
-          })
-          .join(' ')
-        response.score = prediction.classification.score
-        fs.unlink(filePath, err => {
-          if (err) {
-            console.err(err)
-            throw new Error('Could not delete file')
-          }
+router.post('/', upload.single('formKeyName'), async (req, res, next) => {
+  if (req.file) {
+    try {
+      const response = {}
+      const filePath = path.join(__dirname, '../..', req.file.path)
+      let prediction = await predict(filePath)
+      response.commonName = prediction.displayName
+        .split(' ')
+        .map(el => {
+          return el[0].toUpperCase() + el.slice(1)
         })
-        res.json(response)
-      } catch (e) {
-        next(e)
-      }
+        .join(' ')
+      response.score = prediction.classification.score
+      fs.unlink(filePath, err => {
+        if (err) {
+          console.err(err)
+          throw new Error('Could not delete file')
+        }
+      })
+      res.json(response)
+    } catch (e) {
+      next(e)
     }
   }
-)
+})
+
+module.exports = router
