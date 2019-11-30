@@ -5,7 +5,6 @@ import {createStackNavigator, createBottomTabNavigator} from 'react-navigation'
 import TabBarIcon from '../components/TabBarIcon'
 import HomeScreen from '../screens/HomeScreen'
 import CreateAccountScreen from '../screens/CreateAccount'
-import LinksScreen from '../screens/LinksScreen'
 import SettingsScreen from '../screens/MapScreen'
 import SnapScreen from '../screens/SnapScreen'
 import ProfileScreen from '../screens/ProfileScreen'
@@ -37,7 +36,7 @@ HomeStack.navigationOptions = {
     <TabBarIcon
       activeTintColor={activeTintColor}
       name="md-person"
-      color={activeTintColor}
+      color={Colors.activeTintColor}
     />
   )
 }
@@ -96,17 +95,7 @@ const ProfileStack = createStackNavigator(
 
 ProfileStack.navigationOptions = {
   tabBarLabel: 'Profile',
-  tabBarOptions: {
-    activeTintColor: Colors.tintColor,
-    inactiveTintColor: Colors.inactiveTintColor
-  },
-  tabBarIcon: ({activeTintColor}) => (
-    <TabBarIcon
-      activeTintColor={activeTintColor}
-      name="md-person"
-      color={activeTintColor}
-    />
-  )
+  tabBarIcon: ({focused}) => <TabBarIcon focused={focused} name="md-person" />
 }
 
 const tabNavigator = createBottomTabNavigator(

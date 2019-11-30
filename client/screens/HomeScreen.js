@@ -16,6 +16,7 @@ import {withApollo} from 'react-apollo'
 import {gql} from 'apollo-boost'
 import Dialog from 'react-native-dialog'
 import * as Facebook from 'expo-facebook'
+import * as Google from 'expo-google-app-auth'
 
 class HomeScreen extends React.Component {
   state = {
@@ -27,8 +28,8 @@ class HomeScreen extends React.Component {
 
   loginUser = async () => {
     const {email, password} = this.state
+    const {client, navigation} = this.props
     if ([email, password].every(i => i && i.trim())) {
-      const {client, navigation} = this.props
       try {
         const result = await client.query({
           query: gql`
@@ -80,6 +81,24 @@ class HomeScreen extends React.Component {
       }
     } catch ({message}) {
       alert(`Facebook Login Error: ${message}`)
+    }
+  }
+
+  loginWithGoogle = async () => {
+    const {navigation} = this.props
+    try {
+      const {type, user} = await Google.logInAsync({
+        iosClientId: `238915439539-85p433631088kebf5606i7o1s44gil2d.apps.googleusercontent.com`,
+        scopes: ['profile', 'email']
+      })
+      if (type === 'success') {
+        await AsyncStorage.setItem('LOGGED_IN_USER', user.email)
+        navigation.navigate('Snap')
+      } else {
+        alert(JSON.stringify('something elseee'))
+      }
+    } catch (err) {
+      alert('errrrrrrrr' + JSON.stringify(err))
     }
   }
 
@@ -168,7 +187,9 @@ class HomeScreen extends React.Component {
                 </TouchableOpacity>
               </View>
               <View style={{width: 100, height: 50, marginTop: 15}}>
-                <Text style={{fontSize: 18, color: '#6CC7BD'}}>Google</Text>
+                <TouchableOpacity onPress={this.loginWithGoogle}>
+                  <Text style={{fontSize: 18, color: '#6CC7BD'}}>Google</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </View>

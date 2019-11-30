@@ -1,18 +1,7 @@
 import * as WebBrowser from 'expo-web-browser'
 import React from 'react'
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  AsyncStorage
-} from 'react-native'
-import {Input} from 'react-native-elements'
-import GradientButton from 'react-native-gradient-buttons'
+import {Image, Platform, ScrollView, StyleSheet, Text, View} from 'react-native'
 import {withApollo} from 'react-apollo'
-import {gql} from 'apollo-boost'
 
 class ProfileScreen extends React.Component {
   state = {
