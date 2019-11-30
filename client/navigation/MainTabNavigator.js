@@ -16,11 +16,10 @@ const config = Platform.select({
   default: {}
 })
 
-const HomeStack = createStackNavigator(
+export const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
     CreateAccount: CreateAccountScreen
-    //Profile: ProfileScreen
   },
   config
 )
@@ -37,7 +36,7 @@ HomeStack.navigationOptions = {
   tabBarIcon: ({activeTintColor}) => (
     <TabBarIcon
       activeTintColor={activeTintColor}
-      name={`md-person`}
+      name="md-person"
       color={activeTintColor}
     />
   )
@@ -96,7 +95,6 @@ const ProfileStack = createStackNavigator(
 )
 
 ProfileStack.navigationOptions = {
-  tabBarVisible: false,
   tabBarLabel: 'Profile',
   tabBarOptions: {
     activeTintColor: Colors.tintColor,
@@ -105,7 +103,7 @@ ProfileStack.navigationOptions = {
   tabBarIcon: ({activeTintColor}) => (
     <TabBarIcon
       activeTintColor={activeTintColor}
-      name={`md-person`}
+      name="md-person"
       color={activeTintColor}
     />
   )
@@ -113,8 +111,7 @@ ProfileStack.navigationOptions = {
 
 const tabNavigator = createBottomTabNavigator(
   {
-    HomeStack,
-    //ProfileStack,
+    ProfileStack,
     SnapStack,
     SettingsStack
   },

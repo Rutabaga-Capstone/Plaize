@@ -19,6 +19,9 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "facebookScheme": "fb2554828281464536",
+    "facebookAppId": "2554828281464536",
+    "facebookDisplayName": "rutabaga"
   }
 }

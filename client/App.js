@@ -1,15 +1,8 @@
 import {AppLoading} from 'expo'
 import {Asset} from 'expo-asset'
 import * as Font from 'expo-font'
-import React, {useState, useEffect} from 'react'
-import {
-  Platform,
-  StatusBar,
-  StyleSheet,
-  View,
-  AsyncStorage,
-  Text
-} from 'react-native'
+import React, {useState} from 'react'
+import {Platform, StatusBar, StyleSheet, View, Text} from 'react-native'
 import {Ionicons} from '@expo/vector-icons'
 import {ApolloProvider} from 'react-apollo'
 import ApolloClient from 'apollo-boost'

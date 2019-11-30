@@ -14,6 +14,7 @@ import {Input} from 'react-native-elements'
 import {withApollo} from 'react-apollo'
 import {gql} from 'apollo-boost'
 import GradientButton from 'react-native-gradient-buttons'
+import Dialog from 'react-native-dialog'
 
 class CreateAccount extends React.Component {
   state = {
@@ -22,7 +23,9 @@ class CreateAccount extends React.Component {
     middleName: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    showAlert: false,
+    alertMsg: ''
   }
 
   createUser = async () => {
@@ -79,20 +82,37 @@ class CreateAccount extends React.Component {
           await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
           navigate('Snap', userData)
         } catch (err) {
-          alert(JSON.stringify(err))
+          this.setState({
+            showAlert: true,
+            alertMsg: 'Must fill out all required fields!'
+          })
         }
       } else {
-        alert('Passwords must match!')
+        this.setState({showAlert: true, alertMsg: 'Passwords must match!'})
+        // alert('Passwords must match!')
       }
     } else {
-      alert('Must fill out required fields!')
+      this.setState({
+        showAlert: true,
+        alertMsg: 'Must fill out required fields!'
+      })
+      // alert('Must fill out required fields!')
     }
   }
 
+  toggleAlert = () =>
+    this.setState(prevState => ({showAlert: !prevState.showAlert}))
+
   render() {
     const {navigate} = this.props.navigation
+    const {showAlert, alertMsg} = this.state
     return (
       <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
+        <Dialog.Container visible={showAlert}>
+          <Dialog.Title>Error</Dialog.Title>
+          <Dialog.Description>{alertMsg}</Dialog.Description>
+          <Dialog.Button label="OK" onPress={this.toggleAlert} />
+        </Dialog.Container>
         <ScrollView contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
             <Image

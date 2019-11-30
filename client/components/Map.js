@@ -66,7 +66,7 @@ export default class Map extends React.Component {
             <Circle
               radius={this.props.radius}
               center={this.props.center.coords}
-              fillColor={'rgba(123,239,178,.65)'}
+              fillColor="rgba(123,239,178,.65)"
               strokeColor="transparent"
             />
           </MapView>

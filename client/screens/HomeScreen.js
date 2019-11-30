@@ -7,23 +7,28 @@ import {
   StyleSheet,
   Text,
   View,
-  AsyncStorage
+  AsyncStorage,
+  TouchableOpacity
 } from 'react-native'
 import {Input} from 'react-native-elements'
 import GradientButton from 'react-native-gradient-buttons'
 import {withApollo} from 'react-apollo'
 import {gql} from 'apollo-boost'
+import Dialog from 'react-native-dialog'
+import * as Facebook from 'expo-facebook'
 
 class HomeScreen extends React.Component {
   state = {
     email: '',
-    password: ''
+    password: '',
+    showAlert: false,
+    alertMsg: ''
   }
 
   loginUser = async () => {
-    if (Object.values(this.state).every(i => i.trim())) {
+    const {email, password} = this.state
+    if ([email, password].every(i => i && i.trim())) {
       const {client, navigation} = this.props
-      const {email, password} = this.state
       try {
         const result = await client.query({
           query: gql`
@@ -46,17 +51,48 @@ class HomeScreen extends React.Component {
         await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
         navigation.navigate('Snap', userData)
       } catch (error) {
-        alert('Invalid username or password!')
+        this.setState({
+          showAlert: true,
+          alertMsg: 'Invalid username or password!'
+        })
       }
     } else {
-      alert('All fields are required!')
+      this.setState({showAlert: true, alertMsg: 'All fields are required!'})
+    }
+  }
+
+  toggleAlert = () =>
+    this.setState(prevState => ({showAlert: !prevState.showAlert}))
+
+  loginWithFb = async () => {
+    const {navigation} = this.props
+    try {
+      const {type, token} = await Facebook.logInWithReadPermissionsAsync(
+        '2554828281464536'
+      )
+      if (type === 'success') {
+        const response = await fetch(
+          `https://graph.facebook.com/me?access_token=${token}&fields=email`
+        )
+        const userData = await response.json()
+        await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
+        navigation.navigate('Snap')
+      }
+    } catch ({message}) {
+      alert(`Facebook Login Error: ${message}`)
     }
   }
 
   render() {
     const {navigate} = this.props.navigation
+    const {showAlert, alertMsg} = this.state
     return (
       <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
+        <Dialog.Container visible={showAlert}>
+          <Dialog.Title>Error</Dialog.Title>
+          <Dialog.Description>{alertMsg}</Dialog.Description>
+          <Dialog.Button label="OK" onPress={this.toggleAlert} />
+        </Dialog.Container>
         <ScrollView contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
             <Image
@@ -127,7 +163,9 @@ class HomeScreen extends React.Component {
               <View
                 style={{width: 100, height: 50, marginTop: 15, marginLeft: 36}}
               >
-                <Text style={{fontSize: 18, color: '#6CC7BD'}}>Facebook</Text>
+                <TouchableOpacity onPress={this.loginWithFb}>
+                  <Text style={{fontSize: 18, color: '#6CC7BD'}}>Facebook</Text>
+                </TouchableOpacity>
               </View>
               <View style={{width: 100, height: 50, marginTop: 15}}>
                 <Text style={{fontSize: 18, color: '#6CC7BD'}}>Google</Text>
