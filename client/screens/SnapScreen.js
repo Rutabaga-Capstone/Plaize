@@ -2,6 +2,7 @@ import React from 'react'
 import {Text, View, TouchableOpacity} from 'react-native'
 import * as Permissions from 'expo-permissions'
 import {Camera} from 'expo-camera'
+import * as FileSystem from 'expo-file-system'
 
 export default class CameraExample extends React.Component {
   state = {
@@ -12,21 +13,38 @@ export default class CameraExample extends React.Component {
   async componentDidMount() {
     const {status} = await Permissions.askAsync(Permissions.CAMERA)
     this.setState({hasCameraPermission: status === 'granted'})
+    FileSystem.makeDirectoryAsync(FileSystem.cacheDirectory + 'photos').catch(
+      e => {
+        console.log(e, 'Directory exists')
+      }
+    )
   }
 
   takePicture = () => {
-    console.log(this.camera)
     if (this.camera) {
       this.camera.takePictureAsync({onPictureSaved: this.onPictureSaved})
     }
   }
 
-  onPictureSaved = async photo => {
-    await FileSystem.moveAsync({
-      from: photo.uri,
-      to: `${FileSystem.documentDirectory}photos/${Date.now()}.jpg`
+  onPictureSaved = photo => {
+    const ipAddressOfServer = '10.0.0.48' // <--- PUT YOUR OWN IP HERE
+
+    console.log(photo.uri)
+    let formdata = new FormData()
+    formdata.append('formKeyName', {uri: photo.uri})
+    fetch(`http://${ipAddressOfServer}:1234/image`, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'image/jpg'
+      },
+      body: formdata
     })
-    this.setState({newPhotos: true})
+      .then(response => {
+        console.log(response.status)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   render() {
@@ -38,7 +56,13 @@ export default class CameraExample extends React.Component {
     } else {
       return (
         <View style={{flex: 1}}>
-          <Camera style={{flex: 1}} type={this.state.type}>
+          <Camera
+            ref={ref => {
+              this.camera = ref
+            }}
+            style={{flex: 1}}
+            type={this.state.type}
+          >
             <View
               style={{
                 flex: 1,
@@ -52,10 +76,7 @@ export default class CameraExample extends React.Component {
                   alignSelf: 'flex-end',
                   alignItems: 'center'
                 }}
-                onPress={() => {
-                  console.log(this.camera)
-                  this.takePicture()
-                }}
+                onPress={this.takePicture}
               >
                 <Text style={{fontSize: 18, marginBottom: 10, color: 'white'}}>
                   {' '}
