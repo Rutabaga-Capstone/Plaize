@@ -8,6 +8,8 @@ import CreateAccountScreen from '../screens/CreateAccount'
 import LinksScreen from '../screens/LinksScreen'
 import SettingsScreen from '../screens/MapScreen'
 import SnapScreen from '../screens/SnapScreen'
+import ProfileScreen from '../screens/ProfileScreen'
+import Colors from '../constants/Colors'
 
 const config = Platform.select({
   web: {headerMode: 'screen'},
@@ -18,25 +20,24 @@ const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
     CreateAccount: CreateAccountScreen
+    //Profile: ProfileScreen
   },
   config
 )
 
+/*---- HOME NAVIGATION -----*/
+
 HomeStack.navigationOptions = {
   tabBarVisible: false,
-  tabBarLabel: 'Home',
+  tabBarLabel: 'Profile',
   tabBarOptions: {
-    activeTintColor: '#6CC7BD',
-    inactiveTintColor: '#CCCCCC'
+    activeTintColor: Colors.tintColor,
+    inactiveTintColor: Colors.inactiveTintColor
   },
   tabBarIcon: ({activeTintColor}) => (
     <TabBarIcon
       activeTintColor={activeTintColor}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${activeTintColor ? '' : '-outline'}`
-          : 'md-information-circle'
-      }
+      name={`md-person`}
       color={activeTintColor}
     />
   )
@@ -44,24 +45,7 @@ HomeStack.navigationOptions = {
 
 HomeStack.path = ''
 
-const LinksStack = createStackNavigator(
-  {
-    Links: LinksScreen
-  },
-  config
-)
-
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
-  tabBarIcon: ({focused}) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
-    />
-  )
-}
-
-LinksStack.path = ''
+/*----- MAP -----*/
 
 const SettingsStack = createStackNavigator(
   {
@@ -82,6 +66,8 @@ SettingsStack.navigationOptions = {
 
 SettingsStack.path = ''
 
+/*----- SNAP -----*/
+
 const SnapStack = createStackNavigator(
   {
     Snap: SnapScreen
@@ -95,47 +81,51 @@ SnapStack.navigationOptions = {
     <TabBarIcon
       focused={focused}
       name={Platform.OS === 'ios' ? 'ios-camera' : 'md-camera'}
+      color={Colors.activeTintColor}
     />
   )
 }
 
-const tabNavigator = createBottomTabNavigator({
-  HomeStack,
-  SnapStack,
-  SettingsStack
-})
+/*----- PROFILE -----*/
+
+const ProfileStack = createStackNavigator(
+  {
+    Profile: ProfileScreen
+  },
+  config
+)
+
+ProfileStack.navigationOptions = {
+  tabBarVisible: false,
+  tabBarLabel: 'Profile',
+  tabBarOptions: {
+    activeTintColor: Colors.tintColor,
+    inactiveTintColor: Colors.inactiveTintColor
+  },
+  tabBarIcon: ({activeTintColor}) => (
+    <TabBarIcon
+      activeTintColor={activeTintColor}
+      name={`md-person`}
+      color={activeTintColor}
+    />
+  )
+}
+
+const tabNavigator = createBottomTabNavigator(
+  {
+    HomeStack,
+    //ProfileStack,
+    SnapStack,
+    SettingsStack
+  },
+  {
+    tabBarOptions: {
+      activeTintColor: '#6CC7BD',
+      inactiveTintColor: '#ccc'
+    }
+  }
+)
 
 tabNavigator.path = ''
-
-//CUTOFF HERE ------- TRYING TO ADD TOP NAV
-
-// const ProfileStack = createStackNavigator(
-//   {
-//     Home: HomeScreen,
-//     CreateAccount: CreateAccountScreen
-//   },
-//   config
-// )
-
-// ProfileStack.navigationOptions = {
-//   tabBarLabel: 'Profile',
-//   tabBarOptions: {
-//     activeTintColor: '#6CC7BD',
-//     inactiveTintColor: '#CCCCCC',
-//   },
-//   tabBarIcon: ({activeTintColor}) => (
-//     <TabBarIcon
-//       activeTintColor={activeTintColor}
-//       name={
-//         Platform.OS === 'ios'
-//           ? `ios-information-circle${activeTintColor ? '' : '-outline'}`
-//           : 'md-information-circle'
-//       }
-//       color={tintColor}
-//     />
-//   )
-// }
-
-// ProfileStack.path = ''
 
 export default tabNavigator

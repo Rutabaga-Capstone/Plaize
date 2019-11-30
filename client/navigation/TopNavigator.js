@@ -102,8 +102,38 @@ SnapStack.navigationOptions = {
   )
 }
 
+/*---- PROFILE -----*/
+
+/* const ProfileStack = createStackNavigator(
+  {
+    Profile: ProfileScreen,
+  },
+  config
+)
+
+ProfileStack.navigationOptions = {
+  tabBarVisible: false,
+  tabBarLabel: 'Profile',
+  tabBarOptions: {
+    activeTintColor: '#6CC7BD',
+    inactiveTintColor: '#CCCCCC'
+  },
+  tabBarIcon: ({activeTintColor}) => (
+    <TabBarIcon
+      activeTintColor={activeTintColor}
+      name={
+        Platform.OS === 'ios'
+          ? `ios-information-circle${activeTintColor ? '' : '-outline'}`
+          : 'md-information-circle'
+      }
+      color={activeTintColor}
+    />
+  )
+} */
+
 const tabNavigator = createMaterialTopTabNavigator({
   HomeStack,
+  // ProfileStack,
   SnapStack,
   SettingsStack
 })

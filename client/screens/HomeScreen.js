@@ -46,7 +46,7 @@ class HomeScreen extends React.Component {
         await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
         navigation.navigate('Snap', userData)
       } catch (error) {
-        alert(JSON.stringify(error))
+        alert('Invalid username or password!')
       }
     } else {
       alert('All fields are required!')
