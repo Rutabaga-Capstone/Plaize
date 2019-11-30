@@ -8,3 +8,5 @@ downloads
 dist
 .cache
 .env
+credentials.json
+server/uploads
