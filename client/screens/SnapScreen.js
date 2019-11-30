@@ -3,6 +3,7 @@ import {Text, View, TouchableOpacity} from 'react-native'
 import * as Permissions from 'expo-permissions'
 import {Camera} from 'expo-camera'
 import * as FileSystem from 'expo-file-system'
+import axios from 'axios'
 
 export default class CameraExample extends React.Component {
   state = {
@@ -13,9 +14,10 @@ export default class CameraExample extends React.Component {
   async componentDidMount() {
     const {status} = await Permissions.askAsync(Permissions.CAMERA)
     this.setState({hasCameraPermission: status === 'granted'})
-    FileSystem.makeDirectoryAsync(FileSystem.cacheDirectory + 'photos').catch(
+    FileSystem.makeDirectoryAsync(FileSystem.cacheDirectory + 'photos/').catch(
       e => {
-        console.log(e, 'Directory exists')
+        // console.log(FileSystem.cacheDirectory);
+        // console.log(e, 'Directory exists')
       }
     )
   }
@@ -26,20 +28,27 @@ export default class CameraExample extends React.Component {
     }
   }
 
-  onPictureSaved = photo => {
-    const ipAddressOfServer = '10.0.0.48' // <--- PUT YOUR OWN IP HERE
+  onPictureSaved = async photo => {
+    const ipAddressOfServer = 'http://localhost' // <--- PUT YOUR OWN IP HERE
 
-    console.log(photo.uri)
+    // console.log(photo.uri)
     let formdata = new FormData()
-    formdata.append('formKeyName', {uri: photo.uri})
-    fetch(`http://${ipAddressOfServer}:1234/image`, {
+    formdata.append('formKeyName', {
+      uri: photo.uri
+      // name: 'formKeyName',
+      // type: "image/jpg"
+    })
+    console.log(formdata)
+    // await axios.post(`${ipAddressOfServer}:1234/image`, formdata)
+    await fetch(`${ipAddressOfServer}:1234/image/`, {
       method: 'post',
       headers: {
-        'Content-Type': 'image/jpg'
+        'Content-Type': 'multipart/form-data'
       },
       body: formdata
     })
       .then(response => {
+        console.log(formdata)
         console.log(response.status)
       })
       .catch(err => {
