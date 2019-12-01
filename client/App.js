@@ -6,6 +6,8 @@ import {Platform, StatusBar, StyleSheet, View} from 'react-native'
 import {Ionicons} from '@expo/vector-icons'
 import {ApolloProvider} from 'react-apollo'
 import ApolloClient from 'apollo-boost'
+import {Provider} from 'react-redux'
+import store from './store/store'
 
 const client = new ApolloClient({uri: 'http://localhost:1234/graphql'})
 
@@ -25,10 +27,12 @@ export default function App(props) {
   } else {
     return (
       <ApolloProvider client={client}>
-        <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator />
-        </View>
+        <Provider store={store}>
+          <View style={styles.container}>
+            {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+            <AppNavigator />
+          </View>
+        </Provider>
       </ApolloProvider>
     )
   }
