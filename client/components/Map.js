@@ -1,7 +1,6 @@
 import React from 'react'
 import {View, Text, StyleSheet, Dimensions} from 'react-native'
 import MapView, {Marker, Circle} from 'react-native-maps'
-import SwitchSelector from 'react-native-switch-selector'
 
 const styles = StyleSheet.create({
   container: {
