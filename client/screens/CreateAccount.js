@@ -20,7 +20,6 @@ class CreateAccount extends React.Component {
   state = {
     firstName: '',
     lastName: '',
-    //middleName: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -31,14 +30,7 @@ class CreateAccount extends React.Component {
   createUser = async () => {
     const {client, navigation} = this.props
     const {navigate} = navigation
-    const {
-      firstName,
-      lastName,
-      //middleName,
-      email,
-      password,
-      confirmPassword
-    } = this.state
+    const {firstName, lastName, email, password, confirmPassword} = this.state
     if (
       [firstName, lastName, email, password, confirmPassword].every(f =>
         f.trim()
@@ -73,7 +65,6 @@ class CreateAccount extends React.Component {
             variables: {
               firstName,
               lastName,
-              //middleName,
               email,
               password
             }
@@ -132,12 +123,6 @@ class CreateAccount extends React.Component {
               placeholder="First name"
               autoCapitalize="none"
             />
-            {/* <Input
-              style={styles.label}
-              onChangeText={v => this.setState({middleName: v})}
-              placeholder="Middle Name / Initial"
-              autoCapitalize="none"
-            /> */}
             <Input
               style={styles.label}
               onChangeText={v => this.setState({lastName: v})}
@@ -164,12 +149,6 @@ class CreateAccount extends React.Component {
               placeholder="Confirm Password"
               autoCapitalize="none"
             />
-
-            {/* <Text style={styles.screenText}>
-              *By tapping Register, you acknowledge that you have read the
-              Privacy Policy and agree to the Terms of Service. We'll send you a
-              message to verify this number. Messaging rates may apply.
-            </Text> */}
 
             <GradientButton
               style={{
@@ -210,7 +189,6 @@ class CreateAccount extends React.Component {
 
 CreateAccount.navigationOptions = {
   header: null
-  //footer: null
 }
 
 function DevelopmentModeNotice() {
