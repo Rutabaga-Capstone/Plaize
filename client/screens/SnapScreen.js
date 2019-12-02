@@ -28,7 +28,7 @@ export default class CameraExample extends React.Component {
   }
 
   onPictureSaved = photo => {
-    const ipAddressOfServer = '10.0.0.48' // <--- PUT YOUR OWN IP HERE
+    const ipAddressOfServer = '172.17.23.197' // <--- PUT YOUR OWN IP HERE
     const uriParts = photo.uri.split('.')
     const fileType = uriParts[uriParts.length - 1]
 
