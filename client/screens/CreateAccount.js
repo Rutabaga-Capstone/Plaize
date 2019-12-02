@@ -20,7 +20,7 @@ class CreateAccount extends React.Component {
   state = {
     firstName: '',
     lastName: '',
-    middleName: '',
+    //middleName: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -34,7 +34,7 @@ class CreateAccount extends React.Component {
     const {
       firstName,
       lastName,
-      middleName,
+      //middleName,
       email,
       password,
       confirmPassword
@@ -73,7 +73,7 @@ class CreateAccount extends React.Component {
             variables: {
               firstName,
               lastName,
-              middleName,
+              //middleName,
               email,
               password
             }
@@ -132,12 +132,12 @@ class CreateAccount extends React.Component {
               placeholder="First name"
               autoCapitalize="none"
             />
-            <Input
+            {/* <Input
               style={styles.label}
               onChangeText={v => this.setState({middleName: v})}
               placeholder="Middle Name / Initial"
               autoCapitalize="none"
-            />
+            /> */}
             <Input
               style={styles.label}
               onChangeText={v => this.setState({lastName: v})}
@@ -165,23 +165,23 @@ class CreateAccount extends React.Component {
               autoCapitalize="none"
             />
 
-            <Text style={styles.screenText}>
+            {/* <Text style={styles.screenText}>
               *By tapping Register, you acknowledge that you have read the
               Privacy Policy and agree to the Terms of Service. We'll send you a
               message to verify this number. Messaging rates may apply.
-            </Text>
+            </Text> */}
 
             <GradientButton
               style={{
-                marginTop: 20,
+                marginTop: 10,
                 textAlign: 'center',
-                marginBottom: 20
+                marginBottom: 10
               }}
               textStyle={{fontSize: 18}}
               gradientBegin="#6CC7BD"
               gradientEnd="#A5D38F"
               gradientDirection="diagonal"
-              height={50}
+              height={40}
               width={200}
               radius={0}
               onPressAction={this.createUser}
@@ -253,7 +253,8 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   title: {
-    marginTop: 30,
+    marginTop: 5,
+    marginBottom: 0,
     color: '#000000',
     textAlign: 'center',
     fontSize: 40,
@@ -266,8 +267,8 @@ const styles = StyleSheet.create({
     marginRight: 0,
     marginLeft: 0,
     marginTop: 5,
-    fontSize: 20,
-    marginBottom: 15
+    fontSize: 15,
+    marginBottom: 5
   },
   screenText: {
     marginTop: 15,
@@ -282,16 +283,19 @@ const styles = StyleSheet.create({
   },
   label: {
     borderWidth: 1,
-    marginTop: 30,
-    marginBottom: 30
+    marginTop: 20,
+    marginBottom: 20
   },
   button: {
     backgroundColor: '#6CC7BD'
   },
   welcomeImage: {
-    width: 100,
-    height: 100,
-    resizeMode: 'contain'
+    width: 80,
+    height: 80,
+    marginLeft: 10,
+    resizeMode: 'contain',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   container: {
     alignSelf: 'stretch'
