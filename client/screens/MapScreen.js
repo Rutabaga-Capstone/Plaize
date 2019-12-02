@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import MapView, {Marker, Circle} from 'react-native-maps'
+import styled from 'styled-components'
 
 import {useDispatch, useSelector} from 'react-redux'
 import {
@@ -7,10 +8,13 @@ import {
   setLocation,
   setRegion,
   setPinSelected,
-  clearPinSelected
+  clearPinSelected,
+  openModal,
+  closeModal
 } from '../store/actions'
 
 import pinsData from '../store/pins' //fake data for now
+import PlantModal from '../components/PlantModal'
 
 import * as Permissions from 'expo-permissions'
 import * as Location from 'expo-location'
@@ -64,6 +68,9 @@ export default function MapScreen(props) {
   const pinSelectedReducer = useSelector(state => state.pinSelectedReducer)
   const {pinSelected} = pinSelectedReducer
 
+  const modalActionReducer = useSelector(state => state.modalActionReducer)
+  const {modalAction} = modalActionReducer
+
   //==================================================================================================
 
   //2 - EFFECTS
@@ -72,6 +79,7 @@ export default function MapScreen(props) {
   useEffect(() => getRegion(), [])
   useEffect(() => handleMarkerOnPress(), [])
   useEffect(() => handleMarkerOnDeselect(), [])
+  useEffect(() => getModal(), [])
 
   //==================================================================================================
 
@@ -141,6 +149,13 @@ export default function MapScreen(props) {
     dispatch(clearPinSelected(pin))
   }
 
+  const getModal = () => {
+    if (modalAction === ('' || 'closeModal')) {
+      dispatch(openModal('openModal'))
+    }
+    dispatch(closeModal('closeModal'))
+  }
+
   //==================================================================================================
 
   //4 - RENDER
@@ -186,15 +201,15 @@ export default function MapScreen(props) {
                 <ListItem
                   key={i}
                   title={pin.title}
-                  subtitle={() => distanceFromLocation(pin)}
+                  // subtitle={() => distanceFromLocation(pin)}
                   bottomDivider
                   badge={{
-                    value: pin.plants.length,
-                    textStyle: {color: '#fff'},
-                    containerStyle: {
-                      marginTop: -20
-                    },
-                    badgeStyle: {backgroundColor: 'green'}
+                    value: distanceFromLocation(pin),
+                    textStyle: {color: 'white'},
+                    // containerStyle: {
+                    //   marginTop: -20
+                    // },
+                    badgeStyle: {backgroundColor: '#6cc7bd'}
                   }}
                   onPress={() => handlePinItemOnPress(pin)}
                 />
@@ -205,19 +220,25 @@ export default function MapScreen(props) {
           <ScrollView>
             <ListItem
               title={pinSelected.title}
-              subtitle={pinSelected.description}
+              // subtitle={distanceFromLocation(pinSelected)}
               bottomDivider
               badge={{
-                value: pinSelected.plants.length,
-                textStyle: {color: '#fff'},
-                containerStyle: {marginTop: -20},
-                badgeStyle: {backgroundColor: 'green'}
+                value: distanceFromLocation(pinSelected),
+                textStyle: {color: 'white'},
+                // containerStyle: {marginTop: -20},
+                badgeStyle: {backgroundColor: '#6cc7bd'}
               }}
             />
+
             {/* {pinSelected.plants.map((plant, i) => (
               <Text key={i}>{plant.commonName}</Text>
             ))} */}
           </ScrollView>
+        )}
+        {pinSelected.id && (
+          <Container>
+            <PlantModal />
+          </Container>
         )}
       </View>
     )
@@ -227,6 +248,20 @@ export default function MapScreen(props) {
 //==================================================================================================
 
 //5 - STYLING
+
+const Container = styled.View`
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  width: 80%;
+`
+
+const ButtonText = styled.Text`
+  font-size: 20px;
+  font-weight: 600;
+`
+
 const styles = {
   container: {
     width: '100%',
