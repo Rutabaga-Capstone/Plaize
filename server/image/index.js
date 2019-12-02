@@ -51,6 +51,16 @@ router.post('/', upload.single('formKeyName'), async (req, res, next) => {
   }
   const filePath = path.join(__dirname, '../..', req.file.path)
   try {
+    const isGoogleServerMocked = true // <---------- MOCKED GOOGLE SERVER
+
+    if (isGoogleServerMocked) {
+      const mockedGoogleServerResponse = {
+        commonName: 'Poison Ivy',
+        score: 0.5741239190101624
+      }
+      res.json(mockedGoogleServerResponse)
+    }
+
     const response = {}
     let prediction = await predict(filePath)
     response.commonName = prediction.displayName
