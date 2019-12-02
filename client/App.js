@@ -5,11 +5,10 @@ import React, {useState} from 'react'
 import {Platform, StatusBar, StyleSheet, View, Text} from 'react-native'
 import {Ionicons} from '@expo/vector-icons'
 import {ApolloProvider} from 'react-apollo'
-import ApolloClient from 'apollo-boost'\
+import ApolloClient from 'apollo-boost'
 import {Provider} from 'react-redux'
 import store from './store/store'
 import AppNavigator from './navigation/AppNavigator'
-
 
 const client = new ApolloClient({uri: 'http://localhost:1234/graphql'})
 
