@@ -53,6 +53,8 @@ const createApp = server => {
   // compression middleware
   app.use(compression())
 
+  app.use('/image', require('./image'))
+
   // applies graphql query as middleware and defines api endpoint as /graphql
   server.applyMiddleware({app, graphqlPath})
 
@@ -71,7 +73,7 @@ const createApp = server => {
   })
 
   // error handling endware
-  app.use((req, res, next, err) => {
+  app.use((err, req, res, next) => {
     console.error(err)
     console.error(err.stack)
     res.status(err.status || 500).send(err.message || 'Internal server error.')
