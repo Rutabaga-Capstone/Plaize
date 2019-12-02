@@ -1,88 +1,38 @@
 import * as WebBrowser from 'expo-web-browser'
 import React from 'react'
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  Animated
-} from 'react-native'
-import {Button, ThemeProvider, Input} from 'react-native-elements'
+import {Image, Platform, ScrollView, StyleSheet, Text, View} from 'react-native'
+import {withApollo} from 'react-apollo'
 
-import * as Font from 'expo-font'
-import {MonoText} from '../components/StyledText'
-import GradientButton from 'react-native-gradient-buttons'
-import {FontAwesome} from '@expo/vector-icons'
+class ProfileScreen extends React.Component {
+  state = {
+    email: '',
+    password: ''
+  }
 
-export default function HomeScreen(props) {
-  return (
-    <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
-      <ScrollView contentContainerStyle={styles.contentContainer}>
-        <View style={styles.welcomeContainer}>
-          <Image
-            source={
-              __DEV__
-                ? require('../assets/images/logo-gradient.png')
-                : require('../assets/images/logo-gradient.png')
-            }
-            style={styles.welcomeImage}
-          />
-          <Text style={styles.title}>Plaze</Text>
-          <Text style={styles.subtitle}>create an account</Text>
-
-          <Input style={styles.label} placeholder="First name" />
-          <Input style={styles.label} placeholder="Middle Name / Initial" />
-          <Input style={styles.label} placeholder="Last Name" />
-          <Input style={styles.label} placeholder="Email Address" />
-          <Input style={styles.label} placeholder="Password" />
-          <Input style={styles.label} placeholder="Confirm Password" />
-
-          <Text style={styles.screenText}>
-            *By tapping Register, you acknowledge that you have read the Privacy
-            Policy and agree to the Terms of Service. We'll send you a message
-            to verify this number. Messaging rates may apply. Remember, you
-            plant reviews are public.
-          </Text>
-
-          <GradientButton
-            style={{
-              marginTop: 20,
-              textAlign: 'center',
-              marginBottom: 20
-            }}
-            textStyle={{fontSize: 18}}
-            gradientBegin="#6CC7BD"
-            gradientEnd="#A5D38F"
-            gradientDirection="diagonal"
-            height={50}
-            width={200}
-            radius={0}
-            onPressAction={() => alert('You pressed me in create account!')}
-          >
-            register
-          </GradientButton>
-        </View>
-        <Text style={styles.login}>Already have an account?</Text>
-        <Text
-          style={{
-            marginTop: 10,
-            fontSize: 18,
-            color: '#6CC7BD',
-            textAlign: 'center'
-          }}
-          onPressAction={() => navigate('Home')}
-        >
-          Login
-        </Text>
-      </ScrollView>
-    </View>
-  )
+  render() {
+    const {navigate} = this.props.navigation
+    return (
+      <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
+        <ScrollView contentContainerStyle={styles.contentContainer}>
+          <View style={styles.welcomeContainer}>
+            <Image
+              source={
+                __DEV__
+                  ? require('../assets/images/logo-gradient.png')
+                  : require('../assets/images/logo-gradient.png')
+              }
+              style={styles.welcomeImage}
+            />
+            <Text style={styles.title}>Plaze</Text>
+            <Text style={styles.subtitle}>TESTING HELLOWORLD</Text>
+          </View>
+        </ScrollView>
+      </View>
+    )
+  }
 }
 
-HomeScreen.navigationOptions = {
+ProfileScreen.navigationOptions = {
   header: null
 }
 
@@ -121,15 +71,35 @@ function handleHelpPress() {
 }
 
 const styles = StyleSheet.create({
-  login: {
-    fontSize: 18,
-    textAlign: 'center'
+  alert: {
+    backgroundColor: 'grey'
+  },
+  welcomeContainer: {
+    marginTop: 30,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  welcomeImage: {
+    width: 100,
+    height: 100,
+    marginLeft: 10,
+    resizeMode: 'contain',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   title: {
     marginTop: 30,
+    marginBottom: 5,
     color: '#000000',
     textAlign: 'center',
     fontSize: 40,
+    fontFamily: 'yorkten'
+  },
+  titleTwo: {
+    marginTop: 30,
+    color: '#000000',
+    textAlign: 'center',
+    fontSize: 35,
     fontFamily: 'yorkten'
   },
   subtitle: {
@@ -140,14 +110,17 @@ const styles = StyleSheet.create({
     marginLeft: 0,
     marginTop: 5,
     fontSize: 20,
-    marginBottom: 15
+    marginBottom: 35
   },
   screenText: {
-    marginTop: 15,
     color: '#000000',
     fontFamily: 'yorkten',
-    fontSize: 12,
-    justifyContent: 'center'
+    fontSize: 18,
+    textAlign: 'center'
+  },
+  socialContainer: {},
+  socialColumn: {
+    width: '50%' // 50% of container width
   },
   socialLinks: {
     color: '#6CC7BD',
@@ -160,11 +133,6 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#6CC7BD'
-  },
-  welcomeImage: {
-    width: 100,
-    height: 100,
-    resizeMode: 'contain'
   },
   container: {
     alignSelf: 'stretch'
@@ -179,12 +147,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 30,
     flex: 1,
-    marginHorizontal: 80
-  },
-  welcomeContainer: {
-    marginTop: 30,
-    justifyContent: 'center',
-    alignItems: 'center'
+    textAlign: 'center'
   },
   homeScreenFilename: {
     marginVertical: 7
@@ -243,3 +206,5 @@ const styles = StyleSheet.create({
     color: '#2e78b7'
   }
 })
+
+export default withApollo(ProfileScreen)
