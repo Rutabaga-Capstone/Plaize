@@ -42,6 +42,11 @@ export default class CameraExample extends React.Component {
       .post(`http://${ipAddressOfServer}:1234/image`, formData)
       .then(response => {
         console.log(response.data)
+        alert(
+          `Plant ${response.data.commonName}\n probability${
+            response.data.score
+          } `
+        )
       })
       .catch(err => {
         console.log(err)
