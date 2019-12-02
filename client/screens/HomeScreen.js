@@ -34,7 +34,11 @@ export default function HomeScreen(props) {
           <Text style={styles.title}>Plaze</Text>
           <Text style={styles.subtitle}>Identify Poisonous Plants</Text>
           <Input style={styles.label} placeholder="username or email" />
-          <Input style={styles.label} placeholder="password" />
+          <Input
+            style={styles.label}
+            placeholder="password"
+            secureTextEntry={true}
+          />
 
           <GradientButton
             style={{

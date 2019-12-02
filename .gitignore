@@ -9,4 +9,4 @@ dist
 .cache
 .env
 credentials.json
-server/uploads
+uploads
