@@ -1,6 +1,12 @@
 import {combineReducers} from 'redux'
 
-import {SET_PINS, SET_LOCATION, SET_REGION, SET_PIN_SELECTED} from './actions' //Import the actions types constant we defined in our actions
+import {
+  SET_PINS,
+  SET_LOCATION,
+  SET_REGION,
+  SET_PIN_SELECTED,
+  CLEAR_PIN_SELECTED
+} from './actions' //Import the actions types constant we defined in our actions
 
 let pinsState = {pins: []}
 const pinsReducer = (state = pinsState, action) => {
@@ -36,6 +42,8 @@ let pinSelectedState = {pinSelected: {}}
 const pinSelectedReducer = (state = pinSelectedState, action) => {
   switch (action.type) {
     case SET_PIN_SELECTED:
+      return {...state, pinSelected: action.pinSelected}
+    case CLEAR_PIN_SELECTED:
       return {...state, pinSelected: action.pinSelected}
     default:
       return state

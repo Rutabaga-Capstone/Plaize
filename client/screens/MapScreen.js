@@ -2,12 +2,19 @@ import React, {useEffect, useState} from 'react'
 import MapView, {Marker, Circle} from 'react-native-maps'
 
 import {useDispatch, useSelector} from 'react-redux'
-import {setPins, setLocation, setRegion, setPinSelected} from '../store/actions'
+import {
+  setPins,
+  setLocation,
+  setRegion,
+  setPinSelected,
+  clearPinSelected
+} from '../store/actions'
 
 import pinsData from '../store/pins' //fake data for now
 
 import * as Permissions from 'expo-permissions'
 import * as Location from 'expo-location'
+import * as geolib from 'geolib'
 
 import {
   Platform,
@@ -31,7 +38,7 @@ import {ListItem} from 'react-native-elements'
 
 import Map from '../components/Map'
 import Constants from 'expo-constants'
-import * as geolib from 'geolib'
+
 import Plants from '../components/Plants'
 import {Slider} from 'react-native-elements'
 import SwitchSelector from 'react-native-switch-selector'
@@ -64,6 +71,7 @@ export default function MapScreen(props) {
   useEffect(() => getLocation(), [])
   useEffect(() => getRegion(), [])
   useEffect(() => handleMarkerOnPress(), [])
+  useEffect(() => handleMarkerOnDeselect(), [])
 
   //==================================================================================================
 
@@ -97,7 +105,6 @@ export default function MapScreen(props) {
         console.log(errorMessage)
       }
       let location = await Location.getCurrentPositionAsync({})
-      console.log(location)
       dispatch(setLocation(location))
     } catch (err) {
       console.log(err)
@@ -112,18 +119,26 @@ export default function MapScreen(props) {
     dispatch(setRegion(region))
   }
 
-  const handleMarkerOnPress = e => {
-    console.log('e:', e)
-    console.log('pins in handle: ', pins)
-    let pin = pins.filter(pin => {
-      if (
-        pin.coordinate.latitude === e.coordinate.latitude &&
-        pin.coordinate.longitude === e.coordinate.longitude
-      ) {
-        return pin
-      }
-    })
-    dispatch(setPinSelected(pin[0]))
+  const distanceFromLocation = (pin, accuracy = 1) => {
+    const distance = geolib.getDistance(
+      location.coords,
+      pin.coordinate,
+      accuracy
+    )
+    return <Text>{distance.toString()} meters away</Text>
+  }
+
+  const handleMarkerOnPress = pin => {
+    dispatch(setPinSelected(pin))
+  }
+
+  const handlePinItemOnPress = pin => {
+    dispatch(setPinSelected(pin))
+  }
+
+  const handleMarkerOnDeselect = () => {
+    let pin = {}
+    dispatch(clearPinSelected(pin))
   }
 
   //==================================================================================================
@@ -156,41 +171,52 @@ export default function MapScreen(props) {
                     pinColor={pin.hasPoisonousPlants ? 'red' : 'green'}
                     description={pin.description}
                     id={pin.id}
-                    onPress={e => handleMarkerOnPress(e.nativeEvent)}
+                    onPress={() => handleMarkerOnPress(pin)}
+                    onSelect={() => handleMarkerOnPress(pin)}
+                    onDeselect={() => handleMarkerOnDeselect()}
                   />
                 ))}
               </MapView>
             </View>
           )}
-        {!pinSelected && (
-          <ScrollView>
-            {pins.map((pin, i) => (
-              <ListItem
-                key={i}
-                title={pin.title}
-                subtitle={pin.description}
-                bottomDivider
-                badge={{
-                  value: 3,
-                  textStyle: {color: '#fff'},
-                  containerStyle: {marginTop: -20}
-                }}
-              />
-            ))}
-          </ScrollView>
-        )}
-        {pinSelected && (
+        {!pinSelected.id &&
+          pins && (
+            <ScrollView>
+              {pins.map((pin, i) => (
+                <ListItem
+                  key={i}
+                  title={pin.title}
+                  subtitle={() => distanceFromLocation(pin)}
+                  bottomDivider
+                  badge={{
+                    value: pin.plants.length,
+                    textStyle: {color: '#fff'},
+                    containerStyle: {
+                      marginTop: -20
+                    },
+                    badgeStyle: {backgroundColor: 'green'}
+                  }}
+                  onPress={() => handlePinItemOnPress(pin)}
+                />
+              ))}
+            </ScrollView>
+          )}
+        {pinSelected.id && (
           <ScrollView>
             <ListItem
               title={pinSelected.title}
               subtitle={pinSelected.description}
               bottomDivider
               badge={{
-                value: 3,
+                value: pinSelected.plants.length,
                 textStyle: {color: '#fff'},
-                containerStyle: {marginTop: -20}
+                containerStyle: {marginTop: -20},
+                badgeStyle: {backgroundColor: 'green'}
               }}
             />
+            {/* {pinSelected.plants.map((plant, i) => (
+              <Text key={i}>{plant.commonName}</Text>
+            ))} */}
           </ScrollView>
         )}
       </View>

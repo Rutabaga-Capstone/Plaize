@@ -29,3 +29,10 @@ export const setPinSelected = pinSelected => ({
   type: SET_PIN_SELECTED,
   pinSelected
 })
+
+export const CLEAR_PIN_SELECTED = 'CLEAR_PIN_SELECTED'
+
+export const clearPinSelected = pinSelected => ({
+  type: CLEAR_PIN_SELECTED,
+  pinSelected
+})
