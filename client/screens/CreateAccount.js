@@ -6,16 +6,15 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
-  Animated
+  AsyncStorage,
+  TouchableOpacity
 } from 'react-native'
-import {Button, ThemeProvider, Input} from 'react-native-elements'
-import * as Font from 'expo-font'
-import {MonoText} from '../components/StyledText'
+import {Input} from 'react-native-elements'
 import {withApollo} from 'react-apollo'
 import {gql} from 'apollo-boost'
 import GradientButton from 'react-native-gradient-buttons'
+import Dialog from 'react-native-dialog'
 
 class CreateAccount extends React.Component {
   state = {
@@ -24,10 +23,12 @@ class CreateAccount extends React.Component {
     middleName: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    showAlert: false,
+    alertMsg: ''
   }
 
-  createUser = () => {
+  createUser = async () => {
     const {client, navigation} = this.props
     const {navigate} = navigation
     const {
@@ -38,55 +39,80 @@ class CreateAccount extends React.Component {
       password,
       confirmPassword
     } = this.state
-    if (password === confirmPassword) {
-      client
-        .mutate({
-          mutation: gql`
-            mutation CreateUser(
-              $firstName: String!
-              $lastName: String!
-              $middleName: String!
-              $email: String!
-              $password: String!
-            ) {
-              CreateUser(
-                firstName: $firstName
-                lastName: $lastName
-                middleName: $middleName
-                email: $email
-                password: $password
+    if (
+      [firstName, lastName, email, password, confirmPassword].every(f =>
+        f.trim()
+      )
+    ) {
+      if (password === confirmPassword) {
+        try {
+          const result = await client.mutate({
+            mutation: gql`
+              mutation CreateUser(
+                $firstName: String!
+                $lastName: String!
+                $middleName: String!
+                $email: String!
+                $password: String!
               ) {
-                _id
-                firstName
-                middleName
-                lastName
-                email
-                password
+                CreateUser(
+                  firstName: $firstName
+                  lastName: $lastName
+                  middleName: $middleName
+                  email: $email
+                  password: $password
+                ) {
+                  _id
+                  firstName
+                  middleName
+                  lastName
+                  email
+                }
               }
+            `,
+            variables: {
+              firstName,
+              lastName,
+              middleName,
+              email,
+              password
             }
-          `,
-          variables: {
-            firstName,
-            lastName,
-            middleName,
-            email,
-            password
-          }
-        })
-        .then(result => {
+          })
           const userData = result.data.CreateUser
+          await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
           navigate('Snap', userData)
-        })
-        .catch(err => alert(JSON.stringify(err)))
+        } catch (err) {
+          this.setState({
+            showAlert: true,
+            alertMsg: 'Must fill out all required fields!'
+          })
+        }
+      } else {
+        this.setState({showAlert: true, alertMsg: 'Passwords must match!'})
+        // alert('Passwords must match!')
+      }
     } else {
-      alert('Passwords must match!')
+      this.setState({
+        showAlert: true,
+        alertMsg: 'Must fill out required fields!'
+      })
+      // alert('Must fill out required fields!')
     }
   }
 
+  toggleAlert = () =>
+    this.setState(prevState => ({showAlert: !prevState.showAlert}))
+
   render() {
     const {navigate} = this.props.navigation
+    const {showAlert, alertMsg} = this.state
     return (
       <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
+        <Dialog.Container visible={showAlert}>
+          <Dialog.Title>Error</Dialog.Title>
+          <Dialog.Description>{alertMsg}</Dialog.Description>
+          <Dialog.Button label="OK" onPress={this.toggleAlert} />
+        </Dialog.Container>
         <ScrollView contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
             <Image
@@ -104,40 +130,45 @@ class CreateAccount extends React.Component {
               style={styles.label}
               onChangeText={v => this.setState({firstName: v})}
               placeholder="First name"
+              autoCapitalize="none"
             />
             <Input
               style={styles.label}
               onChangeText={v => this.setState({middleName: v})}
               placeholder="Middle Name / Initial"
+              autoCapitalize="none"
             />
             <Input
               style={styles.label}
               onChangeText={v => this.setState({lastName: v})}
               placeholder="Last Name"
+              autoCapitalize="none"
             />
             <Input
               style={styles.label}
               onChangeText={v => this.setState({email: v})}
               placeholder="Email Address"
+              autoCapitalize="none"
             />
             <Input
               secureTextEntry={true}
               style={styles.label}
               onChangeText={v => this.setState({password: v})}
               placeholder="Password"
+              autoCapitalize="none"
             />
             <Input
               secureTextEntry={true}
               style={styles.label}
               onChangeText={v => this.setState({confirmPassword: v})}
               placeholder="Confirm Password"
+              autoCapitalize="none"
             />
 
             <Text style={styles.screenText}>
               *By tapping Register, you acknowledge that you have read the
               Privacy Policy and agree to the Terms of Service. We'll send you a
               message to verify this number. Messaging rates may apply.
-              Remember, you plant reviews are public.
             </Text>
 
             <GradientButton
@@ -159,17 +190,18 @@ class CreateAccount extends React.Component {
             </GradientButton>
           </View>
           <Text style={styles.login}>Already have an account?</Text>
-          <Text
-            style={{
-              marginTop: 10,
-              fontSize: 18,
-              color: '#6CC7BD',
-              textAlign: 'center'
-            }}
-            onPress={() => navigate('Home')}
-          >
-            Login
-          </Text>
+          <TouchableOpacity onPress={() => navigate('Home')}>
+            <Text
+              style={{
+                marginTop: 10,
+                fontSize: 18,
+                color: '#6CC7BD',
+                textAlign: 'center'
+              }}
+            >
+              Login
+            </Text>
+          </TouchableOpacity>
         </ScrollView>
       </View>
     )
@@ -178,6 +210,7 @@ class CreateAccount extends React.Component {
 
 CreateAccount.navigationOptions = {
   header: null
+  //footer: null
 }
 
 function DevelopmentModeNotice() {

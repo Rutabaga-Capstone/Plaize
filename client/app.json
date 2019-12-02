@@ -18,7 +18,17 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
-    }
+      "supportsTablet": true,
+      "bundleIdentifier": "com.gatewaywebdesign.rutabaga",
+      "config": {
+        "googleSignIn": {
+          "reservedClientId":
+            "com.googleusercontent.apps.1089763829-1qvtnhgh7dbh8liehqqn0bhp958phubp"
+        }
+      }
+    },
+    "facebookScheme": "fb2554828281464536",
+    "facebookAppId": "2554828281464536",
+    "facebookDisplayName": "rutabaga"
   }
 }

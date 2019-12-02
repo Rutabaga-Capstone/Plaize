@@ -1,21 +1,23 @@
 import React from 'react'
 import {Platform} from 'react-native'
-import {createStackNavigator, createBottomTabNavigator} from 'react-navigation'
+import {
+  createStackNavigator,
+  createMaterialTopTabNavigator
+} from 'react-navigation'
 
 import TabBarIcon from '../components/TabBarIcon'
 import HomeScreen from '../screens/HomeScreen'
 import CreateAccountScreen from '../screens/CreateAccount'
+import LinksScreen from '../screens/LinksScreen'
 import SettingsScreen from '../screens/MapScreen'
 import SnapScreen from '../screens/SnapScreen'
-import ProfileScreen from '../screens/ProfileScreen'
-import Colors from '../constants/Colors'
 
 const config = Platform.select({
   web: {headerMode: 'screen'},
   default: {}
 })
 
-export const HomeStack = createStackNavigator(
+const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
     CreateAccount: CreateAccountScreen
@@ -23,27 +25,46 @@ export const HomeStack = createStackNavigator(
   config
 )
 
-/*---- HOME NAVIGATION -----*/
-
 HomeStack.navigationOptions = {
   tabBarVisible: false,
-  tabBarLabel: 'Profile',
+  tabBarLabel: 'Home',
   tabBarOptions: {
-    activeTintColor: Colors.tintColor,
-    inactiveTintColor: Colors.inactiveTintColor
+    activeTintColor: '#6CC7BD',
+    inactiveTintColor: '#CCCCCC'
   },
   tabBarIcon: ({activeTintColor}) => (
     <TabBarIcon
       activeTintColor={activeTintColor}
-      name="md-person"
-      color={Colors.activeTintColor}
+      name={
+        Platform.OS === 'ios'
+          ? `ios-information-circle${activeTintColor ? '' : '-outline'}`
+          : 'md-information-circle'
+      }
+      color={activeTintColor}
     />
   )
 }
 
 HomeStack.path = ''
 
-/*----- MAP -----*/
+const LinksStack = createStackNavigator(
+  {
+    Links: LinksScreen
+  },
+  config
+)
+
+LinksStack.navigationOptions = {
+  tabBarLabel: 'Links',
+  tabBarIcon: ({focused}) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+    />
+  )
+}
+
+LinksStack.path = ''
 
 const SettingsStack = createStackNavigator(
   {
@@ -64,8 +85,6 @@ SettingsStack.navigationOptions = {
 
 SettingsStack.path = ''
 
-/*----- SNAP -----*/
-
 const SnapStack = createStackNavigator(
   {
     Snap: SnapScreen
@@ -79,38 +98,45 @@ SnapStack.navigationOptions = {
     <TabBarIcon
       focused={focused}
       name={Platform.OS === 'ios' ? 'ios-camera' : 'md-camera'}
-      color={Colors.activeTintColor}
     />
   )
 }
 
-/*----- PROFILE -----*/
+/*---- PROFILE -----*/
 
-const ProfileStack = createStackNavigator(
+/* const ProfileStack = createStackNavigator(
   {
-    Profile: ProfileScreen
+    Profile: ProfileScreen,
   },
   config
 )
 
 ProfileStack.navigationOptions = {
+  tabBarVisible: false,
   tabBarLabel: 'Profile',
-  tabBarIcon: ({focused}) => <TabBarIcon focused={focused} name="md-person" />
-}
-
-const tabNavigator = createBottomTabNavigator(
-  {
-    ProfileStack,
-    SnapStack,
-    SettingsStack
+  tabBarOptions: {
+    activeTintColor: '#6CC7BD',
+    inactiveTintColor: '#CCCCCC'
   },
-  {
-    tabBarOptions: {
-      activeTintColor: '#6CC7BD',
-      inactiveTintColor: '#ccc'
-    }
-  }
-)
+  tabBarIcon: ({activeTintColor}) => (
+    <TabBarIcon
+      activeTintColor={activeTintColor}
+      name={
+        Platform.OS === 'ios'
+          ? `ios-information-circle${activeTintColor ? '' : '-outline'}`
+          : 'md-information-circle'
+      }
+      color={activeTintColor}
+    />
+  )
+} */
+
+const tabNavigator = createMaterialTopTabNavigator({
+  HomeStack,
+  // ProfileStack,
+  SnapStack,
+  SettingsStack
+})
 
 tabNavigator.path = ''
 
