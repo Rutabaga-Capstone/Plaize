@@ -35,10 +35,7 @@ class HomeScreen extends React.Component {
           query: gql`
             query LoginUser($email: String!, $password: String!) {
               User(email: $email, password: $password) {
-                _id
-                firstName
-                middleName
-                lastName
+                name
                 email
               }
             }

@@ -15,14 +15,26 @@ import {withApollo} from 'react-apollo'
 import {gql} from 'apollo-boost'
 import GradientButton from 'react-native-gradient-buttons'
 import Dialog from 'react-native-dialog'
-
+import {v1 as uuid} from 'uuid'
+/*
+    id: ID
+    name: String!
+    email: String!
+    password: String!
+    plants: [Plant!]! @relation(name: "FOUND", direction: "OUT")
+    location: Location
+    pins: [Pin!] @relation(name: "CREATED", direction: "OUT")
+    deviceIds: [String!]
+    isLoggedIn: Boolean
+    leaves: Int!
+    */
 class CreateAccount extends React.Component {
   state = {
-    firstName: '',
-    lastName: '',
+    name: '',
     email: '',
     password: '',
     confirmPassword: '',
+    leaves: 0,
     showAlert: false,
     alertMsg: ''
   }
@@ -30,43 +42,39 @@ class CreateAccount extends React.Component {
   createUser = async () => {
     const {client, navigation} = this.props
     const {navigate} = navigation
-    const {firstName, lastName, email, password, confirmPassword} = this.state
-    if (
-      [firstName, lastName, email, password, confirmPassword].every(f =>
-        f.trim()
-      )
-    ) {
+    const {name, email, password, confirmPassword, leaves} = this.state
+    if ([name, email, password, confirmPassword].every(f => f.trim())) {
       if (password === confirmPassword) {
         try {
           const result = await client.mutate({
             mutation: gql`
               mutation CreateUser(
-                $firstName: String!
-                $lastName: String!
-                $middleName: String!
+                $id: ID!
+                $name: String!
                 $email: String!
                 $password: String!
+                $leaves: Int!
               ) {
                 CreateUser(
-                  firstName: $firstName
-                  lastName: $lastName
-                  middleName: $middleName
+                  id: $id
+                  name: $name
                   email: $email
                   password: $password
+                  leaves: $leaves
                 ) {
                   _id
-                  firstName
-                  middleName
-                  lastName
+                  id
+                  name
                   email
                 }
               }
             `,
             variables: {
-              firstName,
-              lastName,
+              id: uuid(),
+              name,
               email,
-              password
+              password,
+              leaves
             }
           })
           const userData = result.data.CreateUser
@@ -119,14 +127,8 @@ class CreateAccount extends React.Component {
 
             <Input
               style={styles.label}
-              onChangeText={v => this.setState({firstName: v})}
-              placeholder="First name"
-              autoCapitalize="none"
-            />
-            <Input
-              style={styles.label}
-              onChangeText={v => this.setState({lastName: v})}
-              placeholder="Last Name"
+              onChangeText={v => this.setState({name: v})}
+              placeholder="Name"
               autoCapitalize="none"
             />
             <Input

@@ -354,52 +354,6 @@ client
           }
         }
       }
-
-      mutation AddUserPlants {
-        AddUserPlants(
-          from: {id: "9dc274ed-1837-4771-9a24-5d4e11b04e4b"}
-          to: {id: "e67254ba-1420-48e5-89ac-e2460bce778d"}
-        ) {
-          from {
-            name
-          }
-          to {
-            commonName
-            description
-          }
-        }
-      }
-
-      mutation CreateUser {
-        CreateUser(name: "Jerry", email: "rick@morty.com", password: "1234") {
-          name
-          email
-          password
-        }
-      }
-
-      mutation CreatePlant {
-        CreatePin(lat: 42.1293892, long: 83.1231287) {
-          id
-          lat
-          long
-        }
-
-        CreatePlant(
-          commonName: "Poison Ivy"
-          scientificName: "Toxicodendron radicans"
-          imageURL: "https://www.petguide.com/wp-content/uploads/2019/03/poison-ivy-dogs-668x444.jpg"
-          description: "a poisonous Asian and Eastern North American flowering plant in the genus Toxicodendron"
-          poisonous: true
-        ) {
-          id
-          commonName
-          scientificName
-          imageURL
-          description
-          poisonous
-        }
-      }
     `
   })
   .then(() => console.log('Done seeding the DB!!!'))
