@@ -5,42 +5,28 @@ const express = require('express')
 const morgan = require('morgan')
 const compression = require('compression')
 const neo4j = require('neo4j-driver').v1
-const {makeAugmentedSchema, inferSchema} = require('neo4j-graphql-js')
+const {makeAugmentedSchema} = require('neo4j-graphql-js')
+const {typeDefs} = require('./schema')
 
 const PORT = process.env.PORT
 const app = express()
 const graphqlPath = '/graphql'
-
-const inferAugmentedSchema = driver => {
-  return inferSchema(driver, {alwaysIncludeRelationships: false}).then(
-    result => {
-      console.log('Inferred TypeDefs are:')
-      console.log(result.typeDefs)
-
-      return makeAugmentedSchema({
-        typeDefs: result.typeDefs
-      })
-    }
-  )
-}
 
 const driver = neo4j.driver(
   process.env.NEO4J_URI,
   neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PASSWORD)
 )
 
-const createServer = augmentedSchema =>
-  new ApolloServer({
-    schema: augmentedSchema,
-    // inject the request object into the context to support middleware
-    // inject the Neo4j driver instance to handle database call
-    context: ({req}) => {
-      return {
-        driver,
-        req
-      }
-    }
-  })
+const schema = makeAugmentedSchema({typeDefs})
+
+const gqlServer = new ApolloServer({
+  schema,
+  // inject the request object into the context to support middleware
+  // inject the Neo4j driver instance to handle database call
+  context: {
+    driver
+  }
+})
 
 const createApp = server => {
   // logging middleware
@@ -92,11 +78,4 @@ async function bootApp(server) {
   await startListening()
 }
 
-inferAugmentedSchema(driver)
-  .then(createServer)
-  .then(server => {
-    bootApp(server)
-  })
-  .catch(err => console.error(err))
-
-module.exports = app
+bootApp(gqlServer)

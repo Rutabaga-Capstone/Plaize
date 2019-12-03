@@ -254,7 +254,4 @@ mutation CreatePlant {
     poisonous
   }
 }
-
-
-
 `

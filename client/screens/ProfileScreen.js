@@ -18,13 +18,42 @@ class ProfileScreen extends React.Component {
             <Image
               source={
                 __DEV__
-                  ? require('../assets/images/logo-gradient.png')
-                  : require('../assets/images/logo-gradient.png')
+                  ? require('../assets/images/profile-icon.png')
+                  : require('../assets/images/profile-icon.png')
               }
               style={styles.welcomeImage}
             />
-            <Text style={styles.title}>Plaze</Text>
-            <Text style={styles.subtitle}>TESTING HELLOWORLD</Text>
+            <Text style={styles.title}>Dynamic Username</Text>
+            {/* <Text style={styles.title}>Plaze</Text> */}
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                backfaceVisibility: 'pink'
+              }}
+            >
+              <Text
+                style={{
+                  width: 100,
+                  height: 50,
+                  textAlign: 'center',
+                  fontSize: '24'
+                }}
+              >
+                RankLevel
+              </Text>
+              <Text>•</Text>
+              <Text
+                style={{
+                  width: 100,
+                  height: 50,
+                  textAlign: 'center',
+                  fontSize: '24'
+                }}
+              >
+                World
+              </Text>
+            </View>
           </View>
         </ScrollView>
       </View>
