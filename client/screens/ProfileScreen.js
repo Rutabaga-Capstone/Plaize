@@ -2,6 +2,7 @@ import * as WebBrowser from 'expo-web-browser'
 import React from 'react'
 import {Image, Platform, ScrollView, StyleSheet, Text, View} from 'react-native'
 import {withApollo} from 'react-apollo'
+//import {Ionicons} from '@expo/vector-icons'
 
 class ProfileScreen extends React.Component {
   state = {
@@ -28,27 +29,36 @@ class ProfileScreen extends React.Component {
             <View
               style={{
                 flex: 1,
-                flexDirection: 'row',
-                backfaceVisibility: 'pink'
+                flexDirection: 'row'
+                // backfaceVisibility: 'pink'
               }}
             >
               <Text
                 style={{
-                  width: 100,
+                  width: '47.5%',
                   height: 50,
-                  textAlign: 'center',
-                  fontSize: '24'
+                  textAlign: 'right',
+                  fontSize: 24
                 }}
               >
-                RankLevel
+                Rank-Level
               </Text>
-              <Text>•</Text>
               <Text
                 style={{
-                  width: 100,
+                  width: '5%',
                   height: 50,
                   textAlign: 'center',
-                  fontSize: '24'
+                  fontSize: 24
+                }}
+              >
+                •
+              </Text>
+              <Text
+                style={{
+                  width: '47.5%',
+                  height: 50,
+                  textAlign: 'left',
+                  fontSize: 24
                 }}
               >
                 World
