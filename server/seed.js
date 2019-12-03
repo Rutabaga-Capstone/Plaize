@@ -59,6 +59,18 @@ client
           email
           leaves
         }
+        u5: CreateUser(
+          id: 5
+          name: "cc"
+          email: "cc"
+          password: "cc"
+          leaves: 0
+        ) {
+          id
+          name
+          email
+          leaves
+        }
         p1: CreatePlant(
           id: 1
           commonName: "Poison Ivy"
