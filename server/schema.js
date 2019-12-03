@@ -1,5 +1,6 @@
 const {neo4jgraphql} = require('neo4j-graphql-js')
 const {gql} = require('apollo-server')
+const graphqlDirectiveUid = require('graphql-directive-uid')
 
 // type Mutation {
 //   createPin(
@@ -18,7 +19,7 @@ const typeDefs = `
   }
 
   type Location {
-    id: ID!
+    id: ID
     pin: Pin
     point: Point @cypher (statement: "MATCH (p:Pin { lat: location.lat, long: location.long point: point({latitude: location.lat, longitude: location.long}) MATCH (n {name: user.name}) CREATE (n)-[r:CREATED {dateCreated: date()}]->(p)")
     lat: Float!
@@ -44,13 +45,14 @@ const typeDefs = `
     user: User @relation(name: "FOUND", direction: "IN")
   }
 
-  type User {
+  type User @uid{
     id: ID
     name: String!
     email: String!
     password: String!
     plants: [Plant!]! @relation(name: "FOUND", direction: "OUT")
-    location: Location
+    lat: Float
+    lng: Float
     pins: [Pin!] @relation(name: "CREATED", direction: "OUT")
     deviceIds: [String!]
     isLoggedIn: Boolean
@@ -58,7 +60,7 @@ const typeDefs = `
   }
 
   type Pin {
-    id: ID!
+    id: ID
     user: User! @relation(name: "CREATED", direction: "IN")
     plants: [Plant!]! @relation(name: "HAS_PLANTS", direction: "OUT")
     point: Point @cypher (statement: "MATCH (p:Pin { lat: location.lat, long: location.long point: point({latitude: location.lat, longitude: location.long}) MATCH (n {name: user.name}) CREATE (n)-[r:CREATED {dateCreated: date()}]->(p)")
@@ -68,19 +70,17 @@ const typeDefs = `
 `
 
 const resolvers = {
-  Query: {
-    User(parent, args, ctx, info) {
+  Mutation: {
+    createPin(parent, args, ctx, info) {
       return neo4jgraphql(parent, args, ctx, info)
-    }
+    },
+    createPlant(parent, args, ctx, info) {
+      return neo4jgraphql(parent, args, ctx, info)
+    } /*,
+    createUser(parent, args) {
+
+    }*/
   }
-  // Mutation: {
-  //   createPin(parent, args, ctx, info) {
-  //     return neo4jgraphql(parent, args, ctx, info)
-  //   }
-  //   createPlant(parent, args, ctx, info) {
-  //     return neo4jgraphql(parent, args, ctx, info)
-  //   }
-  // }
 }
 
 // const resolvers = {

@@ -1,11 +1,46 @@
 import gql from 'graphql-tag'
 import {useQuery} from '@apollo/react-hooks'
+import {useApolloClient} from 'apollo-client'
+
+/* Frontend examples:
+* Use query once -- for on click or on callback i.e. when response from snapscreen
+* const client = useApolloClient()
+* returnedObject = client.query(THIS_IS_THE_QUERY, {variables: {'varName': 'varValue', commonName, etc}})
+*
+* Use query on componentRender -- refetch every .5 seconds, refetch on callback -- i.e. get user location
+* const {loading, error, data, refetch} = useQuery(
+*   QUERY_VAR_HERE, {
+*     variables: {
+*       something,
+*       'something': 'else'
+*     },
+*   pollInterval: 500,
+* })
+* <button onClick={() => refetch()}>Click to update data</button>
+*/
 
 export const CHECK_USER_EXISTS = gql`
   query logInUser($email: String!, $password: String!) {
     user(email: $email, password: $password) {
       _id
       name
+    }
+  }
+`
+
+export const GET_USER_PROFILE_INFO = gql`
+  query getUserProfileInfo($email: String!) {
+    user(email: $email, password: $password) {
+      name
+      email
+      leaves
+      plants {
+        commonName
+        scientificName
+        imageURL
+        description
+        poisonous
+      }
     }
   }
 `
@@ -23,6 +58,8 @@ export const GET_ALL_USER_INFO = gql`
         description
         poisonous
       }
+      lat
+      lng
     }
   }
 `
