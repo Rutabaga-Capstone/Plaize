@@ -29,7 +29,7 @@ const HomeScreen = props => {
   const client = useApolloClient()
 
   const loginUser = async () => {
-    const {client, navigation} = props
+    const {navigation} = props
     if ([email, password].every(i => i && i.trim())) {
       try {
         const result = await client.query({
@@ -39,10 +39,12 @@ const HomeScreen = props => {
             password
           }
         })
+
         const userData = result.data.user
-        await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
+        // await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
         navigation.navigate('Snap', userData)
       } catch (error) {
+        console.log('jhgjhfgjhjfg', error)
         setShowAlert(true)
         setAlertMsg('Invalid username or password!')
       }
@@ -218,7 +220,6 @@ function handleLearnMorePress() {
     'https://docs.expo.io/versions/latest/workflow/development-mode/'
   )
 }
-
 
 function handleHelpPress() {
   WebBrowser.openBrowserAsync(
