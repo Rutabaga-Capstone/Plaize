@@ -22,8 +22,7 @@ import {useApolloClient} from 'apollo-client'
 export const CHECK_USER_EXISTS = gql`
   query logInUser($email: String!, $password: String!) {
     user(email: $email, password: $password) {
-      _id
-      name
+      id
     }
   }
 `
@@ -46,7 +45,7 @@ export const GET_USER_PROFILE_INFO = gql`
 `
 
 export const GET_ALL_USER_INFO = gql`
-  query getAllUserInfo($email: String!) {
+  query getAllUserInfo($email: String!, $password: String!) {
     user(email: $email, password: $password) {
       name
       email

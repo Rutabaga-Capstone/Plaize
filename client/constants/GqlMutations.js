@@ -22,11 +22,16 @@ Click to Mutate
 */
 
 const CREATE_USER = gql`
-  mutation createUser($email: String!, $password: String!, $name: String!) {
+  mutation createUser(
+    $id: ID!
+    $email: String!
+    $password: String!
+    $name: String!
+  ) {
     CreateUser(email: $email, password: $password, name: $name, leaves: 0) {
       name
       email
-      _id
+      id
       leaves
     }
     UpdateUser
@@ -34,14 +39,13 @@ const CREATE_USER = gql`
 `
 
 // spread the plant and add user info
-const ADD_PIN_AND_PLANT_TO_USER = gql`
-  mutation addPinAndPlantToUser(
+const CREATE_PIN_PLANT = gql`
+  mutation createPinPlant(
     $commonName: String!
     $scientificName: String!
     $description: String!
     $imageURL: String!
     $poisonous: Boolean!
-    $email: String!
     $lat: Float!
     $lng: Float!
   ) {
@@ -52,7 +56,7 @@ const ADD_PIN_AND_PLANT_TO_USER = gql`
       imageURL: $imageURL
       poisonous: $poisonous
     ) {
-      _id
+      id
       commonName
       scientificName
       description
@@ -60,9 +64,39 @@ const ADD_PIN_AND_PLANT_TO_USER = gql`
       poisonous
     }
     CreatePin(lat: $lat, lng: $lng) {
-      _id
+      id
       lat
       lng
+    }
+  }
+`
+
+const ADD_PIN_PLANT_TO_USER = gql`
+  mutation addPinPlantToUser($pinId: ID!, $plantId: ID!, $userId: ID!) {
+    AddUserPlants(from: {id: $userId}, to: {id: $pinId}) {
+      from {
+        name
+      }
+      to {
+        commonName
+      }
+    }
+    AddUserPins(from: {id: $userId}, to: {id: $pinId}) {
+      from {
+        name
+      }
+      to {
+        lat
+        lng
+      }
+    }
+  }
+`
+
+const UPDATE_USER_LEAVES = gql`
+  mutation updateUserLeaves($id: ID!, $leaves: Int!) {
+    UpdateUser(id: $id, leaves: $leaves) {
+      leaves
     }
   }
 `
