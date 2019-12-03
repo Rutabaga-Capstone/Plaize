@@ -15,28 +15,28 @@ const styles = StyleSheet.create({
   }
 })
 
-export default class Map extends React.Component {
-  render() {
-    return (
-      <View>
-        {this.props.center && (
-          <MapView
-            style={styles.mapStyle}
-            region={this.props.region}
-            showsUserLocation={true}
-            showsMyLocationButton={true}
-          >
-            {this.renderMarkers(this.props.pins)}
-            {/* {this.renderCircle()} */}
-            <Circle
-              radius={this.props.radius}
-              center={this.props.center.coords}
-              fillColor="rgba(123,239,178,.65)"
-              strokeColor="transparent"
-            />
-          </MapView>
-        )}
-      </View>
-    )
-  }
+const Map = props => {
+  return (
+    <View>
+      {props.center && (
+        <MapView
+          style={styles.mapStyle}
+          region={props.region}
+          showsUserLocation={true}
+          showsMyLocationButton={true}
+        >
+          {renderMarkers(props.pins) /* Where is this coming from? */}
+          {/* {renderCircle()} */}
+          <Circle
+            radius={props.radius}
+            center={props.center.coords}
+            fillColor="rgba(123,239,178,.65)"
+            strokeColor="transparent"
+          />
+        </MapView>
+      )}
+    </View>
+  )
 }
+
+export default Map

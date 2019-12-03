@@ -12,9 +12,85 @@ import {
 } from 'react-native'
 import {Input} from 'react-native-elements'
 import {withApollo} from 'react-apollo'
+import {useMutation} from '@apollo/react-hooks'
+import {CREATE_USER} from '../constants/GqlMutations'
 import {gql} from 'apollo-boost'
 import GradientButton from 'react-native-gradient-buttons'
 import Dialog from 'react-native-dialog'
+
+// const CreateAccount = props => {
+//   const [firstName, setFirstName] = useState('')
+//   const [lastName, setLastName] = useState('')
+//   const [email, setEmail] = useState('')
+//   const [password, setPassword] = useState('')
+//   const [confirmPassword, setConfirmPassword] = useState('')
+//   const [showAlert, setShowAlert] = useState(false)
+//   const [alertMsg, setAlertMsg] = useState('')
+//   const [CreateUser] = useMutation(CREATE_USER)
+//
+//   const createUser = async () => {
+//     const {navigation} = props
+//     const {navigate} = navigation
+//     if (
+//       [firstName, lastName, email, password, confirmPassword].every(f =>
+//         f.trim()
+//       )
+//     ) {
+//       if (password === confirmPassword) {
+//         try {
+//           const result = await client.mutate({
+//             mutation: gql`
+//               mutation CreateUser(
+//                 $firstName: String!
+//                 $lastName: String!
+//                 $middleName: String!
+//                 $email: String!
+//                 $password: String!
+//               ) {
+//                 CreateUser(
+//                   firstName: $firstName
+//                   lastName: $lastName
+//                   middleName: $middleName
+//                   email: $email
+//                   password: $password
+//                 ) {
+//                   _id
+//                   firstName
+//                   middleName
+//                   lastName
+//                   email
+//                 }
+//               }
+//             `,
+//             variables: {
+//               firstName,
+//               lastName,
+//               email,
+//               password
+//             }
+//           })
+//           const userData = result.data.CreateUser
+//           await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
+//           navigate('Snap', userData)
+//         } catch (err) {
+//           this.setState({
+//             showAlert: true,
+//             alertMsg: 'Must fill out all required fields!'
+//           })
+//         }
+//       } else {
+//         this.setState({showAlert: true, alertMsg: 'Passwords must match!'})
+//         // alert('Passwords must match!')
+//       }
+//     } else {
+//       this.setState({
+//         showAlert: true,
+//         alertMsg: 'Must fill out required fields!'
+//       })
+//       // alert('Must fill out required fields!')
+//     }
+//   }
+// }
 
 class CreateAccount extends React.Component {
   state = {
