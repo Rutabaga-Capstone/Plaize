@@ -69,8 +69,8 @@ class CustomModal extends React.Component {
             onPress={this.closeModal}
             style={{
               position: 'absolute',
-              top: 120,
-              left: '50%',
+              top: -80,
+              right: '-5%',
               marginLeft: -22,
               zIndex: 1
             }}
@@ -79,7 +79,32 @@ class CustomModal extends React.Component {
               <Icon.Ionicons name="ios-close" size={44} color="#6cc7bd" />
             </CloseView>
           </TouchableOpacity>
-          <Body />
+          <Body>
+            {this.props.pinSelected.plants.map((plant, i) => (
+              <View key={i} style={styles.subtitle}>
+                <Text style={styles.screenText}>
+                  {' '}
+                  {plant.isPoisonous ? (
+                    <Icon.FontAwesome name="warning" size={30} color="red" />
+                  ) : (
+                    'Nonpoisonous'
+                  )}
+                </Text>
+              </View>
+            ))}
+            {this.props.pinSelected.plants.map((plant, i) => (
+              <View key={i} style={styles.subtitle}>
+                <Text style={styles.subtitle}>Scientific Name</Text>
+                <Text style={styles.screenText}>{plant.scientificName}</Text>
+              </View>
+            ))}
+            {this.props.pinSelected.plants.map((plant, i) => (
+              <View key={i} style={styles.subtitle}>
+                <Text style={styles.subtitle}>Description</Text>
+                <Text style={styles.screenText}>{plant.description}</Text>
+              </View>
+            ))}
+          </Body>
         </AnimatedContainer>
       </Container>
     )
@@ -99,11 +124,17 @@ const AnimatedContainer = Animated.createAnimatedComponent(Container)
 const Header = styled.View`
   background: #6cc7bd;
   height: 250px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 `
 
 const Body = styled.View`
   background: #fff;
   height: ${screenHeight};
+  border-left-width: 1px;
+  border-right-width: 1px;
+  border-right-color: lightgrey;
+  border-left-color: lightgrey;
 `
 
 const CloseView = styled.View`
@@ -127,10 +158,16 @@ const styles = StyleSheet.create({
   welcomeImage: {
     width: 200,
     height: 200,
-    marginTop: 20,
+    marginTop: -15,
+    alignSelf: 'center',
     resizeMode: 'contain',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  plantDetails: {
+    flex: 1,
+    flexDirection: 'column', //try change this line
+    justifyContent: 'space-between'
   },
   title: {
     marginTop: 10,
@@ -148,20 +185,24 @@ const styles = StyleSheet.create({
     fontFamily: 'yorkten'
   },
   subtitle: {
-    color: '#C7CAD4',
+    color: '#000',
     textAlign: 'center',
     alignSelf: 'stretch',
     marginRight: 0,
     marginLeft: 0,
     marginTop: 5,
     fontSize: 20,
-    marginBottom: 35
+    marginBottom: 5,
+    fontWeight: 'bold'
   },
   screenText: {
     color: '#000000',
     fontFamily: 'yorkten',
     fontSize: 18,
-    textAlign: 'center'
+    alignSelf: 'center',
+    justifyContent: 'center',
+    marginLeft: 10,
+    marginRight: 10
   }
 })
 

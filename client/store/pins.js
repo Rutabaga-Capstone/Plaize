@@ -11,6 +11,8 @@ let pins = [
       {
         commonName: 'Poison Oak',
         scientificName: 'A scientific name....',
+        description:
+          'A long description of this plant....A long description of this plant....A long description of this plant....A long description of this plant....A long description of this plant....',
         isPoisonous: true,
         createdBy: 'cc',
         pin: {
@@ -30,6 +32,8 @@ let pins = [
       {
         commonName: 'Aloe Vera',
         scientificName: 'A scientific name....',
+        description:
+          'A long description of this plant....A long description of this plant....A long description of this plant....A long description of this plant....A long description of this plant....',
         isPoisonous: false,
         createdBy: 'cc',
         pin: {
@@ -49,6 +53,8 @@ let pins = [
       {
         commonName: 'Aloe Vera',
         scientificName: 'A scientific name....',
+        description:
+          'A long description of this plant....A long description of this plant....A long description of this plant....A long description of this plant....A long description of this plant....',
         isPoisonous: false,
         createdBy: 'cc',
         pin: {
