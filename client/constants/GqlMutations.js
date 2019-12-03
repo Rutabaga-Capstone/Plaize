@@ -38,7 +38,7 @@ const CREATE_USER = gql`
   }
 `
 
-// spread the plant and add user info
+// spread the plant and add user info, generate 2 id's and pass them as pinId and plantId
 const CREATE_PIN_PLANT = gql`
   mutation createPinPlant(
     $commonName: String!
@@ -46,10 +46,13 @@ const CREATE_PIN_PLANT = gql`
     $description: String!
     $imageURL: String!
     $poisonous: Boolean!
+    $pinId: ID!
+    $plantId: ID!
     $lat: Float!
     $lng: Float!
   ) {
     CreatePlant(
+      id: $plantId
       commonName: $commonName
       scientificName: $scientificName
       description: $description
@@ -63,7 +66,7 @@ const CREATE_PIN_PLANT = gql`
       imageURL
       poisonous
     }
-    CreatePin(lat: $lat, lng: $lng) {
+    CreatePin(id: $pinId, lat: $lat, lng: $lng) {
       id
       lat
       lng

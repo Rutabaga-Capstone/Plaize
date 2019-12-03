@@ -29,7 +29,7 @@ export const CHECK_USER_EXISTS = gql`
 
 export const GET_USER_PROFILE_INFO = gql`
   query getUserProfileInfo($email: String!) {
-    user(email: $email, password: $password) {
+    user(email: $email) {
       name
       email
       leaves
