@@ -1,34 +1,46 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import {Text, View, TouchableOpacity} from 'react-native'
 import * as Permissions from 'expo-permissions'
 import {Camera} from 'expo-camera'
 import * as FileSystem from 'expo-file-system'
 import axios from 'axios'
 import {Ionicons} from '@expo/vector-icons'
+import PlantModal from '../components/PlantModal'
 
-export default class CameraExample extends React.Component {
-  state = {
-    hasCameraPermission: null,
-    type: Camera.Constants.Type.back
-  }
+import styled from 'styled-components'
 
-  async componentDidMount() {
-    const {status} = await Permissions.askAsync(Permissions.CAMERA)
-    this.setState({hasCameraPermission: status === 'granted'})
-    FileSystem.makeDirectoryAsync(FileSystem.cacheDirectory + 'photos').catch(
-      e => {
-        console.log(e, 'Directory exists')
-      }
-    )
-  }
+export default function SnapScreen() {
+  const [isPlantInfoReceived, setIsPlantInfoReceived] = useState(false)
+  const [hasCameraPermission, setHasCameraPermission] = useState('null')
 
-  takePicture = () => {
-    if (this.camera) {
-      this.camera.takePictureAsync({onPictureSaved: this.onPictureSaved})
+  let camera = null
+
+  useEffect(() => {
+    async function startUp() {
+      const {status} = await Permissions.askAsync(Permissions.CAMERA)
+      setHasCameraPermission('granted')
+      FileSystem.makeDirectoryAsync(FileSystem.cacheDirectory + 'photos').catch(
+        e => {
+          console.log(e, 'Directory exists')
+        }
+      )
+    }
+    startUp()
+  }, [])
+
+  const takePicture = () => {
+    if (camera) {
+      camera.takePictureAsync({onPictureSaved})
     }
   }
 
-  onPictureSaved = photo => {
+  const buttonCallback = function() {
+    setIsPlantInfoReceived(false)
+  }
+
+  const onPictureSaved = photo => {
+    setIsPlantInfoReceived(true)
+
     const ipAddressOfServer = '172.17.23.197' // <--- PUT YOUR OWN IP HERE
     const uriParts = photo.uri.split('.')
     const fileType = uriParts[uriParts.length - 1]
@@ -54,47 +66,54 @@ export default class CameraExample extends React.Component {
       })
   }
 
-  render() {
-    const {hasCameraPermission} = this.state
-    if (hasCameraPermission === null) {
-      return <View />
-    } else if (hasCameraPermission === false) {
-      return <Text>No access to camera</Text>
-    } else {
-      return (
-        <View style={{flex: 1}}>
-          <Camera
-            ref={ref => {
-              this.camera = ref
+  if (hasCameraPermission === null) {
+    return <View />
+  } else if (hasCameraPermission === false) {
+    return <Text>No access to camera</Text>
+  } else {
+    return (
+      <View style={{flex: 1}}>
+        <Camera
+          ref={ref => {
+            camera = ref
+          }}
+          style={{flex: 1}}
+          type={Camera.Constants.Type.back}
+        >
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: 'transparent',
+              flexDirection: 'row'
             }}
-            style={{flex: 1}}
-            type={this.state.type}
           >
-            <View
+            <TouchableOpacity
               style={{
                 flex: 1,
-                backgroundColor: 'transparent',
-                flexDirection: 'row'
+                alignSelf: 'flex-end',
+                alignItems: 'center'
               }}
+              onPress={takePicture}
             >
-              <TouchableOpacity
-                style={{
-                  flex: 1,
-                  alignSelf: 'flex-end',
-                  alignItems: 'center'
-                }}
-                onPress={this.takePicture}
-              >
-                <Ionicons
-                  name="md-camera"
-                  size={48}
-                  style={{marginBottom: 30}}
-                />
-              </TouchableOpacity>
-            </View>
-          </Camera>
-        </View>
-      )
-    }
+              <Ionicons name="md-camera" size={48} style={{marginBottom: 30}} />
+            </TouchableOpacity>
+          </View>
+        </Camera>
+
+        {isPlantInfoReceived && (
+          <Container>
+            <PlantModal disableModalCallback={buttonCallback} />
+          </Container>
+        )}
+      </View>
+    )
   }
 }
+
+const Container = styled.View`
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  width: 80%;
+`
