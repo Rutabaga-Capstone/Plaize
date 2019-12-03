@@ -141,16 +141,16 @@ class HomeScreen extends React.Component {
 
             <GradientButton
               style={{
-                marginTop: 20,
-                marginBottom: 20,
+                marginTop: 10,
+                marginBottom: 10,
                 textAlign: 'center'
               }}
               textStyle={{fontSize: 18}}
               gradientBegin="#6CC7BD"
               gradientEnd="#A5D38F"
               gradientDirection="diagonal"
-              height={50}
-              width={200}
+              height={40}
+              width={215}
               radius={0}
               onPressAction={this.loginUser}
             >
@@ -161,8 +161,8 @@ class HomeScreen extends React.Component {
 
             <GradientButton
               style={{
-                marginTop: 20,
-                marginBottom: 20,
+                marginTop: 10,
+                marginBottom: 10,
                 textAlign: 'center'
               }}
               onPressAction={() => navigate('CreateAccount')}
@@ -170,23 +170,23 @@ class HomeScreen extends React.Component {
               gradientBegin="#6CC7BD"
               gradientEnd="#A5D38F"
               gradientDirection="diagonal"
-              height={50}
-              width={200}
+              height={40}
+              width={215}
               radius={0}
             >
               create account
             </GradientButton>
 
-            <Text style={styles.screenText}>Create Account With</Text>
+            <Text style={styles.screenTextBottom}>Create Account With</Text>
             <View style={{flex: 1, flexDirection: 'row'}}>
               <View
-                style={{width: 100, height: 50, marginTop: 15, marginLeft: 36}}
+                style={{width: 100, height: 50, marginTop: 5, marginLeft: 36}}
               >
                 <TouchableOpacity onPress={this.loginWithFb}>
                   <Text style={{fontSize: 18, color: '#6CC7BD'}}>Facebook</Text>
                 </TouchableOpacity>
               </View>
-              <View style={{width: 100, height: 50, marginTop: 15}}>
+              <View style={{width: 100, height: 50, marginTop: 5}}>
                 <TouchableOpacity onPress={this.loginWithGoogle}>
                   <Text style={{fontSize: 18, color: '#6CC7BD'}}>Google</Text>
                 </TouchableOpacity>
@@ -247,26 +247,26 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   welcomeImage: {
-    width: 100,
-    height: 100,
+    width: 80,
+    height: 80,
     marginLeft: 10,
     resizeMode: 'contain',
     alignItems: 'center',
     justifyContent: 'center'
   },
   title: {
-    marginTop: 30,
-    marginBottom: 5,
+    marginTop: 5,
+    marginBottom: 0,
     color: '#000000',
     textAlign: 'center',
     fontSize: 40,
     fontFamily: 'yorkten'
   },
   titleTwo: {
-    marginTop: 30,
+    marginTop: 10,
     color: '#000000',
     textAlign: 'center',
-    fontSize: 35,
+    fontSize: 30,
     fontFamily: 'yorkten'
   },
   subtitle: {
@@ -276,10 +276,16 @@ const styles = StyleSheet.create({
     marginRight: 0,
     marginLeft: 0,
     marginTop: 5,
-    fontSize: 20,
-    marginBottom: 35
+    fontSize: 15,
+    marginBottom: 5
   },
   screenText: {
+    color: '#000000',
+    fontFamily: 'yorkten',
+    fontSize: 18,
+    textAlign: 'center'
+  },
+  screenTextBottom: {
     color: '#000000',
     fontFamily: 'yorkten',
     fontSize: 18,
@@ -295,8 +301,8 @@ const styles = StyleSheet.create({
   },
   label: {
     borderWidth: 1,
-    marginTop: 30,
-    marginBottom: 30
+    marginTop: 20,
+    marginBottom: 20
   },
   button: {
     backgroundColor: '#6CC7BD'

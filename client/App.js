@@ -6,6 +6,8 @@ import {Platform, StatusBar, StyleSheet, View, Text} from 'react-native'
 import {Ionicons} from '@expo/vector-icons'
 import {ApolloProvider} from 'react-apollo'
 import ApolloClient from 'apollo-boost'
+import {Provider} from 'react-redux'
+import store from './store/store'
 import AppNavigator from './navigation/AppNavigator'
 
 const client = new ApolloClient({uri: 'http://localhost:1234/graphql'})
@@ -13,28 +15,25 @@ const client = new ApolloClient({uri: 'http://localhost:1234/graphql'})
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false)
 
-  try {
-    if (!isLoadingComplete && !props.skipLoadingScreen) {
-      return (
-        <AppLoading
-          startAsync={loadResourcesAsync}
-          onError={handleLoadingError}
-          onFinish={() => handleFinishLoading(setLoadingComplete)}
-        />
-      )
-    } else {
-      return (
-        <ApolloProvider client={client}>
+  if (!isLoadingComplete && !props.skipLoadingScreen) {
+    return (
+      <AppLoading
+        startAsync={loadResourcesAsync}
+        onError={handleLoadingError}
+        onFinish={() => handleFinishLoading(setLoadingComplete)}
+      />
+    )
+  } else {
+    return (
+      <ApolloProvider client={client}>
+        <Provider store={store}>
           <View style={styles.container}>
             {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
             <AppNavigator />
           </View>
-        </ApolloProvider>
-      )
-    }
-  } catch (err) {
-    alert(JSON.stringify(err))
-    return <Text>Error Checking Auth</Text>
+        </Provider>
+      </ApolloProvider>
+    )
   }
 }
 

@@ -46,28 +46,40 @@ async function predict(filePath) {
 }
 
 router.post('/', upload.single('formKeyName'), async (req, res, next) => {
-  if (req.file) {
-    try {
-      const response = {}
-      const filePath = path.join(__dirname, '../..', req.file.path)
-      let prediction = await predict(filePath)
-      response.commonName = prediction.displayName
-        .split(' ')
-        .map(el => {
-          return el[0].toUpperCase() + el.slice(1)
-        })
-        .join(' ')
-      response.score = prediction.classification.score
-      fs.unlink(filePath, err => {
-        if (err) {
-          console.err(err)
-          throw new Error('Could not delete file')
-        }
-      })
-      res.json(response)
-    } catch (e) {
-      next(e)
+  if (!req.file) {
+    next(new Error('missing req.file'))
+  }
+  const filePath = path.join(__dirname, '../..', req.file.path)
+  try {
+    const isGoogleServerMocked = true // <---------- MOCKED GOOGLE SERVER
+
+    if (isGoogleServerMocked) {
+      const mockedGoogleServerResponse = {
+        commonName: 'Poison Ivy',
+        score: 0.5741239190101624
+      }
+      res.json(mockedGoogleServerResponse)
     }
+
+    const response = {}
+    let prediction = await predict(filePath)
+    response.commonName = prediction.displayName
+      .split(' ')
+      .map(el => {
+        return el[0].toUpperCase() + el.slice(1)
+      })
+      .join(' ')
+    response.score = prediction.classification.score
+    res.json(response)
+  } catch (e) {
+    next(e)
+  } finally {
+    fs.unlink(filePath, err => {
+      if (err) {
+        console.err(err)
+        throw new Error('Could not delete file')
+      }
+    })
   }
 })
 

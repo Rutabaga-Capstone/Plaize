@@ -12,20 +12,22 @@ import {Card, ListItem, Button, Icon} from 'react-native-elements'
 
 const styles = StyleSheet.create({
   container: {
-    top: '0%',
-    // position: 'absolute',
+    top: '10%',
+    position: 'absolute',
     // flex: 2,
     justifyContent: 'flex-start',
     backgroundColor: '#e5e5e5',
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height
+    height: Dimensions.get('window').height,
+    marginBottom: 10,
+    marginTop: 5
   }
 })
 
 export default function Plants(props) {
-  console.log('pins:', props.pins)
   return (
-    <Card styles={styles} title={'Plants'}>
+    <View style={styles}>
+      {/* <View> */}
       {props.pins.map((pin, i) => (
         <View key={i}>
           <Text key={i}>
@@ -40,7 +42,8 @@ export default function Plants(props) {
           </Text>
         </View>
       ))}
-    </Card>
+    </View>
+    // </Card>
   )
 }
 
