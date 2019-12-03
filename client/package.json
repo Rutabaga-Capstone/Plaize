@@ -59,7 +59,8 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "remote-redux-devtools": "^0.5.16",
-    "styled-components": "^4.4.1"
+    "styled-components": "^4.4.1",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "jest-expo": "^35.0.0",
