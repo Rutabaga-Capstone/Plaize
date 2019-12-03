@@ -33,7 +33,7 @@ export default function SinglePlant(props) {
     let plant = pin.plants[0]
     dispatch(setSinglePlant(plant))
   }
-
+  console.log('props in SinglePlant', props)
   return (
     <View>
       <Text>hello from SinglePlant</Text>

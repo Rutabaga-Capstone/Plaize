@@ -237,7 +237,7 @@ export default function MapScreen(props) {
         )}
         {pinSelected.id && (
           <Container>
-            <PlantModal />
+            <PlantModal pinSelected={pinSelected} />
           </Container>
         )}
       </View>
