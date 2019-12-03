@@ -17,6 +17,7 @@ client
           email: "randydxp@gmail.com"
           password: "1234"
           leaves: 0
+          regDate: {formatted: "2019-09-20"}
         ) {
           id
           name
@@ -29,6 +30,7 @@ client
           email: "fer@innovaresip.com"
           password: "1234"
           leaves: 0
+          regDate: {formatted: "2019-09-21"}
         ) {
           id
           name
@@ -41,6 +43,7 @@ client
           email: "gatewaywebdesign18@gmail.com"
           password: "1234"
           leaves: 0
+          regDate: {formatted: "2019-09-22"}
         ) {
           id
           name
@@ -53,6 +56,7 @@ client
           email: "pawel3ala@gmail.com"
           password: "1234"
           leaves: 0
+          regDate: {formatted: "2019-09-23"}
         ) {
           id
           name
@@ -65,6 +69,7 @@ client
           email: "cc"
           password: "cc"
           leaves: 0
+          regDate: {formatted: "2019-09-24"}
         ) {
           id
           name

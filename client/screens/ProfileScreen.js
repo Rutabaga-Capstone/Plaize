@@ -14,20 +14,40 @@ import {Ionicons} from '@expo/vector-icons'
 
 class ProfileScreen extends React.Component {
   state = {
-    email: '',
-    password: ''
-  } // so now we're gonna pull from master, right? to merge. yeah
+    user: {}
+  }
 
   async componentDidMount() {
     try {
-      const userName = await AsyncStorage.getItem('USER_NAME')
+      const user = JSON.parse(
+        (await AsyncStorage.getItem('LOGGED_IN_USER')) || '{}'
+      )
+      this.setState({user})
     } catch (err) {
       console.log('err fetching user', err)
     }
   }
 
+  getRankLevel = leaves => {
+    let result = ''
+    switch (true) {
+      case leaves >= 0 && leaves <= 20:
+        result = 'Novice'
+        break
+      case leaves > 20 && leaves <= 40:
+        result = 'Explorer'
+        break
+      case leaves > 40:
+        result = 'Expert'
+        break
+      default:
+    }
+    return result
+  }
+
   render() {
     const {navigate} = this.props.navigation
+    const {name, leaves, regDate} = this.state.user
     return (
       <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -42,7 +62,7 @@ class ProfileScreen extends React.Component {
               }
               style={styles.welcomeImage}
             />
-            <Text style={styles.title}>Dynamic Username</Text>
+            <Text style={styles.title}>{name}</Text>
 
             {/* Rank Level, Rank Number Container */}
 
@@ -60,7 +80,7 @@ class ProfileScreen extends React.Component {
                   fontSize: 24
                 }}
               >
-                Rank-Level
+                {this.getRankLevel(leaves)}
               </Text>
               <Text
                 style={{
@@ -81,13 +101,15 @@ class ProfileScreen extends React.Component {
                   fontSize: 24
                 }}
               >
-                Rank-Number
+                {leaves}
               </Text>
             </View>
 
             {/* Joined Plaze on JoinDate Row */}
 
-            <Text style={styles.subtitle}>Joined Plaze on JoinDate</Text>
+            <Text style={styles.subtitle}>
+              Joined Plaze on {regDate && regDate.formatted.slice(0, 10)}
+            </Text>
 
             <View
               style={{

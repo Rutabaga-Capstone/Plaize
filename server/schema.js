@@ -13,7 +13,7 @@ const {gql} = require('apollo-server')
 
 const typeDefs = `
   type Query {
-    user(id: ID, name: String, email: String, password: String, leaves: Int): User
+    user(id: ID, name: String, email: String, password: String, leaves: Int, regDate: DateTime): User
     plant(id: ID, commonName: String): Plant
   }
 
@@ -56,6 +56,7 @@ const typeDefs = `
     deviceIds: [String!]
     isLoggedIn: Boolean
     leaves: Int!
+    regDate: DateTime
   }
 
   type Pin {
