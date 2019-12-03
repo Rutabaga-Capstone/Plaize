@@ -1,6 +1,5 @@
 const {neo4jgraphql} = require('neo4j-graphql-js')
 const {gql} = require('apollo-server')
-const graphqlDirectiveUid = require('graphql-directive-uid')
 
 // type Mutation {
 //   createPin(
@@ -45,7 +44,7 @@ const typeDefs = `
     user: User @relation(name: "FOUND", direction: "IN")
   }
 
-  type User @uid{
+  type User {
     id: ID
     name: String!
     email: String!
