@@ -2,6 +2,7 @@ import * as WebBrowser from 'expo-web-browser'
 import React from 'react'
 import {Image, Platform, ScrollView, StyleSheet, Text, View} from 'react-native'
 import {withApollo} from 'react-apollo'
+import {Ionicons} from '@expo/vector-icons'
 
 class ProfileScreen extends React.Component {
   state = {
@@ -18,13 +19,54 @@ class ProfileScreen extends React.Component {
             <Image
               source={
                 __DEV__
-                  ? require('../assets/images/logo-gradient.png')
-                  : require('../assets/images/logo-gradient.png')
+                  ? require('../assets/images/profile-icon.png')
+                  : require('../assets/images/profile-icon.png')
               }
               style={styles.welcomeImage}
             />
-            <Text style={styles.title}>Plaze</Text>
-            <Text style={styles.subtitle}>TESTING HELLOWORLD</Text>
+            <Text style={styles.title}>Dynamic Username</Text>
+            {/* <Text style={styles.title}>Plaze</Text> */}
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row'
+                // backfaceVisibility: 'pink'
+              }}
+            >
+              <Text
+                style={{
+                  width: '47.5%',
+                  height: 50,
+                  textAlign: 'right',
+                  fontSize: 24
+                }}
+              >
+                Rank-Level
+              </Text>
+              <Text
+                style={{
+                  width: '5%',
+                  height: 50,
+                  textAlign: 'center',
+                  fontSize: 24,
+                  color: '#C7CAD4'
+                }}
+              >
+                •
+              </Text>
+              <Text
+                style={{
+                  width: '47.5%',
+                  height: 50,
+                  textAlign: 'left',
+                  fontSize: 24
+                }}
+              >
+                <Ionicons name="ios-leaf" color="#6CC7BD" size={25} />
+                Rank-Number
+              </Text>
+            </View>
+            <Text style={styles.subtitle}>Joined Plaze on JoinDate</Text>
           </View>
         </ScrollView>
       </View>
@@ -88,7 +130,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   title: {
-    marginTop: 30,
+    marginTop: 20,
     marginBottom: 5,
     color: '#000000',
     textAlign: 'center',
@@ -108,8 +150,8 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     marginRight: 0,
     marginLeft: 0,
-    marginTop: 5,
-    fontSize: 20,
+    marginTop: 40,
+    fontSize: 16,
     marginBottom: 35
   },
   screenText: {

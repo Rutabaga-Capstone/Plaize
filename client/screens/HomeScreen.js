@@ -219,6 +219,7 @@ function handleLearnMorePress() {
   )
 }
 
+
 function handleHelpPress() {
   WebBrowser.openBrowserAsync(
     'https://docs.expo.io/versions/latest/workflow/up-and-running/#cant-see-your-changes'
