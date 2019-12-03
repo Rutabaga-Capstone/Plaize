@@ -4,6 +4,7 @@ import * as Permissions from 'expo-permissions'
 import {Camera} from 'expo-camera'
 import * as FileSystem from 'expo-file-system'
 import axios from 'axios'
+import {Ionicons} from '@expo/vector-icons'
 
 export default class CameraExample extends React.Component {
   state = {
@@ -78,16 +79,17 @@ export default class CameraExample extends React.Component {
             >
               <TouchableOpacity
                 style={{
-                  flex: 0.1,
+                  flex: 1,
                   alignSelf: 'flex-end',
                   alignItems: 'center'
                 }}
                 onPress={this.takePicture}
               >
-                <Text style={{fontSize: 18, marginBottom: 10, color: 'white'}}>
-                  {' '}
-                  Take Picture!{' '}
-                </Text>
+                <Ionicons
+                  name="md-camera"
+                  size={48}
+                  style={{marginBottom: 30}}
+                />
               </TouchableOpacity>
             </View>
           </Camera>
