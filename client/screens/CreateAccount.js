@@ -12,6 +12,8 @@ import {
 } from 'react-native'
 import {Input} from 'react-native-elements'
 import {withApollo} from 'react-apollo'
+import {useMutation} from '@apollo/react-hooks'
+import {CREATE_USER} from '../constants/GqlMutations'
 import {gql} from 'apollo-boost'
 import GradientButton from 'react-native-gradient-buttons'
 import Dialog from 'react-native-dialog'
