@@ -13,8 +13,7 @@ const {gql} = require('apollo-server')
 
 const typeDefs = `
   type Query {
-    user(id: ID, name: String, email: String): User
-    location(lat: Float!, lng: Float!): Location
+    user(id: ID, name: String, email: String, password: String, leaves: Int): User
     plant(id: ID, commonName: String): Plant
   }
 
