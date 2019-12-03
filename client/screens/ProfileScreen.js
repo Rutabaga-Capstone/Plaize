@@ -1,6 +1,14 @@
 import * as WebBrowser from 'expo-web-browser'
 import React from 'react'
-import {Image, Platform, ScrollView, StyleSheet, Text, View} from 'react-native'
+import {
+  Image,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  AsyncStorage
+} from 'react-native'
 import {withApollo} from 'react-apollo'
 import {Ionicons} from '@expo/vector-icons'
 
@@ -8,6 +16,14 @@ class ProfileScreen extends React.Component {
   state = {
     email: '',
     password: ''
+  } // so now we're gonna pull from master, right? to merge. yeah
+
+  async componentDidMount() {
+    try {
+      const userName = await AsyncStorage.getItem('USER_NAME')
+    } catch (err) {
+      console.log('err fetching user', err)
+    }
   }
 
   render() {
@@ -15,6 +31,8 @@ class ProfileScreen extends React.Component {
     return (
       <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
+          {/* Welcome Container */}
+
           <View style={styles.welcomeContainer}>
             <Image
               source={
@@ -25,17 +43,18 @@ class ProfileScreen extends React.Component {
               style={styles.welcomeImage}
             />
             <Text style={styles.title}>Dynamic Username</Text>
-            {/* <Text style={styles.title}>Plaze</Text> */}
+
+            {/* Rank Level, Rank Number Container */}
+
             <View
               style={{
                 flex: 1,
                 flexDirection: 'row'
-                // backfaceVisibility: 'pink'
               }}
             >
               <Text
                 style={{
-                  width: '47.5%',
+                  width: '47%',
                   height: 50,
                   textAlign: 'right',
                   fontSize: 24
@@ -45,29 +64,88 @@ class ProfileScreen extends React.Component {
               </Text>
               <Text
                 style={{
-                  width: '5%',
+                  width: '6%',
                   height: 50,
                   textAlign: 'center',
                   fontSize: 24,
                   color: '#C7CAD4'
                 }}
               >
-                •
+                <Ionicons name="ios-leaf" color="#6CC7BD" size={25} />
               </Text>
               <Text
                 style={{
-                  width: '47.5%',
+                  width: '47%',
                   height: 50,
                   textAlign: 'left',
                   fontSize: 24
                 }}
               >
-                <Ionicons name="ios-leaf" color="#6CC7BD" size={25} />
                 Rank-Number
               </Text>
             </View>
+
+            {/* Joined Plaze on JoinDate Row */}
+
             <Text style={styles.subtitle}>Joined Plaze on JoinDate</Text>
+
+            <View
+              style={{
+                flex: 1
+              }}
+            />
+
+            {/* Parent Container View For Plants, Map */}
+            <View
+              style={{
+                flex: 1
+              }}
+            >
+              {/* Poisonous Plants Identified Container */}
+
+              <View
+                style={{
+                  flex: 2,
+                  flexDirection: 'row'
+                }}
+              >
+                <Text
+                  style={{
+                    width: '6%',
+                    height: 50,
+                    textAlign: 'center',
+                    fontSize: 24,
+                    color: '#C7CAD4'
+                  }}
+                />
+                <Text
+                  style={{
+                    width: '60%',
+                    height: 50,
+                    textAlign: 'left',
+                    fontSize: 20,
+                    color: '#000000',
+                    marginLeft: 10
+                  }}
+                >
+                  Poisonous Plants Identified:
+                </Text>
+                <Text
+                  style={{
+                    width: '34%',
+                    height: 50,
+                    textAlign: 'left',
+                    fontSize: 24
+                  }}
+                >
+                  {/* Blank Placeholder */}
+                </Text>
+              </View>
+
+              {/* Plaze Map Container */}
+            </View>
           </View>
+          {/* End Parent Container View */}
         </ScrollView>
       </View>
     )
@@ -113,6 +191,10 @@ function handleHelpPress() {
 }
 
 const styles = StyleSheet.create({
+  heading: {
+    textAlign: 'left',
+    marginLeft: -60
+  },
   alert: {
     backgroundColor: 'grey'
   },
