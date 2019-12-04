@@ -6,19 +6,15 @@ let pins = [
     title: 'Fullstack Academy',
     hasPoisonousPlants: true,
     description: 'Best coding academy ever',
+    createdBy: 'cc',
     plants: [
       {
         commonName: 'Poison Oak',
         scientificName: 'A scientific name....',
+        description:
+          'A long description of this plant....A long description of this plant....A long description of this plant....A long description of this plant....A long description of this plant....',
         isPoisonous: true,
-        pin: {
-          id: 1
-        }
-      },
-      {
-        commonName: 'Poison Ivy',
-        scientificName: 'A scientific name....',
-        isPoisonous: true,
+        createdBy: 'cc',
         pin: {
           id: 1
         }
@@ -31,11 +27,15 @@ let pins = [
     title: 'Starbucks',
     hasPoisonousPlants: false,
     description: 'Fancy coffee shop',
+    createdBy: 'cc',
     plants: [
       {
         commonName: 'Aloe Vera',
         scientificName: 'A scientific name....',
+        description:
+          'A long description of this plant....A long description of this plant....A long description of this plant....A long description of this plant....A long description of this plant....',
         isPoisonous: false,
+        createdBy: 'cc',
         pin: {
           id: 2
         }
@@ -48,11 +48,15 @@ let pins = [
     title: 'Chiropractor',
     hasPoisonousPlants: false,
     description: 'Get your bones cracked here',
+    createdBy: 'cc',
     plants: [
       {
         commonName: 'Aloe Vera',
         scientificName: 'A scientific name....',
+        description:
+          'A long description of this plant....A long description of this plant....A long description of this plant....A long description of this plant....A long description of this plant....',
         isPoisonous: false,
+        createdBy: 'cc',
         pin: {
           id: 3
         }
