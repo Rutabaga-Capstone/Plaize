@@ -6,6 +6,13 @@ export const setPins = pins => ({
   pins
 })
 
+export const ADD_PIN = 'ADD_PIN'
+
+export const addPins = pin => ({
+  type: ADD_PIN,
+  pin
+})
+
 ///LOCATION
 export const SET_LOCATION = 'SET_LOCATION'
 

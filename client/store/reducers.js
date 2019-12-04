@@ -2,6 +2,7 @@ import {combineReducers} from 'redux'
 
 import {
   SET_PINS,
+  ADD_PIN,
   SET_LOCATION,
   SET_REGION,
   SET_PIN_SELECTED,
@@ -15,6 +16,8 @@ const pinsReducer = (state = pinsState, action) => {
   switch (action.type) {
     case SET_PINS:
       return {...state, pins: action.pins}
+    case ADD_PIN:
+      return {...state, pins: [...state.pins, action.pin]}
     default:
       return state
   }

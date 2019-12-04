@@ -46,7 +46,9 @@ class CustomModal extends React.Component {
     Animated.spring(this.state.top, {
       toValue: screenHeight
     }).start()
-    // dispatch(closeModal('closeModal'))
+    if (this.props.disableModalCallback) {
+      this.props.disableModalCallback()
+    }
   }
 
   render(props) {

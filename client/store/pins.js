@@ -3,9 +3,9 @@ let pins = [
   {
     id: 1,
     coordinate: {latitude: 41.895506, longitude: -87.639014},
-    title: 'Fullstack Academy',
+    // title: 'Fullstack Academy',
     hasPoisonousPlants: true,
-    description: 'Best coding academy ever',
+    // description: 'Best coding academy ever',
     createdBy: 'cc',
     plants: [
       {
