@@ -74,7 +74,7 @@ class ProfileScreen extends React.Component {
             >
               <Text
                 style={{
-                  width: '47%',
+                  width: '50%',
                   height: 50,
                   textAlign: 'right',
                   fontSize: 24
@@ -84,7 +84,18 @@ class ProfileScreen extends React.Component {
               </Text>
               <Text
                 style={{
-                  width: '6%',
+                  width: '5%',
+                  height: 50,
+                  textAlign: 'center',
+                  fontSize: 24,
+                  color: '#C7CAD4'
+                }}
+              >
+                •
+              </Text>
+              <Text
+                style={{
+                  width: '5%',
                   height: 50,
                   textAlign: 'center',
                   fontSize: 24,
@@ -95,7 +106,7 @@ class ProfileScreen extends React.Component {
               </Text>
               <Text
                 style={{
-                  width: '47%',
+                  width: '40%',
                   height: 50,
                   textAlign: 'left',
                   fontSize: 24
