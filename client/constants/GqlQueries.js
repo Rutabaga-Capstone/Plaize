@@ -22,8 +22,13 @@ import {useApolloClient} from 'apollo-client'
 export const CHECK_USER_EXISTS = gql`
   query logInUser($email: String!, $password: String!) {
     user(email: $email, password: $password) {
-      _id
+      id
       name
+      email
+      leaves
+      regDate {
+        formatted
+      }
     }
   }
 `
@@ -39,14 +44,14 @@ export const GET_USER_PROFILE_INFO = gql`
         scientificName
         imageURL
         description
-        poisonous
+        isPoisonous
       }
     }
   }
 `
 
 export const GET_ALL_USER_INFO = gql`
-  query getAllUserInfo($email: String!) {
+  query getAllUserInfo($email: String!, $password: String!) {
     user(email: $email, password: $password) {
       name
       email
@@ -56,7 +61,7 @@ export const GET_ALL_USER_INFO = gql`
         scientificName
         imageURL
         description
-        poisonous
+        isPoisonous
       }
       lat
       lng
@@ -79,7 +84,19 @@ export const GET_PLANT_BY_COMMON_NAME = gql`
       scientificName
       description
       imageURL
-      poisonous
+      isPoisonous
+    }
+  }
+`
+
+export const GET_ALL_PINS = gql`
+  query {
+    Pin {
+      lat
+      lng
+      plants {
+        commonName
+      }
     }
   }
 `

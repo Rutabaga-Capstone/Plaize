@@ -1,5 +1,5 @@
 import * as WebBrowser from 'expo-web-browser'
-import React from 'react'
+import React, {useState} from 'react'
 import {
   Image,
   Platform,
@@ -15,180 +15,144 @@ import {withApollo} from 'react-apollo'
 import {useMutation} from '@apollo/react-hooks'
 import {CREATE_USER} from '../constants/GqlMutations'
 import {gql} from 'apollo-boost'
+import uuid from 'react-uuid'
 import GradientButton from 'react-native-gradient-buttons'
 import Dialog from 'react-native-dialog'
-import {v1 as uuid} from 'uuid'
-/*
-    id: ID
-    name: String!
-    email: String!
-    password: String!
-    plants: [Plant!]! @relation(name: "FOUND", direction: "OUT")
-    location: Location
-    pins: [Pin!] @relation(name: "CREATED", direction: "OUT")
-    deviceIds: [String!]
-    isLoggedIn: Boolean
-    leaves: Int!
-    */
-class CreateAccount extends React.Component {
-  state = {
-    name: '',
+
+const CreateAccount = props => {
+  const [userData, setUserData] = useState({
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
-    confirmPassword: '',
-    leaves: 0,
-    showAlert: false,
-    alertMsg: ''
-  }
+    confirmPassword: ''
+  })
+  const [showAlert, setShowAlert] = useState(false)
+  const [alertMsg, setAlertMsg] = useState('')
+  const [CreateUser, {data}] = useMutation(CREATE_USER)
+  const {navigate} = props.navigation
 
-  createUser = async () => {
-    const {client, navigation} = this.props
-    const {navigate} = navigation
-    const {name, email, password, confirmPassword, leaves} = this.state
-    if ([name, email, password, confirmPassword].every(f => f.trim())) {
-      if (password === confirmPassword) {
-        try {
-          const result = await client.mutate({
-            mutation: gql`
-              mutation CreateUser(
-                $id: ID!
-                $name: String!
-                $email: String!
-                $password: String!
-                $leaves: Int!
-              ) {
-                CreateUser(
-                  id: $id
-                  name: $name
-                  email: $email
-                  password: $password
-                  leaves: $leaves
-                ) {
-                  _id
-                  id
-                  name
-                  email
-                }
-              }
-            `,
-            variables: {
-              id: uuid(),
-              name,
-              email,
-              password,
-              leaves
-            }
-          })
-          const userData = result.data.CreateUser
-          await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
-          navigate('Snap', userData)
-        } catch (err) {
-          this.setState({
-            showAlert: true,
-            alertMsg: 'Must fill out all required fields!'
-          })
-        }
-      } else {
-        this.setState({showAlert: true, alertMsg: 'Passwords must match!'})
-        // alert('Passwords must match!')
+  const createUser = async () => {
+    Object.keys(userData).forEach(key => {
+      setUserData({...userData, [key]: userData[key]})
+    })
+    if (password === confirmPassword) {
+      try {
+        const result = CreateUser({
+          variables: {
+            name: firstName + ' ' + lastName,
+            id: uuid(),
+            email,
+            password
+          }
+        })
+        console.log(data)
+        console.log(result)
+        const userData = result.data.CreateUser
+        // await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
+        navigate('Snap', userData)
+      } catch (err) {
+        setShowAlert(true)
+        setAlertMsg('Must fill out all required fields!')
       }
     } else {
-      this.setState({
-        showAlert: true,
-        alertMsg: 'Must fill out required fields!'
-      })
-      // alert('Must fill out required fields!')
+      setShowAlert(true)
+      setAlertMsg('Passwords must match!')
     }
   }
 
-  toggleAlert = () =>
-    this.setState(prevState => ({showAlert: !prevState.showAlert}))
-
-  render() {
-    const {navigate} = this.props.navigation
-    const {showAlert, alertMsg} = this.state
-    return (
-      <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
-        <Dialog.Container visible={showAlert}>
-          <Dialog.Title>Error</Dialog.Title>
-          <Dialog.Description>{alertMsg}</Dialog.Description>
-          <Dialog.Button label="OK" onPress={this.toggleAlert} />
-        </Dialog.Container>
-        <ScrollView contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/logo-gradient.png')
-                  : require('../assets/images/logo-gradient.png')
-              }
-              style={styles.welcomeImage}
-            />
-            <Text style={styles.title}>Plaze</Text>
-            <Text style={styles.subtitle}>create an account</Text>
-
-            <Input
-              style={styles.label}
-              onChangeText={v => this.setState({name: v})}
-              placeholder="Name"
-              autoCapitalize="none"
-            />
-            <Input
-              style={styles.label}
-              onChangeText={v => this.setState({email: v})}
-              placeholder="Email Address"
-              autoCapitalize="none"
-            />
-            <Input
-              secureTextEntry={true}
-              style={styles.label}
-              onChangeText={v => this.setState({password: v})}
-              placeholder="Password"
-              autoCapitalize="none"
-            />
-            <Input
-              secureTextEntry={true}
-              style={styles.label}
-              onChangeText={v => this.setState({confirmPassword: v})}
-              placeholder="Confirm Password"
-              autoCapitalize="none"
-            />
-
-            <GradientButton
-              style={{
-                marginTop: 10,
-                textAlign: 'center',
-                marginBottom: 10
-              }}
-              textStyle={{fontSize: 18}}
-              gradientBegin="#6CC7BD"
-              gradientEnd="#A5D38F"
-              gradientDirection="diagonal"
-              height={40}
-              width={200}
-              radius={0}
-              onPressAction={this.createUser}
-            >
-              register
-            </GradientButton>
-          </View>
-          <Text style={styles.login}>Already have an account?</Text>
-          <TouchableOpacity onPress={() => navigate('Home')}>
-            <Text
-              style={{
-                marginTop: 10,
-                fontSize: 18,
-                color: '#6CC7BD',
-                textAlign: 'center'
-              }}
-            >
-              Login
-            </Text>
-          </TouchableOpacity>
-        </ScrollView>
-      </View>
-    )
+  const toggleAlert = () => {
+    const newAlertStatus = !showAlert
+    setShowAlert(newAlertStatus)
   }
+
+  return (
+    <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
+      <Dialog.Container visible={showAlert}>
+        <Dialog.Title>Error</Dialog.Title>
+        <Dialog.Description>{alertMsg}</Dialog.Description>
+        <Dialog.Button label="OK" onPress={toggleAlert} />
+      </Dialog.Container>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+        <View style={styles.welcomeContainer}>
+          <Image
+            source={
+              __DEV__
+                ? require('../assets/images/logo-gradient.png')
+                : require('../assets/images/logo-gradient.png')
+            }
+            style={styles.welcomeImage}
+          />
+          <Text style={styles.title}>Plaze</Text>
+          <Text style={styles.subtitle}>create an account</Text>
+
+          <Input
+            style={styles.label}
+            onChangeText={v => setUserData({...userData, firstName: v})}
+            placeholder="First name"
+            autoCapitalize="none"
+          />
+          <Input
+            style={styles.label}
+            onChangeText={v => setUserData({...userData, lastName: v})}
+            placeholder="Last Name"
+            autoCapitalize="none"
+          />
+          <Input
+            style={styles.label}
+            onChangeText={v => setUserData({...userData, email: v})}
+            placeholder="Email Address"
+            autoCapitalize="none"
+          />
+          <Input
+            secureTextEntry={true}
+            style={styles.label}
+            onChangeText={v => setUserData({...userData, password: v})}
+            placeholder="Password"
+            autoCapitalize="none"
+          />
+          <Input
+            secureTextEntry={true}
+            style={styles.label}
+            onChangeText={v => setUserData({...userData, confirmPassword: v})}
+            placeholder="Confirm Password"
+            autoCapitalize="none"
+          />
+
+          <GradientButton
+            style={{
+              marginTop: 10,
+              textAlign: 'center',
+              marginBottom: 10
+            }}
+            textStyle={{fontSize: 18}}
+            gradientBegin="#6CC7BD"
+            gradientEnd="#A5D38F"
+            gradientDirection="diagonal"
+            height={40}
+            width={200}
+            radius={0}
+            onPressAction={createUser}
+          >
+            register
+          </GradientButton>
+        </View>
+        <Text style={styles.login}>Already have an account?</Text>
+        <TouchableOpacity onPress={() => navigate('Home')}>
+          <Text
+            style={{
+              marginTop: 10,
+              fontSize: 18,
+              color: '#6CC7BD',
+              textAlign: 'center'
+            }}
+          >
+            Login
+          </Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </View>
+  )
 }
 
 CreateAccount.navigationOptions = {

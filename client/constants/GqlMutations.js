@@ -21,48 +21,90 @@ Click to Mutate
 <h2>this is the {data} received as a whole object. {data.name + data.email} is the name and email</h2>
 */
 
-const CREATE_USER = gql`
-  mutation createUser($email: String!, $password: String!, $name: String!) {
-    CreateUser(email: $email, password: $password, name: $name, leaves: 0) {
+export const CREATE_USER = gql`
+  mutation createUser(
+    $id: ID!
+    $email: String!
+    $password: String!
+    $name: String!
+  ) {
+    CreateUser(
+      id: $id
+      email: $email
+      password: $password
+      name: $name
+      leaves: 0
+    ) {
       name
       email
-      _id
+      id
       leaves
     }
-    UpdateUser
   }
 `
 
-// spread the plant and add user info
-const ADD_PIN_AND_PLANT_TO_USER = gql`
-  mutation addPinAndPlantToUser(
+// spread the plant and add user info, generate 2 id's and pass them as pinId and plantId
+export const CREATE_PIN_PLANT = gql`
+  mutation createPinPlant(
     $commonName: String!
     $scientificName: String!
     $description: String!
     $imageURL: String!
-    $poisonous: Boolean!
-    $email: String!
+    $isPoisonous: Boolean!
+    $pinId: ID!
+    $plantId: ID!
     $lat: Float!
     $lng: Float!
   ) {
     CreatePlant(
+      id: $plantId
       commonName: $commonName
       scientificName: $scientificName
       description: $description
       imageURL: $imageURL
-      poisonous: $poisonous
+      isPoisonous: $isPoisonous
     ) {
-      _id
+      id
       commonName
       scientificName
       description
       imageURL
-      poisonous
+      isPoisonous
     }
-    CreatePin(lat: $lat, lng: $lng) {
-      _id
+    CreatePin(id: $pinId, lat: $lat, lng: $lng) {
+      id
       lat
       lng
+    }
+  }
+`
+
+export const ADD_PIN_PLANT_TO_USER = gql`
+  mutation addPinPlantToUser($pinId: ID!, $plantId: ID!, $userId: ID!) {
+    AddUserPlants(from: {id: $userId}, to: {id: $pinId}) {
+      from {
+        name
+      }
+      to {
+        commonName
+      }
+    }
+    AddUserPins(from: {id: $userId}, to: {id: $pinId}) {
+      from {
+        name
+      }
+      to {
+        lat
+        lng
+      }
+    }
+  }
+`
+
+export const UPDATE_USER_LEAVES = gql`
+  mutation updateUserLeaves($id: ID!, $leaves: Int!) {
+    UpdateUser(id: $id, leaves: $leaves) {
+      leaves
     }
   }
 `
