@@ -1,4 +1,4 @@
-export const getPlantInfo = commonName => {
+export const getPlantInfoQuerry = commonName => {
   switch (commonName) {
     case 'Poison Ivy':
       return {

@@ -6,16 +6,26 @@ import * as FileSystem from 'expo-file-system'
 import axios from 'axios'
 import {Ionicons} from '@expo/vector-icons'
 import PlantModal from '../components/PlantModal'
+import {useDispatch, useSelector} from 'react-redux'
+import * as Location from 'expo-location'
 
 import styled from 'styled-components'
-import {getPlantDataStubbedQuerry} from '../store/plants'
+import {getPlantInfoQuerry} from '../store/plants'
+
+import {setLocation} from '../store/actions'
 
 export default function SnapScreen() {
   const [isPlantInfoReceived, setIsPlantInfoReceived] = useState(false)
   const [hasCameraPermission, setHasCameraPermission] = useState('null')
 
+  const dispatch = useDispatch()
+
   let camera = null
 
+  const locationReducer = useSelector(state => state.locationReducer)
+  const {location} = locationReducer
+
+  useEffect(() => getLocation(), [])
   useEffect(() => {
     async function startUp() {
       const {status} = await Permissions.askAsync(Permissions.CAMERA)
@@ -29,6 +39,23 @@ export default function SnapScreen() {
     startUp()
   }, [])
 
+  const fetchLocationAsync = async () => {
+    try {
+      let {status} = await Permissions.askAsync(Permissions.LOCATION)
+      if (status !== 'granted') {
+        let errorMessage = 'Permission to access location was denied'
+        console.log(errorMessage)
+      }
+      let location = await Location.getCurrentPositionAsync({})
+      dispatch(setLocation(location))
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const getLocation = () => {
+    fetchLocationAsync() //use this indirect func because useEffect does not accept promises as callbacks directly
+  }
   const takePicture = () => {
     if (camera) {
       camera.takePictureAsync({onPictureSaved})
@@ -40,11 +67,11 @@ export default function SnapScreen() {
   }
 
   const getPlantData = function(plantLabel) {
-    return getPlantDataStubbedQuerry(plantLabel)
+    return getPlantInfoQuerry(plantLabel)
   }
 
   const onPictureSaved = photo => {
-    const ipAddressOfServer = '10.0.0.48' // <--- PUT YOUR OWN IP HERE
+    const ipAddressOfServer = '172.17.23.197' // <--- PUT YOUR OWN IP HERE
     const uriParts = photo.uri.split('.')
     const fileType = uriParts[uriParts.length - 1]
 
@@ -57,8 +84,12 @@ export default function SnapScreen() {
     axios
       .post(`http://${ipAddressOfServer}:1234/image`, formData)
       .then(response => {
+        console.log(response.data.commonName)
+        // if (response.data.score < 0.5) { throw(new Error) }
         setIsPlantInfoReceived(true)
-        console.log(response.data)
+
+        console.log('getPlantData', getPlantData(response.data.commonName))
+        console.log(location)
 
         /*
         1. Take photo
@@ -76,7 +107,8 @@ export default function SnapScreen() {
         6. PIN creation
         */
       })
-      .catch(() => {
+      .catch(err => {
+        console.log(err)
         alert('Plant has not been identified')
       })
   }
