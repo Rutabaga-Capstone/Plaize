@@ -8,6 +8,7 @@ import {Ionicons} from '@expo/vector-icons'
 import PlantModal from '../components/PlantModal'
 
 import styled from 'styled-components'
+import {getPlantDataStubbedQuerry} from '../store/plants'
 
 export default function SnapScreen() {
   const [isPlantInfoReceived, setIsPlantInfoReceived] = useState(false)
@@ -38,10 +39,12 @@ export default function SnapScreen() {
     setIsPlantInfoReceived(false)
   }
 
-  const onPictureSaved = photo => {
-    setIsPlantInfoReceived(true)
+  const getPlantData = function(plantLabel) {
+    return getPlantDataStubbedQuerry(plantLabel)
+  }
 
-    const ipAddressOfServer = '172.17.23.197' // <--- PUT YOUR OWN IP HERE
+  const onPictureSaved = photo => {
+    const ipAddressOfServer = '10.0.0.48' // <--- PUT YOUR OWN IP HERE
     const uriParts = photo.uri.split('.')
     const fileType = uriParts[uriParts.length - 1]
 
@@ -54,15 +57,27 @@ export default function SnapScreen() {
     axios
       .post(`http://${ipAddressOfServer}:1234/image`, formData)
       .then(response => {
+        setIsPlantInfoReceived(true)
         console.log(response.data)
-        alert(
-          `Plant ${response.data.commonName}\n probability${
-            response.data.score
-          } `
-        )
+
+        /*
+        1. Take photo
+        2. On mobile device , via axios upload the photo to backend
+        3. Backend will hit Google API and respond with  i.e.
+
+        {
+        commonName: 'Poison Ivy',
+        score: 0.5741239190101624
+        }
+
+        if the score is not high enough I will show alert that plant has not been recognized
+        4. Frontend client will shoot querry asking for more info about 'Poison Ivy'
+        5. Once I have info about posion ivy, location, I am ready to create pin
+        6. PIN creation
+        */
       })
-      .catch(err => {
-        console.log(err)
+      .catch(() => {
+        alert('Plant has not been identified')
       })
   }
 
