@@ -28,13 +28,18 @@ const CREATE_USER = gql`
     $password: String!
     $name: String!
   ) {
-    CreateUser(email: $email, password: $password, name: $name, leaves: 0) {
+    CreateUser(
+      id: $id
+      email: $email
+      password: $password
+      name: $name
+      leaves: 0
+    ) {
       name
       email
       id
       leaves
     }
-    UpdateUser
   }
 `
 
@@ -45,7 +50,7 @@ const CREATE_PIN_PLANT = gql`
     $scientificName: String!
     $description: String!
     $imageURL: String!
-    $poisonous: Boolean!
+    $isPoisonous: Boolean!
     $pinId: ID!
     $plantId: ID!
     $lat: Float!
@@ -57,14 +62,14 @@ const CREATE_PIN_PLANT = gql`
       scientificName: $scientificName
       description: $description
       imageURL: $imageURL
-      poisonous: $poisonous
+      isPoisonous: $isPoisonous
     ) {
       id
       commonName
       scientificName
       description
       imageURL
-      poisonous
+      isPoisonous
     }
     CreatePin(id: $pinId, lat: $lat, lng: $lng) {
       id

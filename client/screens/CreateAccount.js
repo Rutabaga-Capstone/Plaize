@@ -1,5 +1,5 @@
 import * as WebBrowser from 'expo-web-browser'
-import React from 'react'
+import React, {useState} from 'react'
 import {
   Image,
   Platform,
@@ -29,7 +29,7 @@ const CreateAccount = props => {
   })
   const [showAlert, setShowAlert] = useState(false)
   const [alertMsg, setAlertMsg] = useState('')
-  const [CreateUser] = useMutation(CREATE_USER)
+  const [CreateUser, {data}] = useMutation(CREATE_USER)
   const {navigate} = props.navigation
 
   const createUser = async () => {
@@ -38,8 +38,7 @@ const CreateAccount = props => {
     })
     if (password === confirmPassword) {
       try {
-        const result = await client.mutate({
-          mutation: CREATE_USER,
+        const result = CreateUser({
           variables: {
             name: firstName + ' ' + lastName,
             id: uuid(),
@@ -47,8 +46,10 @@ const CreateAccount = props => {
             password
           }
         })
-        const userData = result.data.CreateUser
-        await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
+        console.log(data)
+        console.log(result)
+        // const userData = data.CreateUser
+        // await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
         navigate('Snap', userData)
       } catch (err) {
         setShowAlert(true)

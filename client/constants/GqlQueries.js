@@ -38,7 +38,7 @@ export const GET_USER_PROFILE_INFO = gql`
         scientificName
         imageURL
         description
-        poisonous
+        isPoisonous
       }
     }
   }
@@ -55,7 +55,7 @@ export const GET_ALL_USER_INFO = gql`
         scientificName
         imageURL
         description
-        poisonous
+        isPoisonous
       }
       lat
       lng
@@ -78,7 +78,7 @@ export const GET_PLANT_BY_COMMON_NAME = gql`
       scientificName
       description
       imageURL
-      poisonous
+      isPoisonous
     }
   }
 `
