@@ -106,7 +106,7 @@ export default function MapScreen(props) {
     //     .catch(error => alert(error.message))
     //     .finally(() => setIsFetching(false));
 
-    //OPTION 3 - GRAPHQL - TBD
+    // OPTION 3 - GRAPHQL - TBD
     setTimeout(() => {
       if (error) {
         console.log("Oh no there's an error!")
@@ -147,10 +147,10 @@ export default function MapScreen(props) {
   const distanceFromLocation = (pin, accuracy = 1) => {
     const distance = geolib.getDistance(
       location.coords,
-      pin.coordinate,
+      {latitude: pin.lat, longitude: pin.lng},
       accuracy
     )
-    return <Text>{distance.toString()} meters away</Text>
+    return <Text>{distance} meters away</Text>
   }
 
   const handleMarkerOnPress = pin => {
@@ -199,7 +199,7 @@ export default function MapScreen(props) {
                   <Marker
                     key={i}
                     title={pin.title}
-                    coordinate={pin.coordinate}
+                    coordinate={{latitude: pin.lat, longitude: pin.lng}}
                     pinColor={pin.hasPoisonousPlants ? 'red' : 'green'}
                     description={pin.description}
                     id={pin.id}
@@ -508,4 +508,4 @@ const styles99 = StyleSheet.create({
 //     tagsSelected,
 //     radius: radius
 //   })
-// }
+//

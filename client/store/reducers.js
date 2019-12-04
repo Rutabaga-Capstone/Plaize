@@ -15,7 +15,24 @@ let pinsState = {pins: []}
 const pinsReducer = (state = pinsState, action) => {
   switch (action.type) {
     case SET_PINS:
-      return {...state, pins: action.pins}
+      if (action.pins) {
+        return {
+          ...state,
+          pins: action.pins.map(pin => {
+            return {
+              pin: {
+                ...pin,
+                title: pin.plants[0].commonName,
+                description: pin.plants[0].isPoisonous
+                  ? 'Poisonous'
+                  : 'Nonpoisonous'
+              }
+            }
+          })
+        }
+      } else {
+        return state
+      }
     case ADD_PIN:
       return {...state, pins: [...state.pins, action.pin]}
     default:
@@ -43,11 +60,27 @@ const regionReducer = (state = regionState, action) => {
   }
 }
 
-let pinSelectedState = {pinSelected: {}}
+let pinSelectedState = {
+  pinSelected: {plants: [{commonName: 'hi', isPoisonous: true}]}
+}
 const pinSelectedReducer = (state = pinSelectedState, action) => {
   switch (action.type) {
     case SET_PIN_SELECTED:
-      return {...state, pinSelected: action.pinSelected}
+      console.log('action.pinSelected: ', action.pinSelected)
+      if (action.pinSelected && action.pinSelected.plants) {
+        return {
+          ...state,
+          pinSelected: {
+            ...action.pinSelected,
+            title: action.pinSelected.plants[0].commonName,
+            description: action.pinSelected.plants[0].isPoisonous
+              ? 'Poisonous'
+              : 'Nonpoisonous'
+          }
+        }
+      } else {
+        return state
+      }
     case CLEAR_PIN_SELECTED:
       return {...state, pinSelected: action.pinSelected}
     default:

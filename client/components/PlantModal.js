@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import {
   Animated,
@@ -17,103 +17,103 @@ import {
   Image
 } from 'react-native'
 import * as Icon from '@expo/vector-icons'
-import {useDispatch, useSelector} from 'react-redux'
-import {closeModal} from '../store/actions'
 import SinglePlant from './SinglePlant'
+
+import {useDispatch, useSelector} from 'react-redux'
+
+import {setPinSelected} from '../store/actions'
 
 const screenHeight = Dimensions.get('window').height
 
 // const dispatch = useDispatch()
 
-class CustomModal extends React.Component {
-  state = {
-    top: new Animated.Value(900)
-  }
+export default function PlantModal(props) {
+  const [top, setTop] = useState(new Animated.Value(900))
+  const pinSelected = useSelector(state => state.pinSelected)
+  console.log('pinSelected', pinSelected)
 
-  componentDidMount() {
-    this.toggleModal()
-  }
+  useEffect(() => toggleModal(), [])
+  useEffect(() => closeModal(), [])
 
-  // export default function PlantModal(props)
-
-  toggleModal = () => {
-    Animated.spring(this.state.top, {
+  const toggleModal = () => {
+    Animated.spring(top, {
       toValue: 174
     }).start()
   }
 
-  closeModal = () => {
-    Animated.spring(this.state.top, {
+  const closeModal = () => {
+    Animated.spring(top, {
       toValue: screenHeight
     }).start()
-    if (this.props.disableModalCallback) {
-      this.props.disableModalCallback()
+    if (props.disableModalCallback) {
+      props.disableModalCallback()
     }
   }
 
-  render(props) {
-    return (
-      <Container>
-        <AnimatedContainer style={{top: this.state.top}}>
-          <Header>
-            {this.props.pinSelected.plants.map((plant, i) => (
-              <Text key={i} style={styles.title}>
-                {' '}
-                {plant.commonName}{' '}
-              </Text>
-            ))}
-            <Image
-              source={require('../assets/images/poison-oak.png')}
-              style={styles.welcomeImage}
-            />
-          </Header>
-          <TouchableOpacity
-            onPress={this.closeModal}
-            style={{
-              position: 'absolute',
-              top: -80,
-              right: '-5%',
-              marginLeft: -22,
-              zIndex: 1
-            }}
-          >
-            <CloseView style={{elevation: 10}}>
-              <Icon.Ionicons name="ios-close" size={44} color="#6cc7bd" />
-            </CloseView>
-          </TouchableOpacity>
-          <Body>
-            {this.props.pinSelected.plants.map((plant, i) => (
-              <View key={i} style={styles.subtitle}>
-                <Text style={styles.screenText}>
+  return (
+    <Container>
+      {pinSelected &&
+        pinSelected.plants && (
+          <AnimatedContainer style={{top: top}}>
+            <Header>
+              {pinSelected.plants.map((plant, i) => (
+                <Text key={i} style={styles.title}>
                   {' '}
-                  {plant.isPoisonous ? (
-                    <Image
-                      source={require('../assets/images/poisonous2.png')}
-                      style={styles.poisonImage}
-                    />
-                  ) : (
-                    'Nonpoisonous'
-                  )}
+                  {plant.commonName}{' '}
                 </Text>
-              </View>
-            ))}
-            {this.props.pinSelected.plants.map((plant, i) => (
-              <View key={i} style={styles.subtitle}>
-                <Text style={styles.subtitle}>Scientific Name</Text>
-                <Text style={styles.screenText}>{plant.scientificName}</Text>
-              </View>
-            ))}
-            {this.props.pinSelected.plants.map((plant, i) => (
-              <View key={i} style={styles.subtitle}>
-                <Text style={styles.subtitle}>Description</Text>
-                <Text style={styles.screenText}>{plant.description}</Text>
-              </View>
-            ))}
-          </Body>
-        </AnimatedContainer>
-      </Container>
-    )
-  }
+              ))}
+              <Image
+                source={require('../assets/images/poison-oak.png')}
+                style={styles.welcomeImage}
+              />
+            </Header>
+            <TouchableOpacity
+              onPress={closeModal}
+              style={{
+                position: 'absolute',
+                top: -80,
+                right: '-5%',
+                marginLeft: -22,
+                zIndex: 1
+              }}
+            >
+              <CloseView style={{elevation: 10}}>
+                <Icon.Ionicons name="ios-close" size={44} color="#6cc7bd" />
+              </CloseView>
+            </TouchableOpacity>
+            <Body>
+              {pinSelected.plants.map((plant, i) => (
+                <View key={i} style={styles.subtitle}>
+                  <Text style={styles.screenText}>
+                    {' '}
+                    {plant.isPoisonous ? (
+                      <Image
+                        source={require('../assets/images/poisonous2.png')}
+                        style={styles.poisonImage}
+                      />
+                    ) : (
+                      'Nonpoisonous'
+                    )}
+                  </Text>
+                </View>
+              ))}
+              {pinSelected.plants.map((plant, i) => (
+                <View key={i} style={styles.subtitle}>
+                  <Text style={styles.subtitle}>Scientific Name</Text>
+                  <Text style={styles.screenText}>{plant.scientificName}</Text>
+                </View>
+              ))}
+              {pinSelected.plants.map((plant, i) => (
+                <View key={i} style={styles.subtitle}>
+                  <Text style={styles.subtitle}>Description</Text>
+                  <Text style={styles.screenText}>{plant.description}</Text>
+                </View>
+              ))}
+            </Body>
+          </AnimatedContainer>
+        )}
+    </Container>
+  )
 }
 
 const Container = styled.View`
@@ -217,5 +217,3 @@ const styles = StyleSheet.create({
     marginRight: 10
   }
 })
-
-export default CustomModal
