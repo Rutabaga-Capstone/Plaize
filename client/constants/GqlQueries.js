@@ -23,6 +23,12 @@ export const CHECK_USER_EXISTS = gql`
   query logInUser($email: String!, $password: String!) {
     user(email: $email, password: $password) {
       id
+      name
+      email
+      leaves
+      regDate {
+        formatted
+      }
     }
   }
 `
