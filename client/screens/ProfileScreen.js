@@ -77,68 +77,81 @@ class ProfileScreen extends React.Component {
           {/* Welcome Container */}
           <View style={styles.welcomeContainer}>
             {/* TOP 'NAVIGATION' */}
-            <View
-              style={{
-                flex: 1,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginBottom: 10,
-                paddingBottom: 10,
-                marginTop: 10
-              }}
-            >
+            <View style={{flex: 1, flexDirection: 'row', marginTop: 15}}>
               <View
                 style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  height: 30,
+                  width: '33.3%',
+                  height: 40,
+                  textAlign: 'left',
                   borderBottomColor: '#C7CAD4',
                   borderBottomWidth: 1,
                   marginBottom: 10
                 }}
               >
-                <SimpleLineIcons
-                  onPress={this.logoutUser}
-                  name="logout"
-                  size={25}
-                  color="#C7CAD4"
+                <Text
                   style={{
-                    marginLeft: 10
+                    textAlign: 'left',
+                    marginLeft: 15
                   }}
-                />
+                >
+                  <SimpleLineIcons
+                    name="logout"
+                    onPress={this.logoutUser}
+                    size={25}
+                    color="#C7CAD4"
+                    style={{
+                      textAlign: 'left'
+                    }}
+                  />
+                </Text>
               </View>
+
               <View
                 style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  height: 30,
-                  textAlign: 'center',
+                  width: '33.3%',
+                  height: 40,
+                  textAlign: 'middle',
                   borderBottomColor: '#C7CAD4',
                   borderBottomWidth: 1,
                   marginBottom: 10
                 }}
               >
-                <Text style={{color: '#C7CAD4', fontSize: 20}}>Plaze</Text>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontSize: 24,
+                    fontFamily: 'yorkten',
+                    color: '#C7CAD4'
+                  }}
+                >
+                  Plaze
+                </Text>
               </View>
+
               <View
                 style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  height: 30,
+                  width: '33.3%',
+                  height: 40,
                   textAlign: 'right',
                   borderBottomColor: '#C7CAD4',
                   borderBottomWidth: 1,
                   marginBottom: 10
                 }}
               >
-                <Ionicons
-                  name="ios-leaf"
-                  size={25}
-                  color="#C7CAD4"
+                <Text
                   style={{
-                    marginRight: -20
+                    textAlign: 'right',
+                    marginRight: 15
                   }}
-                />
+                >
+                  <Ionicons
+                    name="ios-leaf"
+                    size={25}
+                    style={{
+                      color: '#C7CAD4'
+                    }}
+                  />
+                </Text>
               </View>
             </View>
             {/* END TOP 'NAVIGATION' */}
@@ -284,20 +297,19 @@ class ProfileScreen extends React.Component {
                     }}
                   >
                     {plants &&
-                      plants
-                        .slice(0, 8)
-                        .map((p, i) => (
-                          <Image
-                            key={i}
-                            style={{
-                              width: 100,
-                              height: 100,
-                              marginRight: 20,
-                              marginBottom: 20
-                            }}
-                            source={{uri: p.imageURL}}
-                          />
-                        ))}
+                      plants.slice(0, 8).map((p, i) => (
+                        <Image
+                          key={i}
+                          style={{
+                            width: 100,
+                            height: 100,
+                            marginRight: 20,
+                            marginBottom: 20
+                          }}
+                          //onPress=
+                          source={{uri: p.imageURL}}
+                        />
+                      ))}
                   </View>
                 </View>
               </View>
@@ -375,7 +387,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     marginLeft: 10,
-    marginTop: 40,
+    marginTop: 50,
     resizeMode: 'contain',
     alignItems: 'center',
     justifyContent: 'center'
