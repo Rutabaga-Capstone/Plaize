@@ -88,3 +88,15 @@ export const GET_PLANT_BY_COMMON_NAME = gql`
     }
   }
 `
+
+export const GET_ALL_PINS = gql`
+  query {
+    Pin {
+      lat
+      lng
+      plants {
+        commonName
+      }
+    }
+  }
+`

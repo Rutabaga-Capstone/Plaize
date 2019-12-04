@@ -48,8 +48,12 @@ import {Slider} from 'react-native-elements'
 import SwitchSelector from 'react-native-switch-selector'
 import {TagSelect} from 'react-native-tag-select'
 
+import {useQuery} from '@apollo/react-hooks'
+import {GET_ALL_PINS} from '../constants/GqlQueries'
+
 export default function MapScreen(props) {
   const dispatch = useDispatch()
+  const {loading, error, data} = useQuery(GET_ALL_PINS)
 
   //1 - DECLARE VARIABLES
   const [isFetching, setIsFetching] = useState(false)
@@ -103,6 +107,17 @@ export default function MapScreen(props) {
     //     .finally(() => setIsFetching(false));
 
     //OPTION 3 - GRAPHQL - TBD
+    // setTimeout(() => {
+    //   if (error) {
+    //     console.log("Oh no there's an error!");
+    //   }
+    //   else if (data) {
+    //     const tempPins = data.Pin
+    //     const pins = pins.map(pin => ({...pin, plants: pin.plants[0]}))
+    //     dispatch(setPins(pins))
+    //     setIsFetching(false)
+    //   }
+    // }, 2000)
   }
 
   const fetchLocationAsync = async () => {
