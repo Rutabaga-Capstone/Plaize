@@ -25,26 +25,21 @@ export const CHECK_USER_EXISTS = gql`
       _id
       name
       email
-      leaves
-      regDate {
-        formatted
-      }
     }
   }
 `
 
 export const GET_USER_PROFILE_INFO = gql`
   query getUserProfileInfo($email: String!) {
-    user(email: $email, password: $password) {
+    user(email: $email) {
       name
       email
       leaves
+      regDate {
+        formatted
+      }
       plants {
-        commonName
-        scientificName
         imageURL
-        description
-        poisonous
       }
     }
   }
