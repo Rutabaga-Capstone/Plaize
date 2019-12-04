@@ -9,9 +9,9 @@ import PlantModal from '../components/PlantModal'
 import {useMutation, useApolloClient} from '@apollo/react-hooks'
 import {
   CREATE_PIN_PLANT,
-  ADD_PIN_PLANT_TO_USER,
-  GET_PLANT_BY_COMMON_NAME
+  ADD_PIN_PLANT_TO_USER
 } from '../constants/GqlMutations'
+import {GET_PLANT_BY_COMMON_NAME} from '../constants/GqlQueries'
 import uuid from 'react-uuid'
 import styled from 'styled-components'
 import {setPinSelected, setLocation} from '../store/actions'
@@ -73,10 +73,6 @@ export default function SnapScreen() {
     setIsPlantInfoReceived(false)
   }
 
-  const getPlantData = function(plantLabel) {
-    return getPlantInfoQuerry(plantLabel)
-  }
-
   const onPictureSaved = photo => {
     const ipAddressOfServer = '172.17.22.211' // <--- PUT YOUR OWN IP HERE
     const uriParts = photo.uri.split('.')
@@ -93,10 +89,6 @@ export default function SnapScreen() {
       .then(response => {
         console.log(response.data.commonName)
         // if (response.data.score < 0.5) { throw(new Error) }
-        setIsPlantInfoReceived(true)
-
-        console.log('getPlantData', getPlantData(response.data.commonName))
-        console.log(location)
 
         /*
         1. Take photo
@@ -121,26 +113,39 @@ export default function SnapScreen() {
               commonName: 'Poison Ivy'
             }
           })
-          .then(location => {
+          .then(plant => {
+            delete plant.data.plant.__typename
+            console.log('plant:', plant)
+            console.log('then after query', {
+              ...plant.data.plant,
+              plantId: uuid(),
+              pinId: uuid(),
+              lat: location.coords.latitude,
+              lng: location.coords.longitude
+            })
             CreatePinPlant({
               variables: {
-                ...plant,
+                ...plant.data.plant,
                 plantId: uuid(),
                 pinId: uuid(),
-                lat: location.latitude,
-                lng: location.longitude
+                lat: location.coords.latitude,
+                lng: location.coords.longitude
               }
             })
               .then(creations => {
+                console.log('creations: ', creations)
                 AddPinPlantToUser({
                   variables: {
                     pinId: creations.data.CreatePin.id,
                     plantId: creations.data.CreatePlant.id,
-                    userId: uuid() // needs to be related to currentUser ID
+                    userId: '5' // needs to be related to currentUser ID
                   }
                 })
-                const pinSelected = creations.CreatePin
-                dispatch(setPinSelected(pinSelected))
+                const newpin = creations.data.CreatePin
+
+                dispatch(setPinSelected(newpin))
+                setIsPlantInfoReceived(true)
+                console.log('newpin', newpin.plants)
               })
               .catch(() => {
                 console.log('Unable to associate plant with user')

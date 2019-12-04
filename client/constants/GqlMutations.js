@@ -89,7 +89,7 @@ export const CREATE_PIN_PLANT = gql`
 
 export const ADD_PIN_PLANT_TO_USER = gql`
   mutation addPinPlantToUser($pinId: ID!, $plantId: ID!, $userId: ID!) {
-    AddUserPlants(from: {id: $userId}, to: {id: $pinId}) {
+    AddUserPlants(from: {id: $userId}, to: {id: $plantId}) {
       from {
         name
       }
@@ -104,6 +104,14 @@ export const ADD_PIN_PLANT_TO_USER = gql`
       to {
         lat
         lng
+      }
+    }
+    AddPinPlants(from: {id: $pinId}, to: {id: $plantId}) {
+      from {
+        id
+      }
+      to {
+        id
       }
     }
   }
