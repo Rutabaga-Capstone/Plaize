@@ -5,7 +5,7 @@ const morgan = require('morgan')
 const compression = require('compression')
 const {typeDefs, resolvers} = require('./schema')
 const neo4j = require('neo4j-driver').v1
-const {augmentSchema, makeAugmentedSchema} = require('neo4j-graphql-js')
+const {makeAugmentedSchema} = require('neo4j-graphql-js')
 require('dotenv').config()
 const PORT = process.env.PORT
 const GRAPHQL_PORT = process.env.GRAPHQL_PORT
@@ -23,7 +23,6 @@ const driver = neo4j.driver(
   process.env.NEO4J_URI,
   neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PASSWORD)
 )
-
 const server = new ApolloServer({
   schema,
   context: {driver},
@@ -75,5 +74,4 @@ async function bootApp() {
   await createApp()
   await startListening()
 }
-
 bootApp()
