@@ -48,7 +48,7 @@ const CreateAccount = props => {
         })
         console.log(data)
         console.log(result)
-        // const userData = data.CreateUser
+        const userData = result.data.CreateUser
         // await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
         navigate('Snap', userData)
       } catch (err) {

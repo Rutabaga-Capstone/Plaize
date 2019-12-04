@@ -21,7 +21,7 @@ Click to Mutate
 <h2>this is the {data} received as a whole object. {data.name + data.email} is the name and email</h2>
 */
 
-const CREATE_USER = gql`
+export const CREATE_USER = gql`
   mutation createUser(
     $id: ID!
     $email: String!
@@ -44,7 +44,7 @@ const CREATE_USER = gql`
 `
 
 // spread the plant and add user info, generate 2 id's and pass them as pinId and plantId
-const CREATE_PIN_PLANT = gql`
+export const CREATE_PIN_PLANT = gql`
   mutation createPinPlant(
     $commonName: String!
     $scientificName: String!
@@ -79,7 +79,7 @@ const CREATE_PIN_PLANT = gql`
   }
 `
 
-const ADD_PIN_PLANT_TO_USER = gql`
+export const ADD_PIN_PLANT_TO_USER = gql`
   mutation addPinPlantToUser($pinId: ID!, $plantId: ID!, $userId: ID!) {
     AddUserPlants(from: {id: $userId}, to: {id: $pinId}) {
       from {
@@ -101,7 +101,7 @@ const ADD_PIN_PLANT_TO_USER = gql`
   }
 `
 
-const UPDATE_USER_LEAVES = gql`
+export const UPDATE_USER_LEAVES = gql`
   mutation updateUserLeaves($id: ID!, $leaves: Int!) {
     UpdateUser(id: $id, leaves: $leaves) {
       leaves
