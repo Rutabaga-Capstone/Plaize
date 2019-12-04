@@ -6,6 +6,13 @@ import * as FileSystem from 'expo-file-system'
 import axios from 'axios'
 import {Ionicons} from '@expo/vector-icons'
 import PlantModal from '../components/PlantModal'
+import {useMutation, useApolloClient} from '@apollo/react-hooks'
+import {
+  CREATE_PIN_PLANT,
+  ADD_PIN_PLANT_TO_USER,
+  GET_PLANT_BY_COMMON_NAME
+} from '../constants/GqlMutations'
+import uuid from 'react-uuid'
 
 import styled from 'styled-components'
 import {getPlantDataStubbedQuerry} from '../store/plants'
@@ -13,7 +20,9 @@ import {getPlantDataStubbedQuerry} from '../store/plants'
 export default function SnapScreen() {
   const [isPlantInfoReceived, setIsPlantInfoReceived] = useState(false)
   const [hasCameraPermission, setHasCameraPermission] = useState('null')
-
+  const client = useApolloClient()
+  const [CreatePinPlant] = useMutation(CREATE_PIN_PLANT)
+  const [AddPinPlantToUser] = useMutation(ADD_PIN_PLANT_TO_USER)
   let camera = null
 
   useEffect(() => {
@@ -75,6 +84,47 @@ export default function SnapScreen() {
         5. Once I have info about posion ivy, location, I am ready to create pin
         6. PIN creation
         */
+        client
+          .query({
+            query: GET_PLANT_BY_COMMON_NAME,
+            variables: {
+              commonName: response.data.commonName
+            }
+          })
+          .then(async plant => {
+            Permissions.askAsync(Permissions.LOCATION).then(res => {
+              if (res.status !== 'granted') {
+                let errorMessage = 'Permission to access location was denied'
+                console.log(errorMessage)
+              }
+              Location.getCurrentPositionAsync({}).then(location => {
+                CreatePinPlant({
+                  variables: {
+                    ...plant,
+                    plantId: uuid(),
+                    pinId: uuid(),
+                    lat: location.latitude,
+                    lng: location.longitude
+                  }
+                })
+                  .then(creations => {
+                    AddPinPlantToUser({
+                      variables: {
+                        pinId: creations.data.CreatePin.id,
+                        plantId: creations.data.CreatePlant.id,
+                        userId: uuid() // needs to be related to currentUser ID
+                      }
+                    })
+                  })
+                  .catch(() => {
+                    console.log('Unable to associate plant with user')
+                  })
+              })
+            })
+          })
+          .catch(() => {
+            console.log('Could not query for plant')
+          })
       })
       .catch(() => {
         alert('Plant has not been identified')
