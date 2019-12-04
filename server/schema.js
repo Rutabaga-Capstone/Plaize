@@ -40,7 +40,7 @@ const typeDefs = `
     scientificName: String
     imageURL: String
     description: String
-    poisonous: Boolean
+    isPoisonous: Boolean
     user: User @relation(name: "FOUND", direction: "IN")
   }
 
