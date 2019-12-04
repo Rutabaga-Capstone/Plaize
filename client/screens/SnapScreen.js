@@ -141,11 +141,16 @@ export default function SnapScreen() {
                     userId: '5' // needs to be related to currentUser ID
                   }
                 })
-                const newpin = creations.data.CreatePin
-
-                dispatch(setPinSelected(newpin))
-                setIsPlantInfoReceived(true)
-                console.log('newpin', newpin.plants)
+                  .then(() => {
+                    const newpin = creations.data.CreatePin
+                    dispatch(setPinSelected(newpin))
+                    setIsPlantInfoReceived(true)
+                    console.log('newpin', newpin)
+                    console.log('newpin.plants', newpin.plants)
+                  })
+                  .catch(() => {
+                    console.log('unable to dispatch to associate plant to pin')
+                  })
               })
               .catch(() => {
                 console.log('Unable to associate plant with user')
