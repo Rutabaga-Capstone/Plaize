@@ -75,6 +75,14 @@ export const CREATE_PIN_PLANT = gql`
       id
       lat
       lng
+      plants {
+        id
+        commonName
+        scientificName
+        description
+        imageURL
+        isPoisonous
+      }
     }
   }
 `

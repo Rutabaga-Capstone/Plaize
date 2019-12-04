@@ -36,14 +36,19 @@ const CreateAccount = props => {
     Object.keys(userData).forEach(key => {
       setUserData({...userData, [key]: userData[key]})
     })
-    if (password === confirmPassword) {
+    if (userData.password === userData.confirmPassword) {
       try {
-        const result = CreateUser({
+        const result = await CreateUser({
           variables: {
-            name: firstName + ' ' + lastName,
+            // name: userData.firstName + ' ' + userData.lastName,
+            // id: uuid(),
+            // email: userData.email,
+            // password: userData.password
+
+            name: 'randy',
             id: uuid(),
-            email,
-            password
+            email: 'email@email.com',
+            password: '1234'
           }
         })
         console.log(data)
@@ -52,6 +57,7 @@ const CreateAccount = props => {
         // await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
         navigate('Snap', userData)
       } catch (err) {
+        console.log(err)
         setShowAlert(true)
         setAlertMsg('Must fill out all required fields!')
       }

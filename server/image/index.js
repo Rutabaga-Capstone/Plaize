@@ -46,6 +46,7 @@ async function predict(filePath) {
 }
 
 router.post('/', upload.single('formKeyName'), async (req, res, next) => {
+  console.log('hit server')
   if (!req.file) {
     next(new Error('missing req.file'))
   }

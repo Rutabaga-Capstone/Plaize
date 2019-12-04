@@ -16,13 +16,19 @@ import uuid from 'react-uuid'
 
 import styled from 'styled-components'
 import {getPlantDataStubbedQuerry} from '../store/plants'
+import {setPinSelected} from '../store/actions'
+import {useDispatch, useSelector} from 'react-redux'
 
 export default function SnapScreen() {
   const [isPlantInfoReceived, setIsPlantInfoReceived] = useState(false)
   const [hasCameraPermission, setHasCameraPermission] = useState('null')
   const client = useApolloClient()
-  const [CreatePinPlant] = useMutation(CREATE_PIN_PLANT)
+  const [CreatePinPlant, {data}] = useMutation(CREATE_PIN_PLANT)
   const [AddPinPlantToUser] = useMutation(ADD_PIN_PLANT_TO_USER)
+  const dispatch = useDispatch()
+
+  const pinSelected = useSelector(state => state.pinSelected)
+
   let camera = null
 
   useEffect(() => {
@@ -53,7 +59,7 @@ export default function SnapScreen() {
   }
 
   const onPictureSaved = photo => {
-    const ipAddressOfServer = '10.0.0.48' // <--- PUT YOUR OWN IP HERE
+    const ipAddressOfServer = '172.17.22.211' // <--- PUT YOUR OWN IP HERE
     const uriParts = photo.uri.split('.')
     const fileType = uriParts[uriParts.length - 1]
 
@@ -88,10 +94,12 @@ export default function SnapScreen() {
           .query({
             query: GET_PLANT_BY_COMMON_NAME,
             variables: {
-              commonName: response.data.commonName
+              // commonName: response.data.commonName
+              commonName: 'Poison Ivy'
             }
           })
-          .then(async plant => {
+          .then(plant => {
+            console.log('plant in query', plant)
             Permissions.askAsync(Permissions.LOCATION).then(res => {
               if (res.status !== 'granted') {
                 let errorMessage = 'Permission to access location was denied'
@@ -115,6 +123,8 @@ export default function SnapScreen() {
                         userId: uuid() // needs to be related to currentUser ID
                       }
                     })
+                    const pinSelected = creations.CreatePin
+                    dispatch(setPinSelected(pinSelected))
                   })
                   .catch(() => {
                     console.log('Unable to associate plant with user')
@@ -167,7 +177,10 @@ export default function SnapScreen() {
 
         {isPlantInfoReceived && (
           <Container>
-            <PlantModal disableModalCallback={buttonCallback} />
+            <PlantModal
+              disableModalCallback={buttonCallback}
+              pinSelected={pinSelected}
+            />
           </Container>
         )}
       </View>
