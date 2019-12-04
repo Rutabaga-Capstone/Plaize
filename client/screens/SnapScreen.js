@@ -77,6 +77,7 @@ export default function SnapScreen() {
     const ipAddressOfServer = '172.17.22.211' // <--- PUT YOUR OWN IP HERE
     const uriParts = photo.uri.split('.')
     const fileType = uriParts[uriParts.length - 1]
+    let plantCopy
 
     let formData = new FormData()
     formData.append('formKeyName', {
@@ -115,6 +116,7 @@ export default function SnapScreen() {
           })
           .then(plant => {
             delete plant.data.plant.__typename
+            plantCopy = plant.data.plant
             console.log('plant:', plant)
             console.log('then after query', {
               ...plant.data.plant,
@@ -141,16 +143,14 @@ export default function SnapScreen() {
                     userId: '5' // needs to be related to currentUser ID
                   }
                 })
-                  .then(() => {
-                    const newpin = creations.data.CreatePin
-                    dispatch(setPinSelected(newpin))
-                    setIsPlantInfoReceived(true)
-                    console.log('newpin', newpin)
-                    console.log('newpin.plants', newpin.plants)
-                  })
-                  .catch(() => {
-                    console.log('unable to dispatch to associate plant to pin')
-                  })
+                const newpin = {
+                  ...creations.data.CreatePin,
+                  plants: [plantCopy]
+                }
+
+                dispatch(setPinSelected(newpin))
+                setIsPlantInfoReceived(true)
+                console.log('newpin.plants', newpin.plants)
               })
               .catch(() => {
                 console.log('Unable to associate plant with user')
@@ -202,10 +202,7 @@ export default function SnapScreen() {
 
         {isPlantInfoReceived && (
           <Container>
-            <PlantModal
-              disableModalCallback={buttonCallback}
-              pinSelected={pinSelected}
-            />
+            <PlantModal disableModalCallback={buttonCallback} />
           </Container>
         )}
       </View>
