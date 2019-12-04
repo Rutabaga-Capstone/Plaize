@@ -88,33 +88,33 @@ const CreateAccount = props => {
 
           <Input
             style={styles.label}
-            onChangeText={v => this.setFirstName(v)}
+            onChangeText={v => setFirstName(v)}
             placeholder="First name"
             autoCapitalize="none"
           />
           <Input
             style={styles.label}
-            onChangeText={v => this.setLastName(v)}
+            onChangeText={v => setLastName(v)}
             placeholder="Last Name"
             autoCapitalize="none"
           />
           <Input
             style={styles.label}
-            onChangeText={v => this.setEmail(v)}
+            onChangeText={v => setEmail(v)}
             placeholder="Email Address"
             autoCapitalize="none"
           />
           <Input
             secureTextEntry={true}
             style={styles.label}
-            onChangeText={v => this.setPassword(v)}
+            onChangeText={v => setPassword(v)}
             placeholder="Password"
             autoCapitalize="none"
           />
           <Input
             secureTextEntry={true}
             style={styles.label}
-            onChangeText={v => this.setConfirmPassword(v)}
+            onChangeText={v => setConfirmPassword(v)}
             placeholder="Confirm Password"
             autoCapitalize="none"
           />
@@ -132,7 +132,7 @@ const CreateAccount = props => {
             height={40}
             width={200}
             radius={0}
-            onPressAction={this.createUser}
+            onPressAction={createUser}
           >
             register
           </GradientButton>
