@@ -186,7 +186,7 @@ export default function MapScreen(props) {
                 <ListItem
                   key={i}
                   title={pin.title}
-                  subtitle={() => distanceFromLocation(pin)}
+                  //subtitle={() => distanceFromLocation(pin)}
                   bottomDivider
                   badge={{
                     value: pin.plants.length,
@@ -205,7 +205,7 @@ export default function MapScreen(props) {
           <ScrollView>
             <ListItem
               title={pinSelected.title}
-              subtitle={pinSelected.description}
+              //subtitle={pinSelected.description}
               bottomDivider
               badge={{
                 value: pinSelected.plants.length,

@@ -4,6 +4,7 @@ import * as Permissions from 'expo-permissions'
 import {Camera} from 'expo-camera'
 import * as FileSystem from 'expo-file-system'
 import axios from 'axios'
+import {Ionicons, SimpleLineIcons} from '@expo/vector-icons'
 
 export default class CameraExample extends React.Component {
   state = {
@@ -61,37 +62,121 @@ export default class CameraExample extends React.Component {
       return <Text>No access to camera</Text>
     } else {
       return (
-        <View style={{flex: 1}}>
-          <Camera
-            ref={ref => {
-              this.camera = ref
-            }}
-            style={{flex: 1}}
-            type={this.state.type}
-          >
+        <>
+          {/* TOP 'NAVIGATION' */}
+          <View style={{flex: 1, flexDirection: 'row', marginTop: 15}}>
             <View
               style={{
-                flex: 1,
-                backgroundColor: 'transparent',
-                flexDirection: 'row'
+                width: '33.3%',
+                height: 40,
+                textAlign: 'left',
+                borderBottomColor: '#C7CAD4',
+                borderBottomWidth: 1,
+                marginBottom: 10
               }}
             >
-              <TouchableOpacity
+              <Text
                 style={{
-                  flex: 0.1,
-                  alignSelf: 'flex-end',
-                  alignItems: 'center'
+                  textAlign: 'left',
+                  marginLeft: 15
                 }}
-                onPress={this.takePicture}
               >
-                <Text style={{fontSize: 18, marginBottom: 10, color: 'white'}}>
-                  {' '}
-                  Take Picture!{' '}
-                </Text>
-              </TouchableOpacity>
+                <SimpleLineIcons
+                  name="logout"
+                  onPress={this.logoutUser}
+                  size={25}
+                  color="#C7CAD4"
+                  style={{
+                    textAlign: 'left'
+                  }}
+                />
+              </Text>
             </View>
-          </Camera>
-        </View>
+
+            <View
+              style={{
+                width: '33.3%',
+                height: 40,
+                textAlign: 'middle',
+                borderBottomColor: '#C7CAD4',
+                borderBottomWidth: 1,
+                marginBottom: 10
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 24,
+                  fontFamily: 'yorkten',
+                  color: '#C7CAD4'
+                }}
+              >
+                Plaze
+              </Text>
+            </View>
+
+            <View
+              style={{
+                width: '33.3%',
+                height: 40,
+                textAlign: 'right',
+                borderBottomColor: '#C7CAD4',
+                borderBottomWidth: 1,
+                marginBottom: 10
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: 'right',
+                  marginRight: 15
+                }}
+              >
+                <Ionicons
+                  name="ios-leaf"
+                  size={25}
+                  style={{
+                    color: '#C7CAD4'
+                  }}
+                />
+              </Text>
+            </View>
+          </View>
+          {/* END TOP 'NAVIGATION' */}
+
+          <View style={{flex: 1}}>
+            <Camera
+              ref={ref => {
+                this.camera = ref
+              }}
+              style={{flex: 1}}
+              type={this.state.type}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: 'transparent',
+                  flexDirection: 'row'
+                }}
+              >
+                <TouchableOpacity
+                  style={{
+                    flex: 0.1,
+                    alignSelf: 'flex-end',
+                    alignItems: 'center'
+                  }}
+                  onPress={this.takePicture}
+                >
+                  <Text
+                    style={{fontSize: 18, marginBottom: 10, color: 'white'}}
+                  >
+                    {' '}
+                    Take Picture!{' '}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </Camera>
+          </View>
+        </>
       )
     }
   }
