@@ -5,7 +5,9 @@ import {
   SET_LOCATION,
   SET_REGION,
   SET_PIN_SELECTED,
-  CLEAR_PIN_SELECTED
+  CLEAR_PIN_SELECTED,
+  OPEN_MODAL,
+  CLOSE_MODAL
 } from './actions' //Import the actions types constant we defined in our actions
 
 let pinsState = {pins: []}
@@ -50,12 +52,25 @@ const pinSelectedReducer = (state = pinSelectedState, action) => {
   }
 }
 
+let modalState = {modalAction: {}}
+const modalActionReducer = (state = modalState, action) => {
+  switch (action.type) {
+    case OPEN_MODAL:
+      return {...state, modalAction: action.modalAction}
+    case CLOSE_MODAL:
+      return {...state, modalAction: action.modalAction}
+    default:
+      return state
+  }
+}
+
 // Combine all the reducers
 const rootReducer = combineReducers({
   pinsReducer,
   locationReducer,
   regionReducer,
-  pinSelectedReducer
+  pinSelectedReducer,
+  modalActionReducer
   // ,[ANOTHER REDUCER], [ANOTHER REDUCER] ....
 })
 
