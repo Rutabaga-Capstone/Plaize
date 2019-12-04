@@ -24,6 +24,11 @@ export const CHECK_USER_EXISTS = gql`
     user(email: $email, password: $password) {
       _id
       name
+      email
+      leaves
+      regDate {
+        formatted
+      }
     }
   }
 `

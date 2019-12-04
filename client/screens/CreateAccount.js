@@ -56,6 +56,7 @@ class CreateAccount extends React.Component {
                 $email: String!
                 $password: String!
                 $leaves: Int!
+                $regDate: DateTime!
               ) {
                 CreateUser(
                   id: $id
@@ -63,11 +64,16 @@ class CreateAccount extends React.Component {
                   email: $email
                   password: $password
                   leaves: $leaves
+                  regDate: $regDate
                 ) {
                   _id
                   id
                   name
                   email
+                  leaves
+                  regDate {
+                    formatted
+                  }
                 }
               }
             `,
@@ -76,12 +82,13 @@ class CreateAccount extends React.Component {
               name,
               email,
               password,
-              leaves
+              leaves,
+              regDate: new Date()
             }
           })
           const userData = result.data.CreateUser
-          await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
-          navigate('Snap', userData)
+          await AsyncStorage.setItem('LOGGED_IN_USER', JSON.stringify(userData))
+          navigate('Snap')
         } catch (err) {
           this.setState({
             showAlert: true,

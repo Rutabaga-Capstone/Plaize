@@ -40,8 +40,8 @@ const HomeScreen = props => {
           }
         })
         const userData = result.data.user
-        await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
-        navigation.navigate('Snap', userData)
+        await AsyncStorage.setItem('LOGGED_IN_USER', JSON.stringify(userData))
+        navigation.navigate('Snap')
       } catch (error) {
         setShowAlert(true)
         setAlertMsg('Invalid username or password!')
@@ -68,7 +68,8 @@ const HomeScreen = props => {
           `https://graph.facebook.com/me?access_token=${token}&fields=email`
         )
         const userData = await response.json()
-        await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
+        userData.leaves = userData.leaves ? userData.leaves : 0
+        await AsyncStorage.setItem('LOGGED_IN_USER', JSON.stringify(userData))
         navigation.navigate('Snap')
       }
     } catch ({message}) {
@@ -84,7 +85,8 @@ const HomeScreen = props => {
         scopes: ['profile', 'email']
       })
       if (type === 'success') {
-        await AsyncStorage.setItem('LOGGED_IN_USER', user.email)
+        user.leaves = user.leaves ? user.leaves : 0
+        await AsyncStorage.setItem('LOGGED_IN_USER', JSON.stringify(user))
         navigation.navigate('Snap')
       } else {
         alert(JSON.stringify('something elseee'))
