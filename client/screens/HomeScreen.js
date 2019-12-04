@@ -1,5 +1,5 @@
 import * as WebBrowser from 'expo-web-browser'
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import {
   Image,
   Platform,
@@ -13,60 +13,52 @@ import {
 import {Input} from 'react-native-elements'
 import GradientButton from 'react-native-gradient-buttons'
 import {withApollo} from 'react-apollo'
+import {useApolloClient} from '@apollo/react-hooks'
+import {CHECK_USER_EXISTS} from '../constants/GqlQueries'
 import {gql} from 'apollo-boost'
 import Dialog from 'react-native-dialog'
 import * as Facebook from 'expo-facebook'
 import * as Google from 'expo-google-app-auth'
 
-class HomeScreen extends React.Component {
-  state = {
-    email: '',
-    password: '',
-    showAlert: false,
-    alertMsg: ''
-  }
+const HomeScreen = props => {
+  const {navigate} = props.navigation
+  const [showAlert, setShowAlert] = useState(false)
+  const [alertMsg, setAlertMsg] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const client = useApolloClient()
 
-  loginUser = async () => {
-    const {email, password} = this.state
-    const {client, navigation} = this.props
+  const loginUser = async () => {
+    const {client, navigation} = props
     if ([email, password].every(i => i && i.trim())) {
       try {
         const result = await client.query({
-          query: gql`
-            query LoginUser($email: String!, $password: String!) {
-              User(email: $email, password: $password) {
-                _id
-                firstName
-                middleName
-                lastName
-                email
-              }
-            }
-          `,
+          query: CHECK_USER_EXISTS,
           variables: {
             email,
             password
           }
         })
-        const userData = result.data.User[0]
-        await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
+        const userData = result.data.user
+        // await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
         navigation.navigate('Snap', userData)
       } catch (error) {
-        this.setState({
-          showAlert: true,
-          alertMsg: 'Invalid username or password!'
-        })
+        setShowAlert(true)
+        setAlertMsg('Invalid username or password!')
       }
     } else {
-      this.setState({showAlert: true, alertMsg: 'All fields are required!'})
+      setShowAlert(true)
+      setAlertMsg('All fields are required!')
     }
   }
 
-  toggleAlert = () =>
-    this.setState(prevState => ({showAlert: !prevState.showAlert}))
+  const toggleAlert = () => {
+    let newAlertStatus = !showAlert
+    setShowAlert(newAlertStatus)
+  }
 
-  loginWithFb = async () => {
-    const {navigation} = this.props
+  const loginWithFb = async () => {
+    const {navigation} = props
     try {
       const {type, token} = await Facebook.logInWithReadPermissionsAsync(
         '2554828281464536'
@@ -76,7 +68,8 @@ class HomeScreen extends React.Component {
           `https://graph.facebook.com/me?access_token=${token}&fields=email`
         )
         const userData = await response.json()
-        await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
+        userData.leaves = userData.leaves ? userData.leaves : 0
+        await AsyncStorage.setItem('LOGGED_IN_USER', JSON.stringify(userData))
         navigation.navigate('Snap')
       }
     } catch ({message}) {
@@ -84,15 +77,16 @@ class HomeScreen extends React.Component {
     }
   }
 
-  loginWithGoogle = async () => {
-    const {navigation} = this.props
+  const loginWithGoogle = async () => {
+    const {navigation} = props
     try {
       const {type, user} = await Google.logInAsync({
         iosClientId: `238915439539-85p433631088kebf5606i7o1s44gil2d.apps.googleusercontent.com`,
         scopes: ['profile', 'email']
       })
       if (type === 'success') {
-        await AsyncStorage.setItem('LOGGED_IN_USER', user.email)
+        user.leaves = user.leaves ? user.leaves : 0
+        await AsyncStorage.setItem('LOGGED_IN_USER', JSON.stringify(user))
         navigation.navigate('Snap')
       } else {
         alert(JSON.stringify('something elseee'))
@@ -102,101 +96,97 @@ class HomeScreen extends React.Component {
     }
   }
 
-  render() {
-    const {navigate} = this.props.navigation
-    const {showAlert, alertMsg} = this.state
-    return (
-      <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
-        <Dialog.Container visible={showAlert}>
-          <Dialog.Title>Error</Dialog.Title>
-          <Dialog.Description>{alertMsg}</Dialog.Description>
-          <Dialog.Button label="OK" onPress={this.toggleAlert} />
-        </Dialog.Container>
-        <ScrollView contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/logo-gradient.png')
-                  : require('../assets/images/logo-gradient.png')
-              }
-              style={styles.welcomeImage}
-            />
-            <Text style={styles.title}>Plaze</Text>
-            <Text style={styles.subtitle}>Identify Poisonous Plants</Text>
-            <Input
-              autoCompleteType="email"
-              onChangeText={v => this.setState({email: v})}
-              style={styles.label}
-              placeholder="Email Address"
-              autoCapitalize="none"
-            />
-            <Input
-              secureTextEntry={true}
-              onChangeText={v => this.setState({password: v})}
-              style={styles.label}
-              placeholder="password"
-              autoCapitalize="none"
-            />
+  return (
+    <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
+      <Dialog.Container visible={showAlert}>
+        <Dialog.Title>Error</Dialog.Title>
+        <Dialog.Description>{alertMsg}</Dialog.Description>
+        <Dialog.Button label="OK" onPress={toggleAlert} />
+      </Dialog.Container>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+        <View style={styles.welcomeContainer}>
+          <Image
+            source={
+              __DEV__
+                ? require('../assets/images/logo-gradient.png')
+                : require('../assets/images/logo-gradient.png')
+            }
+            style={styles.welcomeImage}
+          />
+          <Text style={styles.title}>Plaze</Text>
+          <Text style={styles.subtitle}>Identify Poisonous Plants</Text>
+          <Input
+            autoCompleteType="email"
+            onChangeText={v => setEmail(v)}
+            style={styles.label}
+            placeholder="Email Address"
+            autoCapitalize="none"
+          />
+          <Input
+            secureTextEntry={true}
+            onChangeText={v => setPassword(v)}
+            style={styles.label}
+            placeholder="password"
+            autoCapitalize="none"
+          />
 
-            <GradientButton
-              style={{
-                marginTop: 20,
-                marginBottom: 20,
-                textAlign: 'center'
-              }}
-              textStyle={{fontSize: 18}}
-              gradientBegin="#6CC7BD"
-              gradientEnd="#A5D38F"
-              gradientDirection="diagonal"
-              height={50}
-              width={200}
-              radius={0}
-              onPressAction={this.loginUser}
+          <GradientButton
+            style={{
+              marginTop: 10,
+              marginBottom: 10,
+              textAlign: 'center'
+            }}
+            textStyle={{fontSize: 18}}
+            gradientBegin="#6CC7BD"
+            gradientEnd="#A5D38F"
+            gradientDirection="diagonal"
+            height={40}
+            width={215}
+            radius={0}
+            onPressAction={loginUser}
+          >
+            login
+          </GradientButton>
+          <Text style={styles.screenText}>I forgot my password</Text>
+          <Text style={styles.titleTwo}>New to Plaze?</Text>
+
+          <GradientButton
+            style={{
+              marginTop: 10,
+              marginBottom: 10,
+              textAlign: 'center'
+            }}
+            onPressAction={() => navigate('CreateAccount')}
+            textStyle={{fontSize: 18}}
+            gradientBegin="#6CC7BD"
+            gradientEnd="#A5D38F"
+            gradientDirection="diagonal"
+            height={40}
+            width={215}
+            radius={0}
+          >
+            create account
+          </GradientButton>
+
+          <Text style={styles.screenTextBottom}>Create Account With</Text>
+          <View style={{flex: 1, flexDirection: 'row'}}>
+            <View
+              style={{width: 100, height: 50, marginTop: 5, marginLeft: 36}}
             >
-              login
-            </GradientButton>
-            <Text style={styles.screenText}>I forgot my password</Text>
-            <Text style={styles.titleTwo}>New to Plaze?</Text>
-
-            <GradientButton
-              style={{
-                marginTop: 20,
-                marginBottom: 20,
-                textAlign: 'center'
-              }}
-              onPressAction={() => navigate('CreateAccount')}
-              textStyle={{fontSize: 18}}
-              gradientBegin="#6CC7BD"
-              gradientEnd="#A5D38F"
-              gradientDirection="diagonal"
-              height={50}
-              width={200}
-              radius={0}
-            >
-              create account
-            </GradientButton>
-
-            <Text style={styles.screenText}>Create Account With</Text>
-            <View style={{flex: 1, flexDirection: 'row'}}>
-              <View
-                style={{width: 100, height: 50, marginTop: 15, marginLeft: 36}}
-              >
-                <TouchableOpacity onPress={this.loginWithFb}>
-                  <Text style={{fontSize: 18, color: '#6CC7BD'}}>Facebook</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={{width: 100, height: 50, marginTop: 15}}>
-                <TouchableOpacity onPress={this.loginWithGoogle}>
-                  <Text style={{fontSize: 18, color: '#6CC7BD'}}>Google</Text>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity onPress={loginWithFb}>
+                <Text style={{fontSize: 18, color: '#6CC7BD'}}>Facebook</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{width: 100, height: 50, marginTop: 5}}>
+              <TouchableOpacity onPress={loginWithGoogle}>
+                <Text style={{fontSize: 18, color: '#6CC7BD'}}>Google</Text>
+              </TouchableOpacity>
             </View>
           </View>
-        </ScrollView>
-      </View>
-    )
-  }
+        </View>
+      </ScrollView>
+    </View>
+  )
 }
 
 HomeScreen.navigationOptions = {
@@ -247,26 +237,26 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   welcomeImage: {
-    width: 100,
-    height: 100,
+    width: 80,
+    height: 80,
     marginLeft: 10,
     resizeMode: 'contain',
     alignItems: 'center',
     justifyContent: 'center'
   },
   title: {
-    marginTop: 30,
-    marginBottom: 5,
+    marginTop: 5,
+    marginBottom: 0,
     color: '#000000',
     textAlign: 'center',
     fontSize: 40,
     fontFamily: 'yorkten'
   },
   titleTwo: {
-    marginTop: 30,
+    marginTop: 10,
     color: '#000000',
     textAlign: 'center',
-    fontSize: 35,
+    fontSize: 30,
     fontFamily: 'yorkten'
   },
   subtitle: {
@@ -276,10 +266,16 @@ const styles = StyleSheet.create({
     marginRight: 0,
     marginLeft: 0,
     marginTop: 5,
-    fontSize: 20,
-    marginBottom: 35
+    fontSize: 15,
+    marginBottom: 5
   },
   screenText: {
+    color: '#000000',
+    fontFamily: 'yorkten',
+    fontSize: 18,
+    textAlign: 'center'
+  },
+  screenTextBottom: {
     color: '#000000',
     fontFamily: 'yorkten',
     fontSize: 18,
@@ -295,8 +291,8 @@ const styles = StyleSheet.create({
   },
   label: {
     borderWidth: 1,
-    marginTop: 30,
-    marginBottom: 30
+    marginTop: 20,
+    marginBottom: 20
   },
   button: {
     backgroundColor: '#6CC7BD'

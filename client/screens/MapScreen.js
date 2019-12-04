@@ -1,203 +1,511 @@
-import React from 'react'
-import {Platform, Text, View, SafeAreaView, ScrollView} from 'react-native'
-import Map from '../components/Map'
+import React, {useEffect, useState} from 'react'
+import MapView, {Marker, Circle} from 'react-native-maps'
+import styled from 'styled-components'
+
+import {useDispatch, useSelector} from 'react-redux'
+import {
+  setPins,
+  setLocation,
+  setRegion,
+  setPinSelected,
+  clearPinSelected,
+  openModal,
+  closeModal
+} from '../store/actions'
+
+import pinsData from '../store/pins' //fake data for now
+import PlantModal from '../components/PlantModal'
+
 import * as Permissions from 'expo-permissions'
 import * as Location from 'expo-location'
-import Constants from 'expo-constants'
 import * as geolib from 'geolib'
+
+import {
+  Platform,
+  Text,
+  View,
+  SafeAreaView,
+  ScrollView,
+  Button,
+  StyleSheet,
+  FlatList,
+  List,
+  ActivityIndicator,
+  Dimensions
+} from 'react-native'
+
+import {ListItem} from 'react-native-elements'
+// import TouchableScale from 'react-native-touchable-scale' // https://github.com/kohver/react-native-touchable-scale
+// import ExpoLinearGradient from 'react-native-linear-gradient'
+
+///OLD below
+
+import Map from '../components/Map'
+import Constants from 'expo-constants'
+
 import Plants from '../components/Plants'
 import {Slider} from 'react-native-elements'
+import SwitchSelector from 'react-native-switch-selector'
+import {TagSelect} from 'react-native-tag-select'
 
-// Sample pins with plants until we fetch them from the db
-const pins = [
-  {
-    id: 1,
-    coordinate: {latitude: 41.895506, longitude: -87.639014},
-    title: 'Fullstack Academy',
-    hasPoisonousPlants: true,
-    description: 'Best coding academy ever',
-    plants: [
-      {
-        commonName: 'Poison Oak',
-        scientificName: 'A scientific name....',
-        isPoisonous: true,
-        pin: {
-          id: 1
-        }
-      },
-      {
-        commonName: 'Poison Ivy',
-        scientificName: 'A scientific name....',
-        isPoisonous: true,
-        pin: {
-          id: 1
-        }
+import {useQuery} from '@apollo/react-hooks'
+import {GET_ALL_PINS} from '../constants/GqlQueries'
+
+export default function MapScreen(props) {
+  const dispatch = useDispatch()
+  const {loading, error, data} = useQuery(GET_ALL_PINS)
+
+  //1 - DECLARE VARIABLES
+  const [isFetching, setIsFetching] = useState(false)
+
+  //Access Redux Store State
+
+  const pinsReducer = useSelector(state => state.pinsReducer)
+  const {pins} = pinsReducer
+
+  const locationReducer = useSelector(state => state.locationReducer)
+  const {location} = locationReducer
+
+  const regionReducer = useSelector(state => state.regionReducer)
+  const {region} = regionReducer
+
+  const pinSelectedReducer = useSelector(state => state.pinSelectedReducer)
+  const {pinSelected} = pinSelectedReducer
+
+  const modalActionReducer = useSelector(state => state.modalActionReducer)
+  const {modalAction} = modalActionReducer
+
+  //==================================================================================================
+
+  //2 - EFFECTS
+  useEffect(() => getPins(), [])
+  useEffect(() => getLocation(), [])
+  useEffect(() => getRegion(), [])
+  useEffect(() => handleMarkerOnPress(), [])
+  useEffect(() => handleMarkerOnDeselect(), [])
+  useEffect(() => getModal(), [])
+
+  //==================================================================================================
+
+  //3 - GET DATA AND DISPATCH ACTIONS
+  const getPins = () => {
+    setIsFetching(true)
+
+    //OPTION 1 - LOCAL DATA from imported file
+    // setTimeout(() => {
+    //   const pins = pinsData
+    //   dispatch(setPins(pins))
+    //   setIsFetching(false)
+    // }, 2000)
+
+    //OPTION 2 - API CALL, i.e. axios
+    // let url = "https://my-json-server.typicode.com/mesandigital/demo/instructions";
+    // axios.get(url)
+    //     .then(res => res.data)
+    //     .then((data) => dispatch(addData(data)))
+    //     .catch(error => alert(error.message))
+    //     .finally(() => setIsFetching(false));
+
+    // OPTION 3 - GRAPHQL - TBD
+    setTimeout(() => {
+      if (error) {
+        console.log("Oh no there's an error!")
+      } else if (data) {
+        const tempPins = data.Pin
+        const pins = pins.map(pin => ({...pin, plants: pin.plants[0]}))
+
+        dispatch(setPins(pins))
+        setIsFetching(false)
+      } else if (loading) {
+        console.log('loading...')
       }
-    ]
-  },
-  {
-    id: 2,
-    coordinate: {latitude: 41.896461, longitude: -87.641228},
-    title: 'Starbucks',
-    hasPoisonousPlants: false,
-    description: 'Fancy coffee shop',
-    plants: [
-      {
-        commonName: 'Aloe Vera',
-        scientificName: 'A scientific name....',
-        isPoisonous: false,
-        pin: {
-          id: 2
-        }
-      }
-    ]
-  },
-  {
-    id: 3,
-    coordinate: {latitude: 41.881737, longitude: -87.632751},
-    title: 'Chiropractor',
-    hasPoisonousPlants: false,
-    description: 'Get your bones cracked here',
-    plants: [
-      {
-        commonName: 'Aloe Vera',
-        scientificName: 'A scientific name....',
-        isPoisonous: false,
-        pin: {
-          id: 3
-        }
-      }
-    ]
+    }, 2000)
   }
-]
+
+  const fetchLocationAsync = async () => {
+    try {
+      let {status} = await Permissions.askAsync(Permissions.LOCATION)
+      if (status !== 'granted') {
+        let errorMessage = 'Permission to access location was denied'
+        console.log(errorMessage)
+      }
+      let location = await Location.getCurrentPositionAsync({})
+      dispatch(setLocation(location))
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const getLocation = () => {
+    fetchLocationAsync() //use this indirect func because useEffect does not accept promises as callbacks directly
+  }
+
+  const getRegion = () => {
+    dispatch(setRegion(region))
+  }
+
+  const distanceFromLocation = (pin, accuracy = 1) => {
+    const distance = geolib.getDistance(
+      location.coords,
+      {latitude: pin.lat, longitude: pin.lng},
+      accuracy
+    )
+    return <Text>{distance} meters away</Text>
+  }
+
+  const handleMarkerOnPress = pin => {
+    dispatch(setPinSelected(pin))
+  }
+
+  const handlePinItemOnPress = pin => {
+    dispatch(setPinSelected(pin))
+  }
+
+  const handleMarkerOnDeselect = () => {
+    let pin = {}
+    dispatch(clearPinSelected(pin))
+  }
+
+  const getModal = () => {
+    if (modalAction === ('' || 'closeModal')) {
+      dispatch(openModal('openModal'))
+    }
+    dispatch(closeModal('closeModal'))
+  }
+
+  //==================================================================================================
+
+  //4 - RENDER
+  if (isFetching) {
+    return (
+      <View style={styles99.activityIndicatorContainer}>
+        <ActivityIndicator animating={true} />
+      </View>
+    )
+  } else {
+    return (
+      <View>
+        {{location} && {pins} && (
+            <View>
+              <MapView
+                style={styles.mapStyle}
+                showsUserLocation={true}
+                showsMyLocationButton={true}
+                followsUserLocation={true}
+                zoomEnabled={true}
+                zoomTapEnabled={true}
+              >
+                {pins.map((pin, i) => (
+                  <Marker
+                    key={i}
+                    title={pin.title}
+                    coordinate={{latitude: pin.lat, longitude: pin.lng}}
+                    pinColor={pin.hasPoisonousPlants ? 'red' : 'green'}
+                    description={pin.description}
+                    id={pin.id}
+                    onPress={() => handleMarkerOnPress(pin)}
+                    onSelect={() => handleMarkerOnPress(pin)}
+                    onDeselect={() => handleMarkerOnDeselect()}
+                  />
+                ))}
+              </MapView>
+            </View>
+          )}
+        {!pinSelected.id &&
+          pins && (
+            <ScrollView>
+              {pins.map((pin, i) => (
+                <ListItem
+                  key={i}
+                  title={pin.title}
+                  // subtitle={() => distanceFromLocation(pin)}
+                  bottomDivider
+                  badge={{
+                    value: distanceFromLocation(pin),
+                    textStyle: {color: 'white'},
+                    // containerStyle: {
+                    //   marginTop: -20
+                    // },
+                    badgeStyle: {backgroundColor: '#6cc7bd'}
+                  }}
+                  onPress={() => handlePinItemOnPress(pin)}
+                />
+              ))}
+            </ScrollView>
+          )}
+        {pinSelected.id && (
+          <ScrollView>
+            <ListItem
+              title={pinSelected.title}
+              // subtitle={distanceFromLocation(pinSelected)}
+              bottomDivider
+              badge={{
+                value: distanceFromLocation(pinSelected),
+                textStyle: {color: 'white'},
+                // containerStyle: {marginTop: -20},
+                badgeStyle: {backgroundColor: '#6cc7bd'}
+              }}
+            />
+
+            {/* {pinSelected.plants.map((plant, i) => (
+              <Text key={i}>{plant.commonName}</Text>
+            ))} */}
+          </ScrollView>
+        )}
+        {pinSelected.id && (
+          <Container>
+            <PlantModal pinSelected={pinSelected} />
+          </Container>
+        )}
+      </View>
+    )
+  }
+}
+
+//==================================================================================================
+
+//5 - STYLING
+
+const Container = styled.View`
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  width: 80%;
+`
+
+const ButtonText = styled.Text`
+  font-size: 20px;
+  font-weight: 600;
+`
 
 const styles = {
   container: {
     width: '100%',
     height: '80%'
+  },
+  // mapContainer: {
+  //   flex: 1,
+  //   backgroundColor: '#fff',
+  //   alignItems: 'center',
+  //   justifyContent: 'center'
+  // },
+  mapStyle: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height / 2
   }
 }
 
-export default class MapScreen extends React.Component {
-  state = {
-    region: null,
-    location: null,
-    errorMessage: null,
-    center: null,
-    radius: 700,
-    selectedPin: {},
-    pins: [],
-    plants: [],
-    selectedPlant: {},
-    pinFilter: null
+const styles2 = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    marginTop: 400,
+    marginLeft: 190,
+    position: 'absolute'
+  },
+  buttonContainer: {
+    padding: 5
+  },
+  buttonInner: {
+    marginBottom: 10
+  },
+  labelText: {
+    color: '#333',
+    fontSize: 12,
+    fontWeight: '500',
+    marginBottom: 15
+  },
+  item: {
+    borderWidth: 1,
+    borderColor: '#333',
+    backgroundColor: '#FFF'
+  },
+  label: {
+    color: '#333'
+  },
+  itemSelected: {
+    backgroundColor: '#333'
+  },
+  labelSelected: {
+    color: '#FFF'
   }
+})
 
-  componentDidMount() {
-    if (Platform.OS === 'android' && !Constants.isDevice) {
-      this.setState({
-        errorMessage:
-          'Oops, this will not work in an Android emulator. Try it on your device!'
-      })
-    } else {
-      this._getLocationAsync()
-    }
+const styles99 = StyleSheet.create({
+  activityIndicatorContainer: {
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1
+  },
+
+  row: {
+    borderBottomWidth: 1,
+    borderColor: '#ccc',
+    padding: 10
+  },
+
+  title: {
+    fontSize: 15,
+    fontWeight: '600'
+  },
+
+  description: {
+    marginTop: 5,
+    fontSize: 14
   }
+})
 
-  _getLocationAsync = async () => {
-    let {status} = await Permissions.askAsync(Permissions.LOCATION)
-    if (status !== 'granted') {
-      this.setState({
-        errorMessage: 'Permission to access location was denied'
-      })
-    }
+//   <View>
+//     <SafeAreaView style={styles.container}>
+//       <Map
+//         region={this.state.region}
+//         pins={this.state.pins}
+//         location={this.state.location}
+//         center={this.state.center}
+//         radius={this.state.radius}
+//         onRegionChange={()=> dispatch(onRegionChange(location))}
+//         tagsSelected={this.state.tagsSelected}
+//       />
+//       <View style={styles2.container}>
+//         <TagSelect
+//           ref={tag => {
+//             this.tag = tag
+//           }}
+//           data={data}
+//           itemStyle={styles2.item}
+//           itemLabelStyle={styles2.label}
+//           itemStyleSelected={styles2.itemSelected}
+//           itemLabelStyleSelected={styles2.labelSelected}
+//           onItemPress={() =>
+//             this.filterMarkers(
+//               this.state.pins,
+//               this.tag.itemsSelected,
+//               this.state.radius
+//             )
+//           }
+//         />
+//       </View>
+//       <View
+//         style={{
+//           position: 'absolute',
+//           alignItems: 'stretch',
+//           top: 350,
+//           width: 320,
+//           alignSelf: 'center'
+//         }}
+//       >
+//         <Slider
+//           value={this.state.radius}
+//           mainimumValue={100}
+//           maximumValue={1000}
+//           step={100}
+//           onValueChange={radius =>
+//             this.filterMarkers(
+//               this.state.pins,
+//               this.state.tagsSelected,
+//               radius
+//             )
+//           }
+//           thumbTintColor={'black'}
+//           animateTransitions={true}
+//         />
+//         <Text style={{fontSize: 12}}>
+//           Radius in meters: {this.state.radius}
+//         </Text>
+//       </View>
+//     </SafeAreaView>
+//     <ScrollView>
+//       <Plants pins={this.state.pins} />
+//     </ScrollView>
+//   </View>
+// )
+//   )
+// }
 
-    let location = await Location.getCurrentPositionAsync({})
-    this.setState({
-      location: location,
-      center: location,
-      region: {
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421
-      }
-    })
-  }
+// state = {
+//   region: null,
+//   location: null,
+//   center: null,
+//   radius: 700, //in meters
+//   selectedPin: {},
+//   pins: [],
+//   plants: [],
+//   selectedPlant: {},
+//   tagsSelected: [
+//     {
+//       id: 1,
+//       label: 'Poisonous'
+//     },
+//     {
+//       id: 2,
+//       label: 'Nonpoisonous'
+//     }
+//   ]
+// }
 
-  filterMarkers(pins) {
-    const radiusFromCenter = this.state.radius
-    const radiusCenter = {
-      latitude: this.state.center.coords.latitude,
-      longitude: this.state.center.coords.longitude
-    }
+// onRegionChange(region) {
+//   this.setState({region})
+// }
 
-    return pins.filter((pin, i) => {
-      let pinCoord = {
-        latitude: pin.coordinate.latitude,
-        longitude: pin.coordinate.longitude
-      }
-      if (
-        geolib.isPointWithinRadius(pinCoord, radiusCenter, radiusFromCenter) ===
-        true
-      ) {
-        return pin
-      }
-    })
-  }
+// const data = [
+//   {id: 1, label: 'Poisonous'},
+//   {id: 2, label: 'Nonpoisonous'}
+// ]
 
-  onRegionChange(region) {
-    this.setState({region})
-  }
+// const initialRegion = {
+//   latitude: 41.888824,
+//   longitude: -87.647408,
+//   latitudeDelta: 0.0922,
+//   longitudeDelta: 0.0421
+// }
 
-  render() {
-    let text = 'Waiting..'
-    if (this.state.errorMessage) {
-      text = this.state.errorMessage
-    } else if (this.state.location) {
-      text = JSON.stringify(this.state.location)
-    }
+// export function filterMarkers(currentPins, tagsSelected, radius) {
+//   const radiusFromCenter = radius
+//   const radiusCenter = {
+//     latitude: this.state.center.coords.latitude,
+//     longitude: this.state.center.coords.longitude
+//   }
+// console.log('tagsSelected: ', tagsSelected)
+// console.log(
+//   'haspoison plant:',
+//   tagsSelected.filter(tag => tag.label === 'Poisonous').length
+// )
+// console.log(
+//   'does not have poison plant:',
+//   tagsSelected.filter(tag => tag.label === 'Nonpoisonous').length
+// )
 
-    return (
-      this.state.location &&
-      this.state.center && (
-        <View>
-          <SafeAreaView style={styles.container}>
-            <Map
-              region={this.state.region}
-              pins={this.filterMarkers(pins)}
-              location={this.state.location}
-              center={this.state.center}
-              radius={this.state.radius}
-              onRegionChange={this.state.onRegionChange}
-            />
-            <View
-              style={{
-                position: 'absolute',
-                alignItems: 'stretch',
-                top: '60%',
-                width: 360,
-                alignSelf: 'center'
-              }}
-            >
-              <Slider
-                value={this.state.radius}
-                mainimumValue={100}
-                maximumValue={1000}
-                step={100}
-                onValueChange={value => this.setState({radius: value})}
-                thumbTintColor={'black'}
-                animateTransitions={true}
-              />
-              <Text style={{fontSize: 12}}>
-                Radius in meters: {this.state.radius}
-              </Text>
-            </View>
-          </SafeAreaView>
-          <ScrollView>
-            <Plants pins={this.filterMarkers(pins)} />
-          </ScrollView>
-        </View>
-      )
-    )
-  }
-}
+//   const filteredPins = PINS.filter((pin, i) => {
+//     let pinCoord = {
+//       latitude: pin.coordinate.latitude,
+//       longitude: pin.coordinate.longitude
+//     }
+//     if (
+//       geolib.isPointWithinRadius(pinCoord, radiusCenter, radiusFromCenter) ===
+//       true
+//     ) {
+//       if (
+//         tagsSelected.filter(tag => tag.label === 'Nonpoisonous').length &&
+//         pin.isPoisonous === false
+//       ) {
+//         return pin
+//       }
+//       if (
+//         tagsSelected.filter(tag => tag.label === 'Poisonous').length &&
+//         pin.isPoisonous === true
+//       ) {
+//         return pin
+//       }
+//       if (!tagsSelected.length) {
+//         return pin
+//       }
+//     }
+//   })
+//   this.setState({
+//     pins: filteredPins,
+//     tagsSelected,
+//     radius: radius
+//   })
+//

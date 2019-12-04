@@ -13,8 +13,8 @@ const {gql} = require('apollo-server')
 
 const typeDefs = `
   type Query {
-    user(id: ID, name: String, email: String, password: String, leaves: Int): User
-    plant(id: ID, commonName: String): Plant
+    user(id: ID, name: String, email: String, password: String, leaves: Int, regDate: DateTime): User
+    plant(id: ID, commonName: String, scientificName: String, imageURL: String, description: String, isPoisonous: Boolean): Plant
   }
 
   type Location {
@@ -40,7 +40,7 @@ const typeDefs = `
     scientificName: String
     imageURL: String
     description: String
-    poisonous: Boolean
+    isPoisonous: Boolean
     user: User @relation(name: "FOUND", direction: "IN")
   }
 
@@ -56,6 +56,7 @@ const typeDefs = `
     deviceIds: [String!]
     isLoggedIn: Boolean
     leaves: Int!
+    regDate: DateTime
   }
 
   type Pin {
@@ -72,10 +73,10 @@ const resolvers = {
   Mutation: {
     createPin(parent, args, ctx, info) {
       return neo4jgraphql(parent, args, ctx, info)
-    },
+    } /*,
     createPlant(parent, args, ctx, info) {
       return neo4jgraphql(parent, args, ctx, info)
-    } /*,
+    },
     createUser(parent, args) {
 
     }*/
@@ -88,4 +89,4 @@ const resolvers = {
 //   }
 // }
 
-module.exports = {typeDefs}
+module.exports = {typeDefs, resolvers}
