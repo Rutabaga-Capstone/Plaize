@@ -13,11 +13,10 @@ import {
   GET_PLANT_BY_COMMON_NAME
 } from '../constants/GqlMutations'
 import uuid from 'react-uuid'
-
 import styled from 'styled-components'
-import {getPlantDataStubbedQuerry} from '../store/plants'
-import {setPinSelected} from '../store/actions'
+import {setPinSelected, setLocation} from '../store/actions'
 import {useDispatch, useSelector} from 'react-redux'
+import * as Location from 'expo-location'
 
 export default function SnapScreen() {
   const [isPlantInfoReceived, setIsPlantInfoReceived] = useState(false)
@@ -26,11 +25,14 @@ export default function SnapScreen() {
   const [CreatePinPlant, {data}] = useMutation(CREATE_PIN_PLANT)
   const [AddPinPlantToUser] = useMutation(ADD_PIN_PLANT_TO_USER)
   const dispatch = useDispatch()
-
   const pinSelected = useSelector(state => state.pinSelected)
 
   let camera = null
 
+  const locationReducer = useSelector(state => state.locationReducer)
+  const {location} = locationReducer
+
+  useEffect(() => getLocation(), [])
   useEffect(() => {
     async function startUp() {
       const {status} = await Permissions.askAsync(Permissions.CAMERA)
@@ -44,6 +46,23 @@ export default function SnapScreen() {
     startUp()
   }, [])
 
+  const fetchLocationAsync = async () => {
+    try {
+      let {status} = await Permissions.askAsync(Permissions.LOCATION)
+      if (status !== 'granted') {
+        let errorMessage = 'Permission to access location was denied'
+        console.log(errorMessage)
+      }
+      let location = await Location.getCurrentPositionAsync({})
+      dispatch(setLocation(location))
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const getLocation = () => {
+    fetchLocationAsync() //use this indirect func because useEffect does not accept promises as callbacks directly
+  }
   const takePicture = () => {
     if (camera) {
       camera.takePictureAsync({onPictureSaved})
@@ -55,7 +74,7 @@ export default function SnapScreen() {
   }
 
   const getPlantData = function(plantLabel) {
-    return getPlantDataStubbedQuerry(plantLabel)
+    return getPlantInfoQuerry(plantLabel)
   }
 
   const onPictureSaved = photo => {
@@ -72,8 +91,12 @@ export default function SnapScreen() {
     axios
       .post(`http://${ipAddressOfServer}:1234/image`, formData)
       .then(response => {
+        console.log(response.data.commonName)
+        // if (response.data.score < 0.5) { throw(new Error) }
         setIsPlantInfoReceived(true)
-        console.log(response.data)
+
+        console.log('getPlantData', getPlantData(response.data.commonName))
+        console.log(location)
 
         /*
         1. Take photo
@@ -98,45 +121,37 @@ export default function SnapScreen() {
               commonName: 'Poison Ivy'
             }
           })
-          .then(plant => {
-            console.log('plant in query', plant)
-            Permissions.askAsync(Permissions.LOCATION).then(res => {
-              if (res.status !== 'granted') {
-                let errorMessage = 'Permission to access location was denied'
-                console.log(errorMessage)
+          .then(location => {
+            CreatePinPlant({
+              variables: {
+                ...plant,
+                plantId: uuid(),
+                pinId: uuid(),
+                lat: location.latitude,
+                lng: location.longitude
               }
-              Location.getCurrentPositionAsync({}).then(location => {
-                CreatePinPlant({
+            })
+              .then(creations => {
+                AddPinPlantToUser({
                   variables: {
-                    ...plant,
-                    plantId: uuid(),
-                    pinId: uuid(),
-                    lat: location.latitude,
-                    lng: location.longitude
+                    pinId: creations.data.CreatePin.id,
+                    plantId: creations.data.CreatePlant.id,
+                    userId: uuid() // needs to be related to currentUser ID
                   }
                 })
-                  .then(creations => {
-                    AddPinPlantToUser({
-                      variables: {
-                        pinId: creations.data.CreatePin.id,
-                        plantId: creations.data.CreatePlant.id,
-                        userId: uuid() // needs to be related to currentUser ID
-                      }
-                    })
-                    const pinSelected = creations.CreatePin
-                    dispatch(setPinSelected(pinSelected))
-                  })
-                  .catch(() => {
-                    console.log('Unable to associate plant with user')
-                  })
+                const pinSelected = creations.CreatePin
+                dispatch(setPinSelected(pinSelected))
               })
-            })
+              .catch(() => {
+                console.log('Unable to associate plant with user')
+              })
           })
           .catch(() => {
             console.log('Could not query for plant')
           })
       })
-      .catch(() => {
+      .catch(err => {
+        console.log(err)
         alert('Plant has not been identified')
       })
   }

@@ -59,19 +59,20 @@ router.post('/', upload.single('formKeyName'), async (req, res, next) => {
         commonName: 'Poison Ivy',
         score: 0.5741239190101624
       }
-      res.json(mockedGoogleServerResponse)
-    }
 
-    const response = {}
-    let prediction = await predict(filePath)
-    response.commonName = prediction.displayName
-      .split(' ')
-      .map(el => {
-        return el[0].toUpperCase() + el.slice(1)
-      })
-      .join(' ')
-    response.score = prediction.classification.score
-    res.json(response)
+      res.json(mockedGoogleServerResponse).end()
+    } else {
+      const response = {}
+      let prediction = await predict(filePath)
+      response.commonName = prediction.displayName
+        .split(' ')
+        .map(el => {
+          return el[0].toUpperCase() + el.slice(1)
+        })
+        .join(' ')
+      response.score = prediction.classification.score
+      res.json(response)
+    }
   } catch (e) {
     next(e)
   } finally {
