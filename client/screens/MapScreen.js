@@ -183,7 +183,7 @@ export default function MapScreen(props) {
                     key={i}
                     title={pin.title}
                     coordinate={pin.coordinate}
-                    pinColor={pin.hasPoisonousPlants ? 'red' : 'green'}
+                    pinColor={pin.plants[0].isPoisonous ? 'red' : 'green'}
                     description={pin.description}
                     id={pin.id}
                     onPress={() => handleMarkerOnPress(pin)}

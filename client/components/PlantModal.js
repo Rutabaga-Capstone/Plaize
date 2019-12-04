@@ -55,15 +55,14 @@ class CustomModal extends React.Component {
         <AnimatedContainer style={{top: this.state.top}}>
           <Header>
             {this.props.pinSelected.plants.map((plant, i) => (
-              <Text key={i} style={styles.title}>
-                {' '}
-                {plant.commonName}{' '}
-              </Text>
+              <View key={i}>
+                <Text style={styles.title}> {plant.commonName} </Text>
+                <Image
+                  source={{uri: plant.imageURL}}
+                  style={styles.welcomeImage}
+                />
+              </View>
             ))}
-            <Image
-              source={require('../assets/images/poison-oak.png')}
-              style={styles.welcomeImage}
-            />
           </Header>
           <TouchableOpacity
             onPress={this.closeModal}
@@ -86,7 +85,7 @@ class CustomModal extends React.Component {
                   {' '}
                   {plant.isPoisonous ? (
                     <Image
-                      source={require('../assets/images/poisonous2.png')}
+                      source={require('../assets/images/poisonous3.png')}
                       style={styles.poisonImage}
                     />
                   ) : (
@@ -161,7 +160,7 @@ const styles = StyleSheet.create({
   welcomeImage: {
     width: 200,
     height: 200,
-    marginTop: -15,
+    marginTop: 0,
     alignSelf: 'center',
     resizeMode: 'contain',
     alignItems: 'center',
@@ -169,7 +168,7 @@ const styles = StyleSheet.create({
   },
   poisonImage: {
     width: 200,
-    height: 75,
+    height: 35,
     resizeMode: 'contain',
     backgroundColor: 'white',
     marginTop: 0
