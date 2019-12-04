@@ -85,7 +85,10 @@ class CustomModal extends React.Component {
                 <Text style={styles.screenText}>
                   {' '}
                   {plant.isPoisonous ? (
-                    <Icon.FontAwesome name="warning" size={30} color="red" />
+                    <Image
+                      source={require('../assets/images/poisonous2.png')}
+                      style={styles.poisonImage}
+                    />
                   ) : (
                     'Nonpoisonous'
                   )}
@@ -163,6 +166,13 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  poisonImage: {
+    width: 200,
+    height: 75,
+    resizeMode: 'contain',
+    backgroundColor: 'white',
+    marginTop: 0
   },
   plantDetails: {
     flex: 1,
