@@ -1,5 +1,5 @@
 import * as WebBrowser from 'expo-web-browser'
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import {
   Image,
   Platform,
@@ -10,7 +10,9 @@ import {
   AsyncStorage
 } from 'react-native'
 import {withApollo} from 'react-apollo'
+import {useSelector} from 'react-redux'
 import {Ionicons} from '@expo/vector-icons'
+import {useQuery} from '@apollo/react-hooks'
 
 class ProfileScreen extends React.Component {
   state = {
@@ -184,6 +186,185 @@ class ProfileScreen extends React.Component {
     )
   }
 }
+//
+// const ProfileScreen = props => {
+//   const [user, setUser] = useState({})
+//   const {navigate} = props.navigation
+//   const currentUser = useSelector(state => state.user)
+//   const {loading, error, data} = useQuery(
+//     GET_USER_PROFILE_INFO, {
+//       variables: {
+//
+//     }}
+//   )
+//
+//   useEffect(() => {}, [])
+//
+//   async componentDidMount() {
+//     try {
+//       const user = JSON.parse(
+//         (await AsyncStorage.getItem('LOGGED_IN_USER')) || '{}'
+//       )
+//       this.setState({user})
+//     } catch (err) {
+//       console.log('err fetching user', err)
+//     }
+//   }
+//
+//   const getRankLevel = leaves => {
+//     let result = ''
+//     switch (true) {
+//       case leaves >= 0 && leaves <= 20:
+//         result = 'Novice'
+//         break
+//       case leaves > 20 && leaves <= 40:
+//         result = 'Explorer'
+//         break
+//       case leaves > 40:
+//         result = 'Expert'
+//         break
+//       default:
+//     }
+//     return result
+//   }
+//
+//     const {name, leaves, regDate} = this.state.user
+//     return (
+//       <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
+//         <ScrollView contentContainerStyle={styles.contentContainer}>
+//           {/* Welcome Container */}
+//
+//           <View style={styles.welcomeContainer}>
+//             <Image
+//               source={
+//                 __DEV__
+//                   ? require('../assets/images/profile-icon.png')
+//                   : require('../assets/images/profile-icon.png')
+//               }
+//               style={styles.welcomeImage}
+//             />
+//             <Text style={styles.title}>{name}</Text>
+//
+//             {/* Rank Level, Rank Number Container */}
+//
+//             <View
+//               style={{
+//                 flex: 1,
+//                 flexDirection: 'row'
+//               }}
+//             >
+//               <Text
+//                 style={{
+//                   width: '50%',
+//                   height: 50,
+//                   textAlign: 'right',
+//                   fontSize: 24
+//                 }}
+//               >
+//                 {this.getRankLevel(leaves)}
+//               </Text>
+//               <Text
+//                 style={{
+//                   width: '5%',
+//                   height: 50,
+//                   textAlign: 'center',
+//                   fontSize: 24,
+//                   color: '#C7CAD4'
+//                 }}
+//               >
+//                 •
+//               </Text>
+//               <Text
+//                 style={{
+//                   width: '5%',
+//                   height: 50,
+//                   textAlign: 'center',
+//                   fontSize: 24,
+//                   color: '#C7CAD4'
+//                 }}
+//               >
+//                 <Ionicons name="ios-leaf" color="#6CC7BD" size={25} />
+//               </Text>
+//               <Text
+//                 style={{
+//                   width: '40%',
+//                   height: 50,
+//                   textAlign: 'left',
+//                   fontSize: 24
+//                 }}
+//               >
+//                 {leaves}
+//               </Text>
+//             </View>
+//
+//             {/* Joined Plaze on JoinDate Row */}
+//
+//             <Text style={styles.subtitle}>
+//               Joined Plaze on {regDate && regDate.formatted.slice(0, 10)}
+//             </Text>
+//
+//             <View
+//               style={{
+//                 flex: 1
+//               }}
+//             />
+//
+//             {/* Parent Container View For Plants, Map */}
+//             <View
+//               style={{
+//                 flex: 1
+//               }}
+//             >
+//               {/* Poisonous Plants Identified Container */}
+//
+//               <View
+//                 style={{
+//                   flex: 2,
+//                   flexDirection: 'row'
+//                 }}
+//               >
+//                 <Text
+//                   style={{
+//                     width: '6%',
+//                     height: 50,
+//                     textAlign: 'center',
+//                     fontSize: 24,
+//                     color: '#C7CAD4'
+//                   }}
+//                 />
+//                 <Text
+//                   style={{
+//                     width: '60%',
+//                     height: 50,
+//                     textAlign: 'left',
+//                     fontSize: 20,
+//                     color: '#000000',
+//                     marginLeft: 10
+//                   }}
+//                 >
+//                   Poisonous Plants Identified:
+//                 </Text>
+//                 <Text
+//                   style={{
+//                     width: '34%',
+//                     height: 50,
+//                     textAlign: 'left',
+//                     fontSize: 24
+//                   }}
+//                 >
+//                   {/* Blank Placeholder */}
+//                 </Text>
+//               </View>
+//
+//               {/* Plaze Map Container */}
+//             </View>
+//           </View>
+//           {/* End Parent Container View */}
+//         </ScrollView>
+//       </View>
+//     )
+//   }
+// }
 
 ProfileScreen.navigationOptions = {
   header: null
