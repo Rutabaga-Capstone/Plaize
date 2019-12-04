@@ -88,33 +88,33 @@ const CreateAccount = props => {
 
           <Input
             style={styles.label}
-            onChangeText={v => setFirstName(v)}
+            onChangeText={v => setUserData(...userData, (firstName: v))}
             placeholder="First name"
             autoCapitalize="none"
           />
           <Input
             style={styles.label}
-            onChangeText={v => setLastName(v)}
+            onChangeText={v => setUserData(...userData, (lastName: v))}
             placeholder="Last Name"
             autoCapitalize="none"
           />
           <Input
             style={styles.label}
-            onChangeText={v => setEmail(v)}
+            onChangeText={v => setUserData(...userData, (email: v))}
             placeholder="Email Address"
             autoCapitalize="none"
           />
           <Input
             secureTextEntry={true}
             style={styles.label}
-            onChangeText={v => setPassword(v)}
+            onChangeText={v => setUserData(...userData, (password: v))}
             placeholder="Password"
             autoCapitalize="none"
           />
           <Input
             secureTextEntry={true}
             style={styles.label}
-            onChangeText={v => setConfirmPassword(v)}
+            onChangeText={v => setUserData(...userData, (confirmPassword: v))}
             placeholder="Confirm Password"
             autoCapitalize="none"
           />
