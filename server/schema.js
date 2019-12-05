@@ -70,7 +70,6 @@ const typeDefs = `
   }
 `
 
-connect(({pinSelected}) => ({pinSelected}))(component)
 const resolvers = {
   Mutation: {
     createPin(parent, args, ctx, info) {
