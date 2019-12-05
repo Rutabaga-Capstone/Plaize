@@ -18,8 +18,35 @@ import {CHECK_USER_EXISTS} from '../constants/GqlQueries'
 import Dialog from 'react-native-dialog'
 import * as Facebook from 'expo-facebook'
 import * as Google from 'expo-google-app-auth'
+import {useDispatch, useSelector} from 'react-redux'
+import pinsData from '../store/pins' //fake data for now
+import {setPins} from '../store/actions'
 
 const HomeScreen = props => {
+  const [isFetching, setIsFetching] = useState(false)
+
+  const dispatch = useDispatch()
+
+  const pinsReducer = useSelector(state => state.pinsReducer)
+  const {pins} = pinsReducer
+
+  useEffect(() => getPins(), [])
+
+  const getPins = () => {
+    setIsFetching(true)
+
+    //OPTION 1 - LOCAL DATA from imported file
+    setTimeout(() => {
+      if (!pins) {
+        const allpins = pinsData
+        dispatch(setPins(allpins))
+        setIsFetching(false)
+      } else {
+        console.log('already have at least 1 pin')
+      }
+    }, 2000)
+  }
+
   const {navigate} = props.navigation
   const [showAlert, setShowAlert] = useState(false)
   const [alertMsg, setAlertMsg] = useState('')
@@ -39,13 +66,8 @@ const HomeScreen = props => {
           }
         })
         const userData = result.data.user
-        if (userData) {
-          await AsyncStorage.setItem('LOGGED_IN_USER', JSON.stringify(userData))
-          navigation.navigate('Snap')
-        } else {
-          setShowAlert(true)
-          setAlertMsg('Invalid username or password!')
-        }
+        // await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
+        navigation.navigate('Snap', userData)
       } catch (error) {
         setShowAlert(true)
         setAlertMsg('Invalid username or password!')
