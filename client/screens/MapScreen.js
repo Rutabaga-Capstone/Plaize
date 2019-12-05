@@ -320,6 +320,11 @@ export default function MapScreen(props) {
             ))} */}
             </ScrollView>
           )}
+          {pinSelected.id && (
+            <Container>
+              <PlantModal pinSelected={pinSelected} />
+            </Container>
+          )}
         </View>
       </>
     )
