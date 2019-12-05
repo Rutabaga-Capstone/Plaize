@@ -64,7 +64,7 @@ export default class CameraExample extends React.Component {
       return (
         <>
           {/* TOP 'NAVIGATION' */}
-          <View style={{flex: 1, flexDirection: 'row', marginTop: 15}}>
+          <View style={{flex: 0.05, flexDirection: 'row', marginTop: 15}}>
             <View
               style={{
                 width: '33.3%',

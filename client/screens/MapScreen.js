@@ -156,7 +156,7 @@ export default function MapScreen(props) {
     return (
       <>
         {/* TOP 'NAVIGATION' */}
-        <View style={{flex: 1, flexDirection: 'row', marginTop: 15}}>
+        <View style={{flex: 0.35, flexDirection: 'row', marginTop: 15}}>
           <View
             style={{
               width: '33.3%',
