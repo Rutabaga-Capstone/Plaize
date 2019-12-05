@@ -7,7 +7,8 @@ import {
   StyleSheet,
   Text,
   View,
-  AsyncStorage
+  AsyncStorage,
+  SafeAreaView
 } from 'react-native'
 import {withApollo} from 'react-apollo'
 import {Ionicons, SimpleLineIcons} from '@expo/vector-icons'
@@ -34,9 +35,7 @@ class PlantInfo extends React.Component {
       alert(JSON.stringify(error))
     }
   }
-
   render() {
-    //alert(JSON.stringify(this.state))
     const {
       commonName,
       scientificName,
@@ -45,90 +44,90 @@ class PlantInfo extends React.Component {
       poisonous
     } = this.state.plant
     return (
-      <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
+      // <SafeAreaView>
+      <View style={{alignSelf: 'stretch', flex: 1}}>
+        <View style={{flex: 1, flexDirection: 'row', marginTop: 15}}>
+          <View
+            style={{
+              width: '33.3%',
+              height: 40,
+              textAlign: 'left',
+              borderBottomColor: '#C7CAD4',
+              borderBottomWidth: 1,
+              marginBottom: 10
+            }}
+          >
+            <Text
+              style={{
+                textAlign: 'left',
+                marginLeft: 15
+              }}
+            >
+              <SimpleLineIcons
+                name="logout"
+                onPress={this.logoutUser}
+                size={25}
+                color="#C7CAD4"
+                style={{
+                  textAlign: 'left'
+                }}
+              />
+            </Text>
+          </View>
+
+          <View
+            style={{
+              width: '33.3%',
+              height: 40,
+              textAlign: 'middle',
+              borderBottomColor: '#C7CAD4',
+              borderBottomWidth: 1,
+              marginBottom: 10
+            }}
+          >
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 24,
+                fontFamily: 'yorkten',
+                color: '#C7CAD4'
+              }}
+            >
+              Plaze
+            </Text>
+          </View>
+
+          <View
+            style={{
+              width: '33.3%',
+              height: 40,
+              textAlign: 'right',
+              borderBottomColor: '#C7CAD4',
+              borderBottomWidth: 1,
+              marginBottom: 10
+            }}
+          >
+            <Text
+              style={{
+                textAlign: 'right',
+                marginRight: 15
+              }}
+            >
+              <Ionicons
+                name="ios-leaf"
+                size={25}
+                style={{
+                  color: '#C7CAD4'
+                }}
+              />
+            </Text>
+          </View>
+        </View>
+        {/* END TOP 'NAVIGATION' */}
         <ScrollView contentContainerStyle={styles.contentContainer}>
           {/* Welcome Container */}
           {/* TOP 'NAVIGATION' */}
-          <>
-            <View style={{flex: 1, flexDirection: 'row', marginTop: 15}}>
-              <View
-                style={{
-                  width: '33.3%',
-                  height: 40,
-                  textAlign: 'left',
-                  borderBottomColor: '#C7CAD4',
-                  borderBottomWidth: 1,
-                  marginBottom: 10
-                }}
-              >
-                <Text
-                  style={{
-                    textAlign: 'left',
-                    marginLeft: 15
-                  }}
-                >
-                  <SimpleLineIcons
-                    name="logout"
-                    onPress={this.logoutUser}
-                    size={25}
-                    color="#C7CAD4"
-                    style={{
-                      textAlign: 'left'
-                    }}
-                  />
-                </Text>
-              </View>
 
-              <View
-                style={{
-                  width: '33.3%',
-                  height: 40,
-                  textAlign: 'middle',
-                  borderBottomColor: '#C7CAD4',
-                  borderBottomWidth: 1,
-                  marginBottom: 10
-                }}
-              >
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    fontSize: 24,
-                    fontFamily: 'yorkten',
-                    color: '#C7CAD4'
-                  }}
-                >
-                  Plaze
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  width: '33.3%',
-                  height: 40,
-                  textAlign: 'right',
-                  borderBottomColor: '#C7CAD4',
-                  borderBottomWidth: 1,
-                  marginBottom: 10
-                }}
-              >
-                <Text
-                  style={{
-                    textAlign: 'right',
-                    marginRight: 15
-                  }}
-                >
-                  <Ionicons
-                    name="ios-leaf"
-                    size={25}
-                    style={{
-                      color: '#C7CAD4'
-                    }}
-                  />
-                </Text>
-              </View>
-            </View>
-          </>
-          {/* END TOP 'NAVIGATION' */}
           <View style={styles.welcomeContainer}>
             <Image source={{uri: imageURL}} />
             <Text
@@ -146,6 +145,7 @@ class PlantInfo extends React.Component {
           </View>
         </ScrollView>
       </View>
+      // </SafeAreaView>
     )
   }
 }
