@@ -116,6 +116,7 @@ export default function SnapScreen() {
           })
           .then(plant => {
             delete plant.data.plant.__typename
+
             plantCopy = plant.data.plant
             console.log('plant:', plant)
             console.log('then after query', {
@@ -125,6 +126,7 @@ export default function SnapScreen() {
               lat: location.coords.latitude,
               lng: location.coords.longitude
             })
+
             CreatePinPlant({
               variables: {
                 ...plant.data.plant,

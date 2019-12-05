@@ -49,6 +49,7 @@ const typeDefs = `
     name: String!
     email: String!
     password: String!
+    plant: String
     plants: [Plant!]! @relation(name: "FOUND", direction: "OUT")
     lat: Float
     lng: Float
@@ -69,6 +70,7 @@ const typeDefs = `
   }
 `
 
+connect(({pinSelected}) => ({pinSelected}))(component)
 const resolvers = {
   Mutation: {
     createPin(parent, args, ctx, info) {
