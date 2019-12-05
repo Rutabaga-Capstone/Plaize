@@ -122,7 +122,9 @@ export default function SnapScreen() {
           .then(plant => {
             delete plant.data.plant.__typename
             plantCopy = plant.data.plant
+            dispatch(addPlant(plantCopy))
             console.log('plant:', plant)
+
             console.log('then after query', {
               ...plant.data.plant,
               plantId: uuid(),
@@ -130,6 +132,33 @@ export default function SnapScreen() {
               lat: location.coords.latitude,
               lng: location.coords.longitude
             })
+
+            //This is all new
+
+            client
+              .query({
+                query: GET_USER_LEAVES,
+                variables: {
+                  email: 'cc'
+                }
+              })
+              .then(leaves => {
+                UpdateUserLeaves({
+                  variables: {
+                    id: '5',
+                    leaves
+                  }
+                })
+                  .then(user => {
+                    dispatch(updateUserDataLeaves(user.data.leaves))
+                  })
+                  .catch(() => {
+                    console.log('Could not update user')
+                  })
+              })
+
+            //this is not new
+
             CreatePinPlant({
               variables: {
                 ...plant.data.plant,
@@ -152,28 +181,24 @@ export default function SnapScreen() {
                   ...creations.data.CreatePin,
                   plants: [plantCopy]
                 }
+
+                // This is still the then for the client.query for create pin plant
                 dispatch(setPinSelected(newpin))
-
-                newpin.title = plantCopy.commonName
-                newpin.description = ''
-                newpin.coordinate = {
-                  latitude: newpin.lat,
-                  longitude: newpin.lng
-                }
-
-                dispatch(addPin(newpin))
                 setIsPlantInfoReceived(true)
-                console.log('newpin', newpin)
+                console.log('newpin.plants', newpin.plants)
               })
               .catch(() => {
+                // this is the catch for create pin plant
                 console.log('Unable to associate plant with user')
               })
           })
           .catch(() => {
+            // this is the then for client.query for get plant
             console.log('Could not query for plant')
           })
       })
       .catch(err => {
+        // this is the catch for axios.post for autoML
         console.log(err)
         alert('Plant has not been identified')
       })

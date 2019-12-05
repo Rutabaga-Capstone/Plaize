@@ -10,6 +10,8 @@ import {
   AsyncStorage
 } from 'react-native'
 import {withApollo} from 'react-apollo'
+import {connect} from 'react-redux'
+import {GET_USER_PROFILE_INFO} from '../constants/GqlQueries'
 import {Ionicons} from '@expo/vector-icons'
 
 class ProfileScreen extends React.Component {
@@ -18,11 +20,23 @@ class ProfileScreen extends React.Component {
   }
 
   async componentDidMount() {
+    const {client} = this.props
     try {
-      const user = JSON.parse(
+      const {email} = JSON.parse(
         (await AsyncStorage.getItem('LOGGED_IN_USER')) || '{}'
       )
-      this.setState({user})
+      try {
+        const result = await client.query({
+          query: GET_USER_PROFILE_INFO,
+          variables: {
+            email
+          }
+        })
+        const {user} = result.data
+        this.setState({user})
+      } catch (error) {
+        alert(JSON.stringify(error))
+      }
     } catch (err) {
       console.log('err fetching user', err)
     }
@@ -48,6 +62,8 @@ class ProfileScreen extends React.Component {
   render() {
     const {navigate} = this.props.navigation
     const {name, leaves, regDate} = this.state.user
+    const {userPlants} = this.props.plantsReducer
+
     return (
       <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -364,4 +380,6 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withApollo(ProfileScreen)
+export default connect(({plantsReducer}) => ({plantsReducer}))(
+  withApollo(ProfileScreen)
+)
