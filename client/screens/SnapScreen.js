@@ -187,7 +187,7 @@ export default function SnapScreen() {
     return (
       <>
         {/* TOP 'NAVIGATION' */}
-        <View style={{flex: 0.05, flexDirection: 'row', marginTop: 15}}>
+        <View style={{flex: 0.07, flexDirection: 'row', marginTop: 15}}>
           <View
             style={{
               width: '33.3%',
