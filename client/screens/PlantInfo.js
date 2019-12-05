@@ -160,6 +160,7 @@ class PlantInfo extends React.Component {
                 size={30}
                 color="#C7CAD4"
                 onPress={() => navigate('Snap')}
+                //helloWorld
               />
             </Text>
           </View>
