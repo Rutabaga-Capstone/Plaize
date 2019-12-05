@@ -4,7 +4,6 @@ let pins = [
     id: 1,
     coordinate: {latitude: 41.895506, longitude: -87.639014},
     title: 'Poison Oak',
-    hasPoisonousPlants: true,
     description: '',
     plants: [
       {
@@ -22,7 +21,7 @@ let pins = [
     id: 2,
     coordinate: {latitude: 41.896461, longitude: -87.641228},
     title: 'Morning Glory',
-    description: 'Fancy coffee shop',
+    description: '',
     plants: [
       {
         commonName: 'Morning Glory',
