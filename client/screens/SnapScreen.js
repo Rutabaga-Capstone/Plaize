@@ -100,6 +100,11 @@ export default function SnapScreen() {
       .post(`http://${ipAddressOfServer}:1234/image`, formData)
       .then(response => {
         console.log(response.data.commonName)
+        alert(
+          `Plant identified: ${response.data.commonName} \n probability: ${
+            response.data.score
+          }`
+        )
         // if (response.data.score < 0.5) { throw(new Error) }
 
         /*
