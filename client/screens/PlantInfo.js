@@ -11,7 +11,7 @@ import {
   SafeAreaView
 } from 'react-native'
 import {withApollo} from 'react-apollo'
-import {Ionicons, SimpleLineIcons} from '@expo/vector-icons'
+import {Ionicons, SimpleLineIcons, Feather} from '@expo/vector-icons'
 import {GET_PLANT_BY_COMMON_NAME} from '../constants/GqlQueries'
 
 class PlantInfo extends React.Component {
@@ -43,10 +43,11 @@ class PlantInfo extends React.Component {
       imageURL,
       poisonous
     } = this.state.plant
+
     return (
-      // <SafeAreaView>
       <View style={{alignSelf: 'stretch', flex: 1}}>
-        <View style={{flex: 1, flexDirection: 'row', marginTop: 15}}>
+        {/* START TOP NAVIGATION */}
+        <View style={{flex: 0.1, flexDirection: 'row', marginTop: 25}}>
           <View
             style={{
               width: '33.3%',
@@ -74,7 +75,6 @@ class PlantInfo extends React.Component {
               />
             </Text>
           </View>
-
           <View
             style={{
               width: '33.3%',
@@ -96,7 +96,6 @@ class PlantInfo extends React.Component {
               Plaze
             </Text>
           </View>
-
           <View
             style={{
               width: '33.3%',
@@ -124,12 +123,45 @@ class PlantInfo extends React.Component {
           </View>
         </View>
         {/* END TOP 'NAVIGATION' */}
+
+        {/* START UPPER-RIGHT X */}
+        <View style={{flex: 0.1, flexDirection: 'row', marginTop: -10}}>
+          <View
+            style={{
+              width: '33.3%',
+              textAlign: 'left'
+            }}
+          />
+          <View
+            style={{
+              width: '33.3%',
+              textAlign: 'middle'
+            }}
+          />
+          <View
+            style={{
+              width: '33.3%',
+              textAlign: 'right'
+            }}
+          >
+            <Text style={{textAlign: 'right', marginRight: 10, marginTop: 5}}>
+              <Feather name="x" size={30} color="#C7CAD4" />
+            </Text>
+          </View>
+        </View>
+        {/* END UPPER-RIGHT X */}
+
         <ScrollView contentContainerStyle={styles.contentContainer}>
           {/* Welcome Container */}
-          {/* TOP 'NAVIGATION' */}
-
           <View style={styles.welcomeContainer}>
-            <Image source={{uri: imageURL}} />
+            <Image
+              style={{
+                width: 100,
+                height: 100,
+                marginBottom: 20
+              }}
+              source={{uri: imageURL}}
+            />
             <Text
               style={{fontFamily: 'yorkten', fontSize: 24, marginBottom: 12}}
             >
@@ -145,7 +177,6 @@ class PlantInfo extends React.Component {
           </View>
         </ScrollView>
       </View>
-      // </SafeAreaView>
     )
   }
 }

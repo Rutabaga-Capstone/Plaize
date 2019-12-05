@@ -254,7 +254,7 @@ class ProfileScreen extends React.Component {
                 />
                 <Text
                   style={{
-                    width: '60%',
+                    width: '100%',
                     height: 50,
                     textAlign: 'left',
                     fontSize: 20,
