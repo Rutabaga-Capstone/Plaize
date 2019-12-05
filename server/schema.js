@@ -14,7 +14,7 @@ const {gql} = require('apollo-server')
 const typeDefs = `
   type Query {
     user(id: ID, name: String, email: String, password: String, leaves: Int, regDate: DateTime): User
-    plant(id: ID, commonName: String): Plant
+    plant(id: ID, commonName: String, scientificName: String, imageURL: String, description: String, isPoisonous: Boolean): Plant
   }
 
   type Location {
@@ -40,7 +40,7 @@ const typeDefs = `
     scientificName: String
     imageURL: String
     description: String
-    poisonous: Boolean
+    isPoisonous: Boolean
     user: User @relation(name: "FOUND", direction: "IN")
   }
 
@@ -49,6 +49,7 @@ const typeDefs = `
     name: String!
     email: String!
     password: String!
+    plant: String
     plants: [Plant!]! @relation(name: "FOUND", direction: "OUT")
     lat: Float
     lng: Float
