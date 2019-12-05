@@ -39,7 +39,11 @@ export const GET_USER_PROFILE_INFO = gql`
         formatted
       }
       plants {
+        commonName
+        scientificName
         imageURL
+        description
+        poisonous
       }
     }
   }
@@ -53,10 +57,7 @@ export const GET_ALL_USER_INFO = gql`
       leaves
       plants {
         commonName
-        scientificName
         imageURL
-        description
-        poisonous
       }
       lat
       lng

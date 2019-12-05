@@ -7,73 +7,49 @@ import {
   StyleSheet,
   Text,
   View,
-  AsyncStorage,
-  TouchableHighlight
+  AsyncStorage
 } from 'react-native'
 import {withApollo} from 'react-apollo'
 import {Ionicons, SimpleLineIcons} from '@expo/vector-icons'
-import {GET_USER_PROFILE_INFO} from '../constants/GqlQueries'
+import {GET_PLANT_BY_COMMON_NAME} from '../constants/GqlQueries'
 
-class ProfileScreen extends React.Component {
+class PlantInfo extends React.Component {
   state = {
-    user: {}
+    plant: {}
   }
 
   async componentDidMount() {
-    const {client} = this.props
+    const {client, navigation} = this.props
+    const {commonName} = navigation.state.params
     try {
-      const {email} = JSON.parse(
-        (await AsyncStorage.getItem('LOGGED_IN_USER')) || '{}'
-      )
       const result = await client.query({
-        query: GET_USER_PROFILE_INFO,
+        query: GET_PLANT_BY_COMMON_NAME,
         variables: {
-          email
+          commonName
         }
       })
-      const {user} = result.data
-      this.setState({user})
-    } catch (err) {
-      alert(JSON.stringify(err))
-    }
-  }
-
-  getRankLevel = leaves => {
-    let result = ''
-    switch (true) {
-      case leaves >= 0 && leaves <= 20:
-        result = 'Novice'
-        break
-      case leaves > 20 && leaves <= 40:
-        result = 'Explorer'
-        break
-      case leaves > 40:
-        result = 'Expert'
-        break
-      default:
-    }
-    return result
-  }
-
-  logoutUser = async () => {
-    const {navigate} = this.props.navigation
-    try {
-      await AsyncStorage.removeItem('LOGGED_IN_USER')
-      navigate('Home')
-    } catch (err) {
-      console.log('error removing item from storage', err)
+      const {plant} = result.data
+      this.setState({plant})
+    } catch (error) {
+      alert(JSON.stringify(error))
     }
   }
 
   render() {
-    const {navigate} = this.props.navigation
-    const {name, leaves, regDate, plants} = this.state.user
+    //alert(JSON.stringify(this.state))
+    const {
+      commonName,
+      scientificName,
+      description,
+      imageURL,
+      poisonous
+    } = this.state.plant
     return (
       <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
           {/* Welcome Container */}
-          <View style={styles.welcomeContainer}>
-            {/* TOP 'NAVIGATION' */}
+          {/* TOP 'NAVIGATION' */}
+          <>
             <View style={{flex: 1, flexDirection: 'row', marginTop: 15}}>
               <View
                 style={{
@@ -151,180 +127,30 @@ class ProfileScreen extends React.Component {
                 </Text>
               </View>
             </View>
-            {/* END TOP 'NAVIGATION' */}
-
-            <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/profile-icon.png')
-                  : require('../assets/images/profile-icon.png')
-              }
-              style={styles.welcomeImage}
-            />
-            <Text style={styles.title}>{name}</Text>
-
-            {/* Rank Level, Rank Number Container */}
-            <View
-              style={{
-                flex: 1,
-                flexDirection: 'row'
-              }}
+          </>
+          {/* END TOP 'NAVIGATION' */}
+          <View style={styles.welcomeContainer}>
+            <Image source={{uri: imageURL}} />
+            <Text
+              style={{fontFamily: 'yorkten', fontSize: 24, marginBottom: 12}}
             >
-              <Text
-                style={{
-                  width: '50%',
-                  height: 50,
-                  textAlign: 'right',
-                  fontSize: 24
-                }}
-              >
-                {this.getRankLevel(leaves)}
-              </Text>
-              <Text
-                style={{
-                  width: '5%',
-                  height: 50,
-                  textAlign: 'center',
-                  fontSize: 24,
-                  color: '#C7CAD4'
-                }}
-              >
-                •
-              </Text>
-              <Text
-                style={{
-                  width: '5%',
-                  height: 50,
-                  textAlign: 'center',
-                  fontSize: 24,
-                  color: '#C7CAD4'
-                }}
-              >
-                <Ionicons name="ios-leaf" color="#6CC7BD" size={25} />
-              </Text>
-              <Text
-                style={{
-                  width: '40%',
-                  height: 50,
-                  textAlign: 'left',
-                  fontSize: 24
-                }}
-              >
-                {leaves}
-              </Text>
-            </View>
-
-            {/* Joined Plaze on JoinDate Row */}
-            <Text style={styles.subtitle}>
-              Joined Plaze on {regDate && regDate.formatted.slice(0, 10)}
+              {commonName}
             </Text>
-
-            <View
-              style={{
-                flex: 1,
-                marginTop: -40
-              }}
-            />
-
-            {/* PARENT Container View - Plants Text, Images, Map, etc */}
-            <View
-              style={{
-                flex: 1,
-                flexDirection: 'col',
-                justifyContent: 'space-between'
-              }}
+            <Text
+              style={{fontFamily: 'yorkten', fontSize: 18, marginBottom: 12}}
             >
-              {/* 'Poisonous Plants Identified:' TEXT Container */}
-              <View
-                style={{
-                  flex: 1,
-                  //flexDirection: 'col'
-                  marginBottom: 20
-                }}
-              >
-                <Text
-                  style={{
-                    width: '6%',
-                    height: 50,
-                    textAlign: 'center',
-                    fontSize: 24,
-                    color: '#C7CAD4'
-                  }}
-                  //Blank Placeholder
-                />
-                <Text
-                  style={{
-                    width: '60%',
-                    height: 50,
-                    textAlign: 'left',
-                    fontSize: 20,
-                    color: '#000000',
-                    marginLeft: 25
-                  }}
-                >
-                  Poisonous Plants Identified:
-                </Text>
-                <Text
-                  style={{
-                    width: '34%',
-                    height: 50,
-                    textAlign: 'left',
-                    fontSize: 24
-                  }}
-                >
-                  {/* Blank Placeholder */}
-                </Text>
-              </View>
-              {/* End Row of 'Poisonous Plants Identified:' TEXT Container*/}
-
-              {/* Start Row of Plant IMAGES */}
-              <View style={styles.plantsContainer}>
-                <View
-                  style={{
-                    flex: 1,
-                    //flexDirection: 'col',
-                    flexWrap: 'wrap'
-                  }}
-                >
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: 'row',
-                      flexWrap: 'wrap'
-                    }}
-                  >
-                    {plants &&
-                      plants.slice(0, 8).map((p, i) => (
-                        <TouchableHighlight
-                          key={i}
-                          onPress={() => navigate('PlantInfo', p)}
-                        >
-                          <Image
-                            style={{
-                              width: 100,
-                              height: 100,
-                              marginRight: 20,
-                              marginBottom: 20
-                            }}
-                            source={{uri: p.imageURL}}
-                          />
-                        </TouchableHighlight>
-                      ))}
-                  </View>
-                </View>
-              </View>
-              {/* End Row of 'Poisonous Plants Identified' IMAGES*/}
-            </View>
-            {/* Plaze Map Container */}
+              {scientificName}
+            </Text>
+            <Text>{description}</Text>
+            <Text>{poisonous}</Text>
           </View>
-          {/* End Parent Container View */}
         </ScrollView>
       </View>
     )
   }
 }
 
-ProfileScreen.navigationOptions = {
+PlantInfo.navigationOptions = {
   header: null
 }
 
@@ -371,9 +197,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'grey'
   },
   welcomeContainer: {
-    marginTop: 0,
+    // marginTop: -300,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginLeft: 40,
+    marginRight: 40
   },
   plantsContainer: {
     justifyContent: 'center',
@@ -512,4 +340,6 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withApollo(ProfileScreen)
+export default withApollo(PlantInfo)
+
+//you need to charge your emulator, the battery is low :)

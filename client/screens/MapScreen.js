@@ -31,6 +31,8 @@ import {
 } from 'react-native'
 
 import {ListItem} from 'react-native-elements'
+import {Ionicons, SimpleLineIcons} from '@expo/vector-icons'
+
 // import TouchableScale from 'react-native-touchable-scale' // https://github.com/kohver/react-native-touchable-scale
 // import ExpoLinearGradient from 'react-native-linear-gradient'
 
@@ -152,74 +154,155 @@ export default function MapScreen(props) {
     )
   } else {
     return (
-      <View>
-        {{location} && {pins} && (
-            <View>
-              <MapView
-                style={styles.mapStyle}
-                showsUserLocation={true}
-                showsMyLocationButton={true}
-                followsUserLocation={true}
-                zoomEnabled={true}
-                zoomTapEnabled={true}
-              >
+      <>
+        {/* TOP 'NAVIGATION' */}
+        <View style={{flex: 1, flexDirection: 'row', marginTop: 15}}>
+          <View
+            style={{
+              width: '33.3%',
+              height: 40,
+              textAlign: 'left',
+              borderBottomColor: '#C7CAD4',
+              borderBottomWidth: 1,
+              marginBottom: 10
+            }}
+          >
+            <Text
+              style={{
+                textAlign: 'left',
+                marginLeft: 15
+              }}
+            >
+              <SimpleLineIcons
+                name="logout"
+                onPress={this.logoutUser}
+                size={25}
+                color="#C7CAD4"
+                style={{
+                  textAlign: 'left'
+                }}
+              />
+            </Text>
+          </View>
+
+          <View
+            style={{
+              width: '33.3%',
+              height: 40,
+              textAlign: 'middle',
+              borderBottomColor: '#C7CAD4',
+              borderBottomWidth: 1,
+              marginBottom: 10
+            }}
+          >
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 24,
+                fontFamily: 'yorkten',
+                color: '#C7CAD4'
+              }}
+            >
+              Plaze
+            </Text>
+          </View>
+
+          <View
+            style={{
+              width: '33.3%',
+              height: 40,
+              textAlign: 'right',
+              borderBottomColor: '#C7CAD4',
+              borderBottomWidth: 1,
+              marginBottom: 10
+            }}
+          >
+            <Text
+              style={{
+                textAlign: 'right',
+                marginRight: 15
+              }}
+            >
+              <Ionicons
+                name="ios-leaf"
+                size={25}
+                style={{
+                  color: '#C7CAD4'
+                }}
+              />
+            </Text>
+          </View>
+        </View>
+        {/* END TOP 'NAVIGATION' */}
+        <View>
+          {{location} && {pins} && (
+              <View>
+                <MapView
+                  style={styles.mapStyle}
+                  showsUserLocation={true}
+                  showsMyLocationButton={true}
+                  followsUserLocation={true}
+                  zoomEnabled={true}
+                  zoomTapEnabled={true}
+                >
+                  {pins.map((pin, i) => (
+                    <Marker
+                      key={i}
+                      title={pin.title}
+                      coordinate={pin.coordinate}
+                      pinColor={pin.hasPoisonousPlants ? 'red' : 'green'}
+                      description={pin.description}
+                      id={pin.id}
+                      onPress={() => handleMarkerOnPress(pin)}
+                      onSelect={() => handleMarkerOnPress(pin)}
+                      onDeselect={() => handleMarkerOnDeselect()}
+                    />
+                  ))}
+                </MapView>
+              </View>
+            )}
+          {!pinSelected.id &&
+            pins && (
+              <ScrollView>
                 {pins.map((pin, i) => (
-                  <Marker
+                  <ListItem
                     key={i}
                     title={pin.title}
-                    coordinate={pin.coordinate}
-                    pinColor={pin.hasPoisonousPlants ? 'red' : 'green'}
-                    description={pin.description}
-                    id={pin.id}
-                    onPress={() => handleMarkerOnPress(pin)}
-                    onSelect={() => handleMarkerOnPress(pin)}
-                    onDeselect={() => handleMarkerOnDeselect()}
+                    //subtitle={() => distanceFromLocation(pin)}
+                    bottomDivider
+                    badge={{
+                      value: pin.plants.length,
+                      textStyle: {color: '#fff'},
+                      containerStyle: {
+                        marginTop: -20
+                      },
+                      badgeStyle: {backgroundColor: 'green'}
+                    }}
+                    onPress={() => handlePinItemOnPress(pin)}
                   />
                 ))}
-              </MapView>
-            </View>
-          )}
-        {!pinSelected.id &&
-          pins && (
+              </ScrollView>
+            )}
+          {pinSelected.id && (
             <ScrollView>
-              {pins.map((pin, i) => (
-                <ListItem
-                  key={i}
-                  title={pin.title}
-                  //subtitle={() => distanceFromLocation(pin)}
-                  bottomDivider
-                  badge={{
-                    value: pin.plants.length,
-                    textStyle: {color: '#fff'},
-                    containerStyle: {
-                      marginTop: -20
-                    },
-                    badgeStyle: {backgroundColor: 'green'}
-                  }}
-                  onPress={() => handlePinItemOnPress(pin)}
-                />
-              ))}
-            </ScrollView>
-          )}
-        {pinSelected.id && (
-          <ScrollView>
-            <ListItem
-              title={pinSelected.title}
-              //subtitle={pinSelected.description}
-              bottomDivider
-              badge={{
-                value: pinSelected.plants.length,
-                textStyle: {color: '#fff'},
-                containerStyle: {marginTop: -20},
-                badgeStyle: {backgroundColor: 'green'}
-              }}
-            />
-            {/* {pinSelected.plants.map((plant, i) => (
+              <ListItem
+                title={pinSelected.title}
+                //subtitle={pinSelected.description}
+                bottomDivider
+                badge={{
+                  value: pinSelected.plants.length,
+                  textStyle: {color: '#fff'},
+                  containerStyle: {marginTop: -20},
+                  badgeStyle: {backgroundColor: 'green'}
+                }}
+              />
+              {/* {pinSelected.plants.map((plant, i) => (
               <Text key={i}>{plant.commonName}</Text>
             ))} */}
-          </ScrollView>
-        )}
-      </View>
+            </ScrollView>
+          )}
+        </View>
+      </>
     )
   }
 }
