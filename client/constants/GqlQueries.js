@@ -25,10 +25,6 @@ export const CHECK_USER_EXISTS = gql`
       id
       name
       email
-      leaves
-      regDate {
-        formatted
-      }
     }
   }
 `
@@ -39,6 +35,9 @@ export const GET_USER_PROFILE_INFO = gql`
       name
       email
       leaves
+      regDate {
+        formatted
+      }
       plants {
         commonName
         scientificName
@@ -58,7 +57,6 @@ export const GET_ALL_USER_INFO = gql`
       leaves
       plants {
         commonName
-        scientificName
         imageURL
         description
         isPoisonous
