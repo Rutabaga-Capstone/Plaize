@@ -24,7 +24,7 @@ import pinsData from '../store/pins' //fake data for now
 import {setPins} from '../store/actions'
 
 const HomeScreen = props => {
-  const [isFetching, setIsFetching] = useState(false)
+  // const [isFetching, setIsFetching] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -34,14 +34,15 @@ const HomeScreen = props => {
   useEffect(() => getPins(), [])
 
   const getPins = () => {
-    setIsFetching(true)
+    // setIsFetching(true)
 
     //OPTION 1 - LOCAL DATA from imported file
     setTimeout(() => {
       if (!pins) {
-        const allpins = pinsData
-        dispatch(setPins(allpins))
-        setIsFetching(false)
+        // const allpins = pinsData
+        dispatch(setPins(pinsData))
+        // // setIsFetching(false)
+        // console.log(allpins)
       } else {
         console.log('already have at least 1 pin')
       }

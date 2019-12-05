@@ -52,7 +52,7 @@ export default function MapScreen(props) {
   const dispatch = useDispatch()
 
   //1 - DECLARE VARIABLES
-  // const [isFetching, setIsFetching] = useState(false)
+  const [isFetching, setIsFetching] = useState(false)
 
   //Access Redux Store State
 
@@ -74,11 +74,11 @@ export default function MapScreen(props) {
   //==================================================================================================
 
   //2 - EFFECTS
-  // useEffect(() => getPins(), [pins])
+  // useEffect(() => getPins(), [])
   // useEffect(() => getLocation(), [])
   useEffect(() => getRegion(), [])
-  useEffect(() => handleMarkerOnPress(), [])
-  useEffect(() => handleMarkerOnDeselect(), [])
+  // useEffect(() => handleMarkerOnPress(), [])
+  // useEffect(() => handleMarkerOnDeselect(), [])
   // useEffect(() => getModal(), [])
 
   //==================================================================================================
@@ -86,18 +86,13 @@ export default function MapScreen(props) {
   //3 - GET DATA AND DISPATCH ACTIONS
   // const getPins = () => {
   //   setIsFetching(true)
-
   //   //OPTION 1 - LOCAL DATA from imported file
   //   setTimeout(() => {
-  //     if (!pins) {
-  //       const pins = pinsData
-  //       dispatch(setPins(pins))
-  //       setIsFetching(false)
-  //     } else {
-  //       console.log('already have at least 1 pin')
-  //     }
+  //     const allpins = pinsData
+  //     dispatch(setPins(allpins))
+  //     console.log(pins)
+  //     setIsFetching(false)
   //   }, 2000)
-
   //   //OPTION 2 - API CALL, i.e. axios
   //   // let url = "https://my-json-server.typicode.com/mesandigital/demo/instructions";
   //   // axios.get(url)
@@ -105,10 +100,8 @@ export default function MapScreen(props) {
   //   //     .then((data) => dispatch(addData(data)))
   //   //     .catch(error => alert(error.message))
   //   //     .finally(() => setIsFetching(false));
-
-  //   //OPTION 3 - GRAPHQL - TBD
+  //OPTION 3 - GRAPHQL - TBD
   // }
-
   // const fetchLocationAsync = async () => {
   //   try {
   //     let {status} = await Permissions.askAsync(Permissions.LOCATION)
@@ -122,7 +115,6 @@ export default function MapScreen(props) {
   //     console.log(err)
   //   }
   // }
-
   // const getLocation = () => {
   //   fetchLocationAsync() //use this indirect func because useEffect does not accept promises as callbacks directly
   // }
@@ -141,10 +133,12 @@ export default function MapScreen(props) {
   }
 
   const handleMarkerOnPress = pin => {
+    console.log(pin)
     dispatch(setPinSelected(pin))
   }
 
   const handlePinItemOnPress = pin => {
+    console.log(pin)
     dispatch(setPinSelected(pin))
   }
 
@@ -172,7 +166,8 @@ export default function MapScreen(props) {
   } else {
     return (
       <View>
-        {{location} && {pins} && (
+        {location &&
+          pins && (
             /* pinSelected.plants && */ <View>
               <MapView
                 style={styles.mapStyle}
@@ -193,6 +188,7 @@ export default function MapScreen(props) {
                     onPress={() => handleMarkerOnPress(pin)}
                     onSelect={() => handleMarkerOnPress(pin)}
                     onDeselect={() => handleMarkerOnDeselect()}
+                    // isPreselected={pin.id === '2'}
                   />
                 ))}
               </MapView>
@@ -241,7 +237,7 @@ export default function MapScreen(props) {
         )}
         {pinSelected.id && (
           <Container>
-            <PlantModal />
+            <PlantModal pinSelected={pinSelected} />
           </Container>
         )}
       </View>
