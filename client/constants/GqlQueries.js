@@ -3,26 +3,26 @@ import {useQuery} from '@apollo/react-hooks'
 import {useApolloClient} from 'apollo-client'
 
 /* Frontend examples:
-* Use query once -- for on click or on callback i.e. when response from snapscreen
-* const client = useApolloClient()
-* returnedObject = client.query(THIS_IS_THE_QUERY, {variables: {'varName': 'varValue', commonName, etc}})
-*
-* Use query on componentRender -- refetch every .5 seconds, refetch on callback -- i.e. get user location
-* const {loading, error, data, refetch} = useQuery(
-*   QUERY_VAR_HERE, {
-*     variables: {
-*       something,
-*       'something': 'else'
-*     },
-*   pollInterval: 500,
-* })
-* <button onClick={() => refetch()}>Click to update data</button>
-*/
+ * Use query once -- for on click or on callback i.e. when response from snapscreen
+ * const client = useApolloClient()
+ * returnedObject = client.query(THIS_IS_THE_QUERY, {variables: {'varName': 'varValue', commonName, etc}})
+ *
+ * Use query on componentRender -- refetch every .5 seconds, refetch on callback -- i.e. get user location
+ * const {loading, error, data, refetch} = useQuery(
+ *   QUERY_VAR_HERE, {
+ *     variables: {
+ *       something,
+ *       'something': 'else'
+ *     },
+ *   pollInterval: 500,
+ * })
+ * <button onClick={() => refetch()}>Click to update data</button>
+ */
 
 export const CHECK_USER_EXISTS = gql`
   query logInUser($email: String!, $password: String!) {
     user(email: $email, password: $password) {
-      _id
+      id
       name
       email
     }
@@ -43,14 +43,14 @@ export const GET_USER_PROFILE_INFO = gql`
         scientificName
         imageURL
         description
-        poisonous
+        isPoisonous
       }
     }
   }
 `
 
 export const GET_ALL_USER_INFO = gql`
-  query getAllUserInfo($email: String!) {
+  query getAllUserInfo($email: String!, $password: String!) {
     user(email: $email, password: $password) {
       name
       email
@@ -58,6 +58,8 @@ export const GET_ALL_USER_INFO = gql`
       plants {
         commonName
         imageURL
+        description
+        isPoisonous
       }
       lat
       lng
@@ -80,7 +82,19 @@ export const GET_PLANT_BY_COMMON_NAME = gql`
       scientificName
       description
       imageURL
-      poisonous
+      isPoisonous
+    }
+  }
+`
+
+export const GET_ALL_PINS = gql`
+  query {
+    Pin {
+      lat
+      lng
+      plants {
+        commonName
+      }
     }
   }
 `
