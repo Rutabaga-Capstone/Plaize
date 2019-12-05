@@ -25,10 +25,6 @@ export const CHECK_USER_EXISTS = gql`
       id
       name
       email
-      leaves
-      regDate {
-        formatted
-      }
     }
   }
 `

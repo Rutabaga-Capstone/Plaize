@@ -10,12 +10,13 @@ import {
   AsyncStorage,
   TouchableOpacity
 } from 'react-native'
+import {useDispatch} from 'react-redux'
+import {getPlants} from '../store/actions'
 import {Input} from 'react-native-elements'
 import GradientButton from 'react-native-gradient-buttons'
 import {withApollo} from 'react-apollo'
 import {useApolloClient} from '@apollo/react-hooks'
 import {CHECK_USER_EXISTS} from '../constants/GqlQueries'
-import {gql} from 'apollo-boost'
 import Dialog from 'react-native-dialog'
 import * as Facebook from 'expo-facebook'
 import * as Google from 'expo-google-app-auth'
@@ -27,6 +28,11 @@ const HomeScreen = props => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const client = useApolloClient()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getPlants())
+  }, [])
 
   const loginUser = async () => {
     const {client, navigation} = props

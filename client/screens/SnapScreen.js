@@ -4,7 +4,6 @@ import * as Permissions from 'expo-permissions'
 import {Camera} from 'expo-camera'
 import * as FileSystem from 'expo-file-system'
 import axios from 'axios'
-import {Ionicons} from '@expo/vector-icons'
 import PlantModal from '../components/PlantModal'
 import {useMutation, useApolloClient} from '@apollo/react-hooks'
 import {
@@ -21,6 +20,8 @@ import styled from 'styled-components'
 import {setPinSelected, setLocation} from '../store/actions'
 import {useDispatch, useSelector} from 'react-redux'
 import * as Location from 'expo-location'
+import {Ionicons, SimpleLineIcons} from '@expo/vector-icons'
+import {addPlant} from '../store/actions'
 
 export default function SnapScreen() {
   const [isPlantInfoReceived, setIsPlantInfoReceived] = useState(false)
@@ -122,6 +123,7 @@ export default function SnapScreen() {
           .then(plant => {
             delete plant.data.plant.__typename
             plantCopy = plant.data.plant
+            dispatch(addPlant(plantCopy))
             console.log('plant:', plant)
             console.log('then after query', {
               ...plant.data.plant,
@@ -176,40 +178,120 @@ export default function SnapScreen() {
     return <Text>No access to camera</Text>
   } else {
     return (
-      <View style={{flex: 1}}>
-        <Camera
-          ref={ref => {
-            camera = ref
-          }}
-          style={{flex: 1}}
-          type={Camera.Constants.Type.back}
-        >
+      <>
+        {/* TOP 'NAVIGATION' */}
+        <View style={{flex: 1, flexDirection: 'row', marginTop: 15}}>
           <View
             style={{
-              flex: 1,
-              backgroundColor: 'transparent',
-              flexDirection: 'row'
+              width: '33.3%',
+              height: 40,
+              textAlign: 'left',
+              borderBottomColor: '#C7CAD4',
+              borderBottomWidth: 1,
+              marginBottom: 10
+            }}
+            onPress={takePicture}
+          >
+            <Text
+              style={{
+                textAlign: 'left',
+                marginLeft: 15
+              }}
+            >
+              <SimpleLineIcons
+                name="logout"
+                onPress={this.logoutUser}
+                size={25}
+                color="#C7CAD4"
+                style={{
+                  textAlign: 'left'
+                }}
+              />
+            </Text>
+          </View>
+
+          <View
+            style={{
+              width: '33.3%',
+              height: 40,
+              textAlign: 'middle',
+              borderBottomColor: '#C7CAD4',
+              borderBottomWidth: 1,
+              marginBottom: 10
             }}
           >
-            <TouchableOpacity
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 24,
+                fontFamily: 'yorkten',
+                color: '#C7CAD4'
+              }}
+            >
+              Plaze
+            </Text>
+          </View>
+
+          <View
+            style={{
+              width: '33.3%',
+              height: 40,
+              textAlign: 'right',
+              borderBottomColor: '#C7CAD4',
+              borderBottomWidth: 1,
+              marginBottom: 10
+            }}
+          >
+            <Text
+              style={{
+                textAlign: 'right',
+                marginRight: 15
+              }}
+            >
+              <Ionicons
+                name="ios-leaf"
+                size={25}
+                style={{
+                  color: '#C7CAD4'
+                }}
+              />
+            </Text>
+          </View>
+        </View>
+        {/* END TOP 'NAVIGATION' */}
+
+        <View style={{flex: 1}}>
+          <Camera
+            ref={ref => {
+              this.camera = ref
+            }}
+            style={{flex: 1}}
+            type={this.state.type}
+          >
+            <View
               style={{
                 flex: 1,
-                alignSelf: 'flex-end',
-                alignItems: 'center'
+                backgroundColor: 'transparent',
+                flexDirection: 'row'
               }}
-              onPress={takePicture}
             >
-              <Ionicons name="md-camera" size={48} style={{marginBottom: 30}} />
-            </TouchableOpacity>
-          </View>
-        </Camera>
-
-        {isPlantInfoReceived && (
-          <Container>
-            <PlantModal disableModalCallback={buttonCallback} />
-          </Container>
-        )}
-      </View>
+              <TouchableOpacity
+                style={{
+                  flex: 0.1,
+                  alignSelf: 'flex-end',
+                  alignItems: 'center'
+                }}
+                onPress={this.takePicture}
+              >
+                <Text style={{fontSize: 18, marginBottom: 10, color: 'white'}}>
+                  {' '}
+                  Take Picture!{' '}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </Camera>
+        </View>
+      </>
     )
   }
 }

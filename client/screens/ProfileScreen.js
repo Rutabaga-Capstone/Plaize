@@ -1,5 +1,6 @@
 import * as WebBrowser from 'expo-web-browser'
 import React, {useState, useEffect} from 'react'
+import {connect} from 'react-redux'
 import {
   Image,
   Platform,
@@ -10,9 +11,8 @@ import {
   AsyncStorage
 } from 'react-native'
 import {withApollo} from 'react-apollo'
-import {useSelector} from 'react-redux'
-import {Ionicons} from '@expo/vector-icons'
-import {useQuery} from '@apollo/react-hooks'
+import {Ionicons, SimpleLineIcons} from '@expo/vector-icons'
+import {GET_USER_PROFILE_INFO} from '../constants/GqlQueries'
 
 class ProfileScreen extends React.Component {
   state = {
@@ -20,11 +20,23 @@ class ProfileScreen extends React.Component {
   }
 
   async componentDidMount() {
+    const {client} = this.props
     try {
-      const user = JSON.parse(
+      const {email} = JSON.parse(
         (await AsyncStorage.getItem('LOGGED_IN_USER')) || '{}'
       )
-      this.setState({user})
+      try {
+        const result = await client.query({
+          query: GET_USER_PROFILE_INFO,
+          variables: {
+            email
+          }
+        })
+        const {user} = result.data
+        this.setState({user})
+      } catch (error) {
+        alert(JSON.stringify(error))
+      }
     } catch (err) {
       console.log('err fetching user', err)
     }
@@ -47,15 +59,105 @@ class ProfileScreen extends React.Component {
     return result
   }
 
+  logoutUser = async () => {
+    const {navigate} = this.props.navigation
+    try {
+      await AsyncStorage.removeItem('LOGGED_IN_USER')
+      navigate('Home')
+    } catch (err) {
+      console.log('error removing item from storage', err)
+    }
+  }
+
   render() {
     const {navigate} = this.props.navigation
-    const {name, leaves, regDate} = this.state.user
+    const {userPlants} = this.props.plantsReducer
+    const {name, leaves, regDate, plants} = this.state.user
     return (
       <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
           {/* Welcome Container */}
-
           <View style={styles.welcomeContainer}>
+            {/* TOP 'NAVIGATION' */}
+            <View style={{flex: 1, flexDirection: 'row', marginTop: 15}}>
+              <View
+                style={{
+                  width: '33.3%',
+                  height: 40,
+                  textAlign: 'left',
+                  borderBottomColor: '#C7CAD4',
+                  borderBottomWidth: 1,
+                  marginBottom: 10
+                }}
+              >
+                <Text
+                  style={{
+                    textAlign: 'left',
+                    marginLeft: 15
+                  }}
+                >
+                  <SimpleLineIcons
+                    name="logout"
+                    onPress={this.logoutUser}
+                    size={25}
+                    color="#C7CAD4"
+                    style={{
+                      textAlign: 'left'
+                    }}
+                  />
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  width: '33.3%',
+                  height: 40,
+                  textAlign: 'middle',
+                  borderBottomColor: '#C7CAD4',
+                  borderBottomWidth: 1,
+                  marginBottom: 10
+                }}
+              >
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontSize: 24,
+                    fontFamily: 'yorkten',
+                    color: '#C7CAD4'
+                  }}
+                >
+                  Plaze
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  width: '33.3%',
+                  height: 40,
+                  textAlign: 'right',
+                  borderBottomColor: '#C7CAD4',
+                  borderBottomWidth: 1,
+                  marginBottom: 10
+                }}
+              >
+                <Text
+                  style={{
+                    textAlign: 'right',
+                    marginRight: 15
+                  }}
+                >
+                  <Ionicons
+                    name="ios-leaf"
+                    size={25}
+                    style={{
+                      color: '#C7CAD4'
+                    }}
+                  />
+                </Text>
+              </View>
+            </View>
+            {/* END TOP 'NAVIGATION' */}
+
             <Image
               source={
                 __DEV__
@@ -67,7 +169,6 @@ class ProfileScreen extends React.Component {
             <Text style={styles.title}>{name}</Text>
 
             {/* Rank Level, Rank Number Container */}
-
             <View
               style={{
                 flex: 1,
@@ -119,29 +220,31 @@ class ProfileScreen extends React.Component {
             </View>
 
             {/* Joined Plaze on JoinDate Row */}
-
             <Text style={styles.subtitle}>
               Joined Plaze on {regDate && regDate.formatted.slice(0, 10)}
             </Text>
 
             <View
               style={{
-                flex: 1
+                flex: 1,
+                marginTop: -40
               }}
             />
 
-            {/* Parent Container View For Plants, Map */}
+            {/* PARENT Container View - Plants Text, Images, Map, etc */}
             <View
               style={{
-                flex: 1
+                flex: 1,
+                flexDirection: 'col',
+                justifyContent: 'space-between'
               }}
             >
-              {/* Poisonous Plants Identified Container */}
-
+              {/* 'Poisonous Plants Identified:' TEXT Container */}
               <View
                 style={{
-                  flex: 2,
-                  flexDirection: 'row'
+                  flex: 1,
+                  //flexDirection: 'col'
+                  marginBottom: 20
                 }}
               >
                 <Text
@@ -152,6 +255,7 @@ class ProfileScreen extends React.Component {
                     fontSize: 24,
                     color: '#C7CAD4'
                   }}
+                  //Blank Placeholder
                 />
                 <Text
                   style={{
@@ -160,7 +264,7 @@ class ProfileScreen extends React.Component {
                     textAlign: 'left',
                     fontSize: 20,
                     color: '#000000',
-                    marginLeft: 10
+                    marginLeft: 25
                   }}
                 >
                   Poisonous Plants Identified:
@@ -176,9 +280,44 @@ class ProfileScreen extends React.Component {
                   {/* Blank Placeholder */}
                 </Text>
               </View>
+              {/* End Row of 'Poisonous Plants Identified:' TEXT Container*/}
 
-              {/* Plaze Map Container */}
+              {/* Start Row of Plant IMAGES */}
+              <View style={styles.plantsContainer}>
+                <View
+                  style={{
+                    flex: 1,
+                    //flexDirection: 'col',
+                    flexWrap: 'wrap'
+                  }}
+                >
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                      flexWrap: 'wrap'
+                    }}
+                  >
+                    {plants &&
+                      plants.slice(0, 8).map((p, i) => (
+                        <Image
+                          key={i}
+                          style={{
+                            width: 100,
+                            height: 100,
+                            marginRight: 20,
+                            marginBottom: 20
+                          }}
+                          //onPress=
+                          source={{uri: p.imageURL}}
+                        />
+                      ))}
+                  </View>
+                </View>
+              </View>
+              {/* End Row of 'Poisonous Plants Identified' IMAGES*/}
             </View>
+            {/* Plaze Map Container */}
           </View>
           {/* End Parent Container View */}
         </ScrollView>
@@ -413,14 +552,23 @@ const styles = StyleSheet.create({
     backgroundColor: 'grey'
   },
   welcomeContainer: {
-    marginTop: 30,
+    marginTop: 0,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  plantsContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: '6%',
+    marginRight: '6%',
+    marginTop: 80,
+    flex: 1
   },
   welcomeImage: {
     width: 100,
     height: 100,
     marginLeft: 10,
+    marginTop: 50,
     resizeMode: 'contain',
     alignItems: 'center',
     justifyContent: 'center'
@@ -545,4 +693,6 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withApollo(ProfileScreen)
+export default connect(({plantsReducer}) => ({plantsReducer}))(
+  withApollo(ProfileScreen)
+)
