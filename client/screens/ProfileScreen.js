@@ -74,7 +74,7 @@ class ProfileScreen extends React.Component {
           {/* Welcome Container */}
           <View style={styles.welcomeContainer}>
             {/* TOP 'NAVIGATION' */}
-            <View style={{flex: 1, flexDirection: 'row', marginTop: 15}}>
+            <View style={{flex: 1, flexDirection: 'row', marginTop: 0}}>
               <View
                 style={{
                   width: '33.3%',

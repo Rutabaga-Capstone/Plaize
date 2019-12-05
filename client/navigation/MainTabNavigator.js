@@ -75,15 +75,18 @@ const SnapStack = createStackNavigator(
   config
 )
 
-SnapStack.navigationOptions = {
-  tabBarLabel: 'Snap',
-  tabBarIcon: ({focused}) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-camera' : 'md-camera'}
-      color={Colors.activeTintColor}
-    />
-  )
+SnapStack.navigationOptions = ({navigation}) => {
+  //alert(JSON.stringify(navigation))
+  return {
+    tabBarLabel: 'Snap',
+    tabBarIcon: ({focused}) => (
+      <TabBarIcon
+        focused={focused}
+        name={Platform.OS === 'ios' ? 'ios-camera' : 'md-camera'}
+        color={Colors.activeTintColor}
+      />
+    )
+  }
 }
 
 /*----- PROFILE -----*/
