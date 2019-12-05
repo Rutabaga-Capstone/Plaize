@@ -95,6 +95,9 @@ export default function SnapScreen() {
       .post(`http://${ipAddressOfServer}:1234/image`, formData)
       .then(response => {
         console.log(response.data.commonName)
+        if (response.data.commonName === 'none of the above') {
+          console.error()
+        }
         // if (response.data.score < 0.5) { throw(new Error) }
 
         /*
@@ -112,6 +115,7 @@ export default function SnapScreen() {
         5. Once I have info about posion ivy, location, I am ready to create pin
         6. PIN creation
         */
+
         client
           .query({
             query: GET_PLANT_BY_COMMON_NAME,
@@ -125,6 +129,7 @@ export default function SnapScreen() {
             plantCopy = plant.data.plant
             dispatch(addPlant(plantCopy))
             console.log('plant:', plant)
+
             console.log('then after query', {
               ...plant.data.plant,
               plantId: uuid(),
@@ -132,6 +137,25 @@ export default function SnapScreen() {
               lat: location.coords.latitude,
               lng: location.coords.longitude
             })
+
+            client
+              .query({
+                query: GET_USER_LEAVES,
+                variables: {
+                  email: 'cc'
+                }
+              })
+              .then(leaves => {
+                UpdateUserLeaves({
+                  variables: {
+                    id: '5',
+                    leaves
+                  }
+                }).catch(() => {
+                  console.log('Could not update user')
+                })
+              })
+
             CreatePinPlant({
               variables: {
                 ...plant.data.plant,
@@ -142,6 +166,7 @@ export default function SnapScreen() {
               }
             })
               .then(creations => {
+                // This is the then for the client.query for get plant
                 console.log('creations: ', creations)
                 AddPinPlantToUser({
                   variables: {
@@ -159,14 +184,17 @@ export default function SnapScreen() {
                 console.log('newpin.plants', newpin.plants)
               })
               .catch(() => {
+                // this is the catch for create pin plant
                 console.log('Unable to associate plant with user')
               })
           })
           .catch(() => {
+            // this is the then for client.query for get plant
             console.log('Could not query for plant')
           })
       })
       .catch(err => {
+        // this is the catch for axios.post for autoML
         console.log(err)
         alert('Plant has not been identified')
       })
