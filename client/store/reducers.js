@@ -13,7 +13,10 @@ import {
   CLOSE_MODAL,
   GET_PLANTS,
   SET_PLANTS,
-  ADD_PLANT
+  ADD_PLANT,
+  GET_USER_DATA,
+  SET_USER_DATA,
+  UPDATE_USER_DATA_LEAVES
 } from './actions' //Import the actions types constant we defined in our actions
 
 let pinsState = {pins: []}
@@ -117,6 +120,29 @@ const plantsReducer = (state = plantsState, action) => {
   }
 }
 
+let userState = {
+  user: {
+    id: 5,
+    name: 'cc',
+    email: 'cc',
+    password: 'cc',
+    leaves: 0,
+    regDate: {formatted: '2019-09-24'}
+  }
+}
+const userReducer = (state = userState, action) => {
+  switch (action.type) {
+    case GET_USER_DATA:
+      return state
+    case SET_USER_DATA:
+      return {...state, userData: action.user}
+    case UPDATE_USER_DATA_LEAVES:
+      return {...state, userData: {...state.userData, leaves: action.leaves}}
+    default:
+      return state
+  }
+}
+
 // Combine all the reducers
 const rootReducer = combineReducers({
   pinsReducer,
@@ -124,7 +150,8 @@ const rootReducer = combineReducers({
   regionReducer,
   pinSelectedReducer,
   modalActionReducer,
-  plantsReducer
+  plantsReducer,
+  userReducer
   // ,[ANOTHER REDUCER], [ANOTHER REDUCER] ....
 })
 

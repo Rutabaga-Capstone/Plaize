@@ -69,17 +69,6 @@ client
           email: "cc"
           password: "cc"
           leaves: 0
-          plant: "{[{\"id\": \"1\", \"commonName\": \"Poison Ivy\", \"scientificName\": \"Toxicodendron radicans\"}]}"
-          imageURL: "https://www.petguide.com/wp-content/uploads/2019/03/poison-ivy-dogs-668x444.jpg"
-          description: "A poisonous Asian and Eastern North American flowering plant in the genus Toxicodendron. Causes rashes when touched"
-          isPoisonous: true]}"
-
-
-
-
-          imageURL: "https://www.petguide.com/wp-content/uploads/2019/03/poison-ivy-dogs-668x444.jpg"
-          description: "A poisonous Asian and Eastern North American flowering plant in the genus Toxicodendron. Causes rashes when touched"
-          isPoisonous: true
           regDate: {formatted: "2019-09-24"}
         ) {
           id
@@ -386,3 +375,6 @@ client
   })
   .then(() => console.log('Done seeding the DB!!!'))
   .catch(error => console.error(error))
+
+/// Possible future JSON string workaround
+// plant: "{[{\"id\": \"1\", \"commonName\": \"Poison Ivy\", \"scientificName\": \"Toxicodendron radicans\"}]}"

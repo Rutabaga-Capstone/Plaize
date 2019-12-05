@@ -79,3 +79,23 @@ export const addPlant = plant => ({
   type: ADD_PLANT,
   plant
 })
+
+///USER
+
+export const GET_USER_DATA = 'GET_USER_DATA'
+export const SET_USER_DATA = 'SET_USER_DATA'
+export const UPDATE_USER_DATA_LEAVES = 'UPDATE_USER_DATA_LEAVES'
+
+export const getUserData = user => ({
+  type: GET_USER_DATA
+})
+
+export const setUserData = user => ({
+  type: SET_USER_DATA,
+  user
+})
+
+export const updateUserDataLeaves = leaves => ({
+  type: UPDATE_USER_DATA_LEAVES,
+  leaves
+})

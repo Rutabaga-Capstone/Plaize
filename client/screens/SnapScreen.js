@@ -151,9 +151,13 @@ export default function SnapScreen() {
                     id: '5',
                     leaves
                   }
-                }).catch(() => {
-                  console.log('Could not update user')
                 })
+                  .then(user => {
+                    dispatch(updateUserDataLeaves(user.data.leaves))
+                  })
+                  .catch(() => {
+                    console.log('Could not update user')
+                  })
               })
 
             CreatePinPlant({

@@ -11,7 +11,7 @@ import {
   TouchableOpacity
 } from 'react-native'
 import {useDispatch} from 'react-redux'
-import {getPlants} from '../store/actions'
+import {getPlants, getUserData, setUserData} from '../store/actions'
 import {Input} from 'react-native-elements'
 import GradientButton from 'react-native-gradient-buttons'
 import {withApollo} from 'react-apollo'
@@ -34,6 +34,10 @@ const HomeScreen = props => {
     dispatch(getPlants())
   }, [])
 
+  useEffect(() => {
+    dispatch(getUserData())
+  }, [])
+
   const loginUser = async () => {
     const {client, navigation} = props
     if ([email, password].every(i => i && i.trim())) {
@@ -46,6 +50,7 @@ const HomeScreen = props => {
           }
         })
         const userData = result.data.user
+        dispatch(setUserData(userData))
         // await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
         navigation.navigate('Snap', userData)
       } catch (error) {
