@@ -1,4 +1,5 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import styled from 'styled-components'
 import {
   Animated,
@@ -54,7 +55,7 @@ class CustomModal extends React.Component {
       <Container>
         <AnimatedContainer style={{top: this.state.top}}>
           <Header>
-            {props.pinSelected.plants.map((plant, i) => (
+            {this.props.pinSelected.plants.map((plant, i) => (
               <View key={i}>
                 <Text style={styles.title}> {plant.commonName} </Text>
                 <Image
@@ -79,7 +80,7 @@ class CustomModal extends React.Component {
             </CloseView>
           </TouchableOpacity>
           <Body>
-            {props.pinSelected.plants.map((plant, i) => (
+            {this.props.pinSelected.plants.map((plant, i) => (
               <View key={i} style={styles.subtitle}>
                 <Text style={styles.screenText}>
                   {' '}
@@ -94,13 +95,13 @@ class CustomModal extends React.Component {
                 </Text>
               </View>
             ))}
-            {props.pinSelected.plants.map((plant, i) => (
+            {this.props.pinSelected.plants.map((plant, i) => (
               <View key={i} style={styles.subtitle}>
                 <Text style={styles.subtitle}>Scientific Name</Text>
                 <Text style={styles.screenText}>{plant.scientificName}</Text>
               </View>
             ))}
-            {props.pinSelected.plants.map((plant, i) => (
+            {this.props.pinSelected.plants.map((plant, i) => (
               <View key={i} style={styles.subtitle}>
                 <Text style={styles.subtitle}>Description</Text>
                 <Text style={styles.screenText}>{plant.description}</Text>
@@ -215,4 +216,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default CustomModal
+export default connect(({pinSelected}) => ({pinSelected}))(CustomModal)

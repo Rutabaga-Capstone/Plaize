@@ -18,7 +18,7 @@ import {
 } from '../constants/GqlQueries'
 import uuid from 'react-uuid'
 import styled from 'styled-components'
-import {setPinSelected, setLocation} from '../store/actions'
+import {setPinSelected, setLocation, addPin} from '../store/actions'
 import {useDispatch, useSelector} from 'react-redux'
 import * as Location from 'expo-location'
 
@@ -153,8 +153,17 @@ export default function SnapScreen() {
                   plants: [plantCopy]
                 }
                 dispatch(setPinSelected(newpin))
+
+                newpin.title = plantCopy.commonName
+                newpin.description = ''
+                newpin.coordinate = {
+                  latitude: newpin.lat,
+                  longitude: newpin.lng
+                }
+
+                dispatch(addPin(newpin))
                 setIsPlantInfoReceived(true)
-                console.log('newpin.plants', newpin.plants)
+                console.log('newpin', newpin)
               })
               .catch(() => {
                 console.log('Unable to associate plant with user')
@@ -207,10 +216,7 @@ export default function SnapScreen() {
         {isPlantInfoReceived &&
           pinSelected && (
             <Container>
-              <PlantModal
-                disableModalCallback={buttonCallback}
-                pinSelected={pinSelected}
-              />
+              <PlantModal disableModalCallback={buttonCallback} />
             </Container>
           )}
       </View>

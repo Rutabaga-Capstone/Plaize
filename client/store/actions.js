@@ -30,6 +30,12 @@ export const setPinSelected = pinSelected => ({
   pinSelected
 })
 
+export const ADD_PIN = 'ADD_PIN'
+export const addPin = pin => ({
+  type: ADD_PIN,
+  pin
+})
+
 export const CLEAR_PIN_SELECTED = 'CLEAR_PIN_SELECTED'
 
 export const clearPinSelected = pinSelected => ({
