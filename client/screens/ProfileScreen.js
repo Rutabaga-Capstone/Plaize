@@ -20,24 +20,17 @@ class ProfileScreen extends React.Component {
     user: {}
   }
 
-  async componentDidMount() {
-    const {client} = this.props
-    try {
-      const {email} = JSON.parse(
-        (await AsyncStorage.getItem('LOGGED_IN_USER')) || '{}'
-      )
-      const result = await client.query({
-        query: GET_USER_PROFILE_INFO,
-        variables: {
-          email
-        }
-      })
-      const {user} = result.data
-      this.setState({user})
-    } catch (err) {
-      alert(JSON.stringify(err))
-    }
-  }
+  // async componentDidMount() {
+  //   const {client} = this.props
+  //   try {
+  //     // const {email} = JSON.parse(
+  //     //   (await AsyncStorage.getItem('LOGGED_IN_USER')) || '{}'
+  //     // )
+  //     // this.setState({user})
+  //   } catch (err) {
+  //     alert(JSON.stringify(err))
+  //   }
+  // }
 
   getRankLevel = leaves => {
     let result = ''

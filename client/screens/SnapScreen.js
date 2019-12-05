@@ -18,7 +18,13 @@ import {
 } from '../constants/GqlQueries'
 import uuid from 'react-uuid'
 import styled from 'styled-components'
-import {setPinSelected, setLocation, addPin} from '../store/actions'
+import {
+  setPinSelected,
+  setLocation,
+  addPlant,
+  updateUserDataLeaves,
+  addPin
+} from '../store/actions'
 import {useDispatch, useSelector} from 'react-redux'
 import * as Location from 'expo-location'
 
@@ -79,7 +85,7 @@ export default function SnapScreen() {
   }
 
   const onPictureSaved = photo => {
-    const ipAddressOfServer = '172.17.22.211' // <--- PUT YOUR OWN IP HERE
+    const ipAddressOfServer = '172.17.23.197' // <--- PUT YOUR OWN IP HERE
     const uriParts = photo.uri.split('.')
     const fileType = uriParts[uriParts.length - 1]
     let plantCopy
@@ -142,15 +148,19 @@ export default function SnapScreen() {
                   email: 'cc'
                 }
               })
-              .then(leaves => {
+              .then(response => {
+                console.log('XXXXXXXXXXXgetUserLeaves', response)
                 UpdateUserLeaves({
                   variables: {
                     id: '5',
-                    leaves
+                    leaves: response.data.user.leaves
                   }
                 })
-                  .then(user => {
-                    dispatch(updateUserDataLeaves(user.data.leaves))
+                  .then(response => {
+                    console.log('YYYYYYYYYUpdateUserLeaves', response)
+                    dispatch(
+                      updateUserDataLeaves(response.data.UpdateUser.leaves)
+                    )
                   })
                   .catch(() => {
                     console.log('Could not update user')
@@ -181,6 +191,17 @@ export default function SnapScreen() {
                   ...creations.data.CreatePin,
                   plants: [plantCopy]
                 }
+
+                dispatch(setPinSelected(newpin))
+
+                newpin.title = plantCopy.commonName
+                newpin.description = ''
+                newpin.coordinate = {
+                  latitude: newpin.lat,
+                  longitude: newpin.lng
+                }
+
+                dispatch(addPin(newpin))
 
                 // This is still the then for the client.query for create pin plant
                 dispatch(setPinSelected(newpin))
