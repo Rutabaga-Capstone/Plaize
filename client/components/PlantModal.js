@@ -51,6 +51,7 @@ class CustomModal extends React.Component {
   }
 
   render(props) {
+    if (!this.props.pinSelected) return null
     return (
       <Container>
         <AnimatedContainer style={{top: this.state.top}}>
