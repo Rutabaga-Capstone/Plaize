@@ -7,14 +7,17 @@ import {
   SET_PIN_SELECTED,
   CLEAR_PIN_SELECTED,
   OPEN_MODAL,
-  CLOSE_MODAL
+  CLOSE_MODAL,
+  ADD_PIN
 } from './actions' //Import the actions types constant we defined in our actions
 
 let pinsState = {pins: []}
 const pinsReducer = (state = pinsState, action) => {
   switch (action.type) {
     case SET_PINS:
-      return {...state, pins: action.pins}
+      return {...state, pins: [...state.pins, action.pins]}
+    case ADD_PIN:
+      return {...state, pins: [...state.pins, action.pin]}
     default:
       return state
   }

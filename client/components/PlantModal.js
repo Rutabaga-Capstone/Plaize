@@ -1,4 +1,5 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import styled from 'styled-components'
 import {
   Animated,
@@ -55,15 +56,14 @@ class CustomModal extends React.Component {
         <AnimatedContainer style={{top: this.state.top}}>
           <Header>
             {this.props.pinSelected.plants.map((plant, i) => (
-              <Text key={i} style={styles.title}>
-                {' '}
-                {plant.commonName}{' '}
-              </Text>
+              <View key={i}>
+                <Text style={styles.title}> {plant.commonName} </Text>
+                <Image
+                  source={{uri: plant.imageURL}}
+                  style={styles.welcomeImage}
+                />
+              </View>
             ))}
-            <Image
-              source={require('../assets/images/poison-oak.png')}
-              style={styles.welcomeImage}
-            />
           </Header>
           <TouchableOpacity
             onPress={this.closeModal}
@@ -85,7 +85,10 @@ class CustomModal extends React.Component {
                 <Text style={styles.screenText}>
                   {' '}
                   {plant.isPoisonous ? (
-                    <Icon.FontAwesome name="warning" size={30} color="red" />
+                    <Image
+                      source={require('../assets/images/poisonous3.png')}
+                      style={styles.poisonImage}
+                    />
                   ) : (
                     'Nonpoisonous'
                   )}
@@ -158,11 +161,18 @@ const styles = StyleSheet.create({
   welcomeImage: {
     width: 200,
     height: 200,
-    marginTop: -15,
+    marginTop: 0,
     alignSelf: 'center',
     resizeMode: 'contain',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  poisonImage: {
+    width: 200,
+    height: 35,
+    resizeMode: 'contain',
+    backgroundColor: 'white',
+    marginTop: 0
   },
   plantDetails: {
     flex: 1,
@@ -206,4 +216,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default CustomModal
+export default connect(({pinSelected}) => ({pinSelected}))(CustomModal)
