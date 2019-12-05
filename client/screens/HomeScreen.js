@@ -20,7 +20,7 @@ import * as Facebook from 'expo-facebook'
 import * as Google from 'expo-google-app-auth'
 import {useDispatch, useSelector} from 'react-redux'
 import pinsData from '../store/pins' //fake data for now
-import {setPins} from '../store/actions'
+import {getPlants, getUserData, setUserData, setPins} from '../store/actions'
 
 const HomeScreen = props => {
   const [isFetching, setIsFetching] = useState(false)
@@ -31,6 +31,14 @@ const HomeScreen = props => {
   const {pins} = pinsReducer
 
   useEffect(() => getPins(), [])
+
+  useEffect(() => {
+    dispatch(getPlants())
+  }, [])
+
+  useEffect(() => {
+    dispatch(getUserData())
+  }, [])
 
   const getPins = () => {
     setIsFetching(true)

@@ -18,7 +18,13 @@ import {
 } from '../constants/GqlQueries'
 import uuid from 'react-uuid'
 import styled from 'styled-components'
-import {setPinSelected, setLocation, addPin} from '../store/actions'
+import {
+  setPinSelected,
+  setLocation,
+  addPlant,
+  updateUserDataLeaves,
+  addPin
+} from '../store/actions'
 import {useDispatch, useSelector} from 'react-redux'
 import * as Location from 'expo-location'
 
@@ -79,7 +85,7 @@ export default function SnapScreen() {
   }
 
   const onPictureSaved = photo => {
-    const ipAddressOfServer = '172.17.22.211' // <--- PUT YOUR OWN IP HERE
+    const ipAddressOfServer = '172.17.23.197' // <--- PUT YOUR OWN IP HERE
     const uriParts = photo.uri.split('.')
     const fileType = uriParts[uriParts.length - 1]
     let plantCopy
@@ -122,7 +128,9 @@ export default function SnapScreen() {
           .then(plant => {
             delete plant.data.plant.__typename
             plantCopy = plant.data.plant
+            dispatch(addPlant(plantCopy))
             console.log('plant:', plant)
+
             console.log('then after query', {
               ...plant.data.plant,
               plantId: uuid(),
@@ -130,6 +138,37 @@ export default function SnapScreen() {
               lat: location.coords.latitude,
               lng: location.coords.longitude
             })
+
+            //This is all new
+
+            client
+              .query({
+                query: GET_USER_LEAVES,
+                variables: {
+                  email: 'cc'
+                }
+              })
+              .then(response => {
+                console.log('XXXXXXXXXXXgetUserLeaves', response)
+                UpdateUserLeaves({
+                  variables: {
+                    id: '5',
+                    leaves: response.data.user.leaves
+                  }
+                })
+                  .then(response => {
+                    console.log('YYYYYYYYYUpdateUserLeaves', response)
+                    dispatch(
+                      updateUserDataLeaves(response.data.UpdateUser.leaves)
+                    )
+                  })
+                  .catch(() => {
+                    console.log('Could not update user')
+                  })
+              })
+
+            //this is not new
+
             CreatePinPlant({
               variables: {
                 ...plant.data.plant,
@@ -152,6 +191,7 @@ export default function SnapScreen() {
                   ...creations.data.CreatePin,
                   plants: [plantCopy]
                 }
+
                 dispatch(setPinSelected(newpin))
 
                 newpin.title = plantCopy.commonName
@@ -162,18 +202,24 @@ export default function SnapScreen() {
                 }
 
                 dispatch(addPin(newpin))
+
+                // This is still the then for the client.query for create pin plant
+                dispatch(setPinSelected(newpin))
                 setIsPlantInfoReceived(true)
-                console.log('newpin', newpin)
+                console.log('newpin.plants', newpin.plants)
               })
               .catch(() => {
+                // this is the catch for create pin plant
                 console.log('Unable to associate plant with user')
               })
           })
           .catch(() => {
+            // this is the then for client.query for get plant
             console.log('Could not query for plant')
           })
       })
       .catch(err => {
+        // this is the catch for axios.post for autoML
         console.log(err)
         alert('Plant has not been identified')
       })

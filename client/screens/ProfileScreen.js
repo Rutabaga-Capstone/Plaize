@@ -11,8 +11,9 @@ import {
   TouchableHighlight
 } from 'react-native'
 import {withApollo} from 'react-apollo'
-import {Ionicons, SimpleLineIcons} from '@expo/vector-icons'
+import {connect} from 'react-redux'
 import {GET_USER_PROFILE_INFO} from '../constants/GqlQueries'
+import {Ionicons, SimpleLineIcons} from '@expo/vector-icons'
 
 class ProfileScreen extends React.Component {
   state = {
@@ -67,6 +68,7 @@ class ProfileScreen extends React.Component {
 
   render() {
     const {navigate} = this.props.navigation
+    const {userPlants} = this.props.plantsReducer
     const {name, leaves, regDate, plants} = this.state.user
     return (
       <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
@@ -512,4 +514,6 @@ const styles = StyleSheet.create({
   }
 })
 
-export default withApollo(ProfileScreen)
+export default connect(({plantsReducer}) => ({plantsReducer}))(
+  withApollo(ProfileScreen)
+)
