@@ -72,7 +72,6 @@ class ProfileScreen extends React.Component {
     const {navigate} = this.props.navigation
     const {name, leaves, regDate, plants} = this.state.user
     //console.log('user***', user);
-    //gosh - let's just get it working again first
     return (
       <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
