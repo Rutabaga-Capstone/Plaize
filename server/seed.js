@@ -17,7 +17,6 @@ client
           email: "randydxp@gmail.com"
           password: "1234"
           leaves: 0
-          regDate: {formatted: "2019-09-20"}
         ) {
           id
           name
@@ -30,7 +29,6 @@ client
           email: "fer@innovaresip.com"
           password: "1234"
           leaves: 0
-          regDate: {formatted: "2019-09-21"}
         ) {
           id
           name
@@ -43,7 +41,6 @@ client
           email: "gatewaywebdesign18@gmail.com"
           password: "1234"
           leaves: 0
-          regDate: {formatted: "2019-09-22"}
         ) {
           id
           name
@@ -56,7 +53,6 @@ client
           email: "pawel3ala@gmail.com"
           password: "1234"
           leaves: 0
-          regDate: {formatted: "2019-09-23"}
         ) {
           id
           name
@@ -69,10 +65,6 @@ client
           email: "cc"
           password: "cc"
           leaves: 0
-          imageURL: "https://www.petguide.com/wp-content/uploads/2019/03/poison-ivy-dogs-668x444.jpg"
-          description: "A poisonous Asian and Eastern North American flowering plant in the genus Toxicodendron. Causes rashes when touched"
-          isPoisonous: true"
-          regDate: {formatted: "2019-09-24"}
         ) {
           id
           name
@@ -85,14 +77,14 @@ client
           scientificName: "Toxicodendron radicans"
           imageURL: "https://www.petguide.com/wp-content/uploads/2019/03/poison-ivy-dogs-668x444.jpg"
           description: "A poisonous Asian and Eastern North American flowering plant in the genus Toxicodendron. Causes rashes when touched"
-          isPoisonous: true
+          poisonous: true
         ) {
           id
           commonName
           scientificName
           imageURL
           description
-          isPoisonous
+          poisonous
         }
         p2: CreatePlant(
           id: 2
@@ -100,14 +92,14 @@ client
           scientificName: "Toxicodendron diversilobum"
           imageURL: "http://nativeplantspnw.com/wp-content/uploads/2017/01/Poison-Oak-624x470.png"
           description: "A woody vine or shrub in the sumac family, Anacardiaceae. Causes rashes when touched"
-          isPoisonous: true
+          poisonous: true
         ) {
           id
           commonName
           scientificName
           imageURL
           description
-          isPoisonous
+          poisonous
         }
         p3: CreatePlant(
           id: 3
@@ -115,14 +107,14 @@ client
           scientificName: "Toxicodendron diversilobum"
           imageURL: "https://cdn.britannica.com/50/198250-050-2D0D4360/Poison-sumac-Massachusetts.jpg"
           description: "A woody shrub or small tree growing to 9 m (30 ft) tall. Causes a rash when touch"
-          isPoisonous: true
+          poisonous: true
         ) {
           id
           commonName
           scientificName
           imageURL
           description
-          isPoisonous
+          poisonous
         }
         p4: CreatePlant(
           id: 4
@@ -130,14 +122,14 @@ client
           scientificName: "Amanita Muscaria"
           imageURL: "https://cdn.britannica.com/50/198250-050-2D0D4360/Poison-sumac-Massachusetts.jpg"
           description: "Commonly known to be the mushroom which Mario Mario's Growth mushroom is based off of, fly agaric is a basidiomycete of the genus Amanita. It is also a muscimol mushroom. It can cause liver toxicity, hallucinations, and death when eaten"
-          isPoisonous: true
+          poisonous: true
         ) {
           id
           commonName
           scientificName
           imageURL
           description
-          isPoisonous
+          poisonous
         }
         p5: CreatePlant(
           id: 5
@@ -145,14 +137,14 @@ client
           scientificName: "Oxytropis"
           imageURL: "https://www.aspca.org/sites/default/files/styles/medium_image_300x200/public/field/image/plants/loco-weed-r.jpg?itok=vq-D8CBK"
           description: "Locoweed (also crazyweed and loco) is a common name in North America for any plant that produces swainsonine, a phytotoxin harmful to livestock."
-          isPoisonous: true
+          poisonous: true
         ) {
           id
           commonName
           scientificName
           imageURL
           description
-          isPoisonous
+          poisonous
         }
         p6: CreatePlant(
           id: 6
@@ -160,14 +152,14 @@ client
           scientificName: "Oxytropis"
           imageURL: "https://smhttp-ssl-17653.nexcesscdn.net/media/catalog/product/cache/1/thumbnail/9df78eab33525d08d6e5fb8d27136e95/m/o/morn-glory-mailbox.jpg"
           description: "Morning glory (also written as morning-glory) is the common name for over 1,000 species of flowering plants in the family Convolvulaceae, whose current taxonomy and systematics are in flux."
-          isPoisonous: false
+          poisonous: false
         ) {
           id
           commonName
           scientificName
           imageURL
           description
-          isPoisonous
+          poisonous
         }
         pin1: CreatePin(id: 1, lat: 41.895506, lng: -87.639014) {
           id
