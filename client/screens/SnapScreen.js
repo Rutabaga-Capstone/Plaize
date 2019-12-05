@@ -9,9 +9,13 @@ import PlantModal from '../components/PlantModal'
 import {useMutation, useApolloClient} from '@apollo/react-hooks'
 import {
   CREATE_PIN_PLANT,
-  ADD_PIN_PLANT_TO_USER
+  ADD_PIN_PLANT_TO_USER,
+  UPDATE_USER_LEAVES
 } from '../constants/GqlMutations'
-import {GET_PLANT_BY_COMMON_NAME} from '../constants/GqlQueries'
+import {
+  GET_PLANT_BY_COMMON_NAME,
+  GET_USER_LEAVES
+} from '../constants/GqlQueries'
 import uuid from 'react-uuid'
 import styled from 'styled-components'
 import {setPinSelected, setLocation} from '../store/actions'
@@ -22,8 +26,9 @@ export default function SnapScreen() {
   const [isPlantInfoReceived, setIsPlantInfoReceived] = useState(false)
   const [hasCameraPermission, setHasCameraPermission] = useState('null')
   const client = useApolloClient()
-  const [CreatePinPlant, {data}] = useMutation(CREATE_PIN_PLANT)
+  const [CreatePinPlant] = useMutation(CREATE_PIN_PLANT)
   const [AddPinPlantToUser] = useMutation(ADD_PIN_PLANT_TO_USER)
+  const [UpdateUserLeaves] = useMutation(UPDATE_USER_LEAVES)
   const dispatch = useDispatch()
   const pinSelected = useSelector(state => state.pinSelected)
 
@@ -116,7 +121,6 @@ export default function SnapScreen() {
           })
           .then(plant => {
             delete plant.data.plant.__typename
-
             plantCopy = plant.data.plant
             console.log('plant:', plant)
             console.log('then after query', {
@@ -126,7 +130,6 @@ export default function SnapScreen() {
               lat: location.coords.latitude,
               lng: location.coords.longitude
             })
-
             CreatePinPlant({
               variables: {
                 ...plant.data.plant,
@@ -149,7 +152,6 @@ export default function SnapScreen() {
                   ...creations.data.CreatePin,
                   plants: [plantCopy]
                 }
-
                 dispatch(setPinSelected(newpin))
                 setIsPlantInfoReceived(true)
                 console.log('newpin.plants', newpin.plants)

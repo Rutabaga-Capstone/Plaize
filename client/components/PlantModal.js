@@ -52,66 +52,62 @@ export default function PlantModal(props) {
 
   return (
     <Container>
-      {pinSelected &&
-        pinSelected.plants && (
-          <AnimatedContainer style={{top: top}}>
-            <Header>
-              {pinSelected.plants.map((plant, i) => (
-                <Text key={i} style={styles.title}>
-                  {' '}
-                  {plant.commonName}{' '}
-                </Text>
-              ))}
+      <AnimatedContainer style={{top: this.state.top}}>
+        <Header>
+          {props.pinSelected.plants.map((plant, i) => (
+            <View key={i}>
+              <Text style={styles.title}> {plant.commonName} </Text>
               <Image
-                source={require('../assets/images/poison-oak.png')}
+                source={{uri: plant.imageURL}}
                 style={styles.welcomeImage}
               />
-            </Header>
-            <TouchableOpacity
-              onPress={closeModal}
-              style={{
-                position: 'absolute',
-                top: -80,
-                right: '-5%',
-                marginLeft: -22,
-                zIndex: 1
-              }}
-            >
-              <CloseView style={{elevation: 10}}>
-                <Icon.Ionicons name="ios-close" size={44} color="#6cc7bd" />
-              </CloseView>
-            </TouchableOpacity>
-            <Body>
-              {pinSelected.plants.map((plant, i) => (
-                <View key={i} style={styles.subtitle}>
-                  <Text style={styles.screenText}>
-                    {' '}
-                    {plant.isPoisonous ? (
-                      <Image
-                        source={require('../assets/images/poisonous2.png')}
-                        style={styles.poisonImage}
-                      />
-                    ) : (
-                      'Nonpoisonous'
-                    )}
-                  </Text>
-                </View>
-              ))}
-              {pinSelected.plants.map((plant, i) => (
-                <View key={i} style={styles.subtitle}>
-                  <Text style={styles.subtitle}>Scientific Name</Text>
-                  <Text style={styles.screenText}>{plant.scientificName}</Text>
-                </View>
-              ))}
-              {pinSelected.plants.map((plant, i) => (
-                <View key={i} style={styles.subtitle}>
-                  <Text style={styles.subtitle}>Description</Text>
-                  <Text style={styles.screenText}>{plant.description}</Text>
-                </View>
-              ))}
-            </Body>
-          </AnimatedContainer>
-        )}
+            </View>
+          ))}
+        </Header>
+        <TouchableOpacity
+          onPress={this.closeModal}
+          style={{
+            position: 'absolute',
+            top: -80,
+            right: '-5%',
+            marginLeft: -22,
+            zIndex: 1
+          }}
+        >
+          <CloseView style={{elevation: 10}}>
+            <Icon.Ionicons name="ios-close" size={44} color="#6cc7bd" />
+          </CloseView>
+        </TouchableOpacity>
+        <Body>
+          {props.pinSelected.plants.map((plant, i) => (
+            <View key={i} style={styles.subtitle}>
+              <Text style={styles.screenText}>
+                {' '}
+                {plant.isPoisonous ? (
+                  <Image
+                    source={require('../assets/images/poisonous3.png')}
+                    style={styles.poisonImage}
+                  />
+                ) : (
+                  'Nonpoisonous'
+                )}
+              </Text>
+            </View>
+          ))}
+          {props.pinSelected.plants.map((plant, i) => (
+            <View key={i} style={styles.subtitle}>
+              <Text style={styles.subtitle}>Scientific Name</Text>
+              <Text style={styles.screenText}>{plant.scientificName}</Text>
+            </View>
+          ))}
+          {props.pinSelected.plants.map((plant, i) => (
+            <View key={i} style={styles.subtitle}>
+              <Text style={styles.subtitle}>Description</Text>
+              <Text style={styles.screenText}>{plant.description}</Text>
+            </View>
+          ))}
+        </Body>
+      </AnimatedContainer>
     </Container>
   )
 }
@@ -163,7 +159,7 @@ const styles = StyleSheet.create({
   welcomeImage: {
     width: 200,
     height: 200,
-    marginTop: -15,
+    marginTop: 0,
     alignSelf: 'center',
     resizeMode: 'contain',
     alignItems: 'center',
@@ -171,7 +167,7 @@ const styles = StyleSheet.create({
   },
   poisonImage: {
     width: 200,
-    height: 75,
+    height: 35,
     resizeMode: 'contain',
     backgroundColor: 'white',
     marginTop: 0

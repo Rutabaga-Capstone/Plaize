@@ -92,11 +92,11 @@ export default function MapScreen(props) {
     setIsFetching(true)
 
     //OPTION 1 - LOCAL DATA from imported file
-    // setTimeout(() => {
-    //   const pins = pinsData
-    //   dispatch(setPins(pins))
-    //   setIsFetching(false)
-    // }, 2000)
+    setTimeout(() => {
+      const pins = pinsData
+      dispatch(setPins(pins))
+      setIsFetching(false)
+    }, 2000)
 
     //OPTION 2 - API CALL, i.e. axios
     // let url = "https://my-json-server.typicode.com/mesandigital/demo/instructions";
@@ -107,19 +107,19 @@ export default function MapScreen(props) {
     //     .finally(() => setIsFetching(false));
 
     // OPTION 3 - GRAPHQL - TBD
-    setTimeout(() => {
-      if (error) {
-        console.log("Oh no there's an error!")
-      } else if (data) {
-        const tempPins = data.Pin
-        const pins = pins.map(pin => ({...pin, plants: pin.plants[0]}))
-
-        dispatch(setPins(pins))
-        setIsFetching(false)
-      } else if (loading) {
-        console.log('loading...')
-      }
-    }, 2000)
+    // setTimeout(() => {
+    //   if (error) {
+    //     console.log("Oh no there's an error!")
+    //   } else if (data) {
+    //     const tempPins = data.Pin
+    //     const pins = pins.map(pin => ({...pin, plants: pin.plants[0]}))
+    //
+    //     dispatch(setPins(pins))
+    //     setIsFetching(false)
+    //   } else if (loading) {
+    //     console.log('loading...')
+    //   }
+    // }, 2000)
   }
 
   const fetchLocationAsync = async () => {
@@ -199,8 +199,8 @@ export default function MapScreen(props) {
                   <Marker
                     key={i}
                     title={pin.title}
-                    coordinate={{latitude: pin.lat, longitude: pin.lng}}
-                    pinColor={pin.hasPoisonousPlants ? 'red' : 'green'}
+                    coordinate={pin.coordinate}
+                    pinColor={pin.plants[0].isPoisonous ? 'red' : 'green'}
                     description={pin.description}
                     id={pin.id}
                     onPress={() => handleMarkerOnPress(pin)}
