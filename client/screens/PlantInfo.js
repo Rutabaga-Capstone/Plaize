@@ -49,7 +49,7 @@ class PlantInfo extends React.Component {
       'https://www.petguide.com/wp-content/uploads/2019/03/poison-ivy-dogs-668x444.jpg'
 
     return (
-      <View style={{alignSelf: 'stretch', flex: 1}}>
+      <View style={{alignSelf: 'stretch', flex: 1, marginTop: 0}}>
         <TopNavigation />
         {/* START UPPER-RIGHT X */}
         <View style={{flex: 0.1, flexDirection: 'row', marginTop: -10}}>
