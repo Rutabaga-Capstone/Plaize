@@ -14,6 +14,7 @@ import {withApollo} from 'react-apollo'
 import {connect} from 'react-redux'
 import {GET_USER_PROFILE_INFO} from '../constants/GqlQueries'
 import {Ionicons, SimpleLineIcons} from '@expo/vector-icons'
+import RenderImages from './TempImageRender'
 
 class ProfileScreen extends React.Component {
   state = {
@@ -295,23 +296,7 @@ class ProfileScreen extends React.Component {
                       flexWrap: 'wrap'
                     }}
                   >
-                    {plants &&
-                      plants.slice(0, 8).map((p, i) => (
-                        <TouchableHighlight
-                          key={i}
-                          onPress={() => navigate('PlantInfo', p)}
-                        >
-                          <Image
-                            style={{
-                              width: 100,
-                              height: 100,
-                              marginRight: 20,
-                              marginBottom: 20
-                            }}
-                            source={{uri: p.imageURL}}
-                          />
-                        </TouchableHighlight>
-                      ))}
+                    <RenderImages {...this.props} />
                   </View>
                 </View>
               </View>
