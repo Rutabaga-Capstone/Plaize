@@ -49,34 +49,7 @@ class CreateAccount extends React.Component {
       if (password === confirmPassword) {
         try {
           const result = await client.mutate({
-            mutation: gql`
-              mutation CreateUser(
-                $id: ID!
-                $name: String!
-                $email: String!
-                $password: String!
-                $leaves: Int!
-                $regDate: DateTime!
-              ) {
-                CreateUser(
-                  id: $id
-                  name: $name
-                  email: $email
-                  password: $password
-                  leaves: $leaves
-                  regDate: $regDate
-                ) {
-                  _id
-                  id
-                  name
-                  email
-                  leaves
-                  regDate {
-                    formatted
-                  }
-                }
-              }
-            `,
+            mutation: CREATE_USER,
             variables: {
               id: uuid(),
               name,

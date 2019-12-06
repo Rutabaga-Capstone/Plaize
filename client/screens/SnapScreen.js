@@ -23,7 +23,8 @@ import {
   setLocation,
   addPlant,
   updateUserDataLeaves,
-  addPin
+  addPin,
+  setLeaves
 } from '../store/actions'
 import {useDispatch, useSelector} from 'react-redux'
 import * as Location from 'expo-location'
@@ -96,6 +97,9 @@ export default function SnapScreen() {
       name: `photo.${fileType}`,
       type: `image/${fileType}`
     })
+
+    dispatch(setLeaves)
+
     axios
       .post(`http://${ipAddressOfServer}:1234/image`, formData)
       .then(response => {

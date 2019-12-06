@@ -16,7 +16,9 @@ import {
   ADD_PLANT,
   GET_USER_DATA,
   SET_USER_DATA,
-  UPDATE_USER_DATA_LEAVES
+  UPDATE_USER_DATA_LEAVES,
+  GET_LEAVES,
+  SET_LEAVES
 } from './actions' //Import the actions types constant we defined in our actions
 
 let pinsState = {pins: []}
@@ -109,6 +111,17 @@ const userReducer = (state = userState, action) => {
       return {...state, userData: {...state.userData, leaves: action.leaves}}
     default:
       return state
+  }
+}
+
+const leavesReducer = (state = 0, action) => {
+  switch (action.type) {
+    case GET_LEAVES:
+      return state
+    case SET_LEAVES:
+      return state + 25
+    default:
+      return 25
   }
 }
 
