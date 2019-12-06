@@ -260,9 +260,15 @@ export default function SnapScreen() {
             visible={isWelcomeModalVisible}
             modalTitle={
               <View style={{flexDirection: 'row'}}>
-                {/* <Ionicons name="ios-leaf" color="#6CC7BD" size={25} /> */}
-                <ModalTitle title="Welcome to Plaize" />
-                {/* <Ionicons name="ios-leaf" color="#6CC7BD" size={25} /> */}
+                <ModalTitle
+                  title={
+                    <>
+                      <Ionicons name="ios-leaf" color="#6CC7BD" size={25} />
+                      <Text> Welcome to Plaize </Text>
+                      <Ionicons name="ios-leaf" color="#6CC7BD" size={25} />
+                    </>
+                  }
+                />
               </View>
             }
             width={0.7}
@@ -278,10 +284,7 @@ export default function SnapScreen() {
             }
           >
             <ModalContent>
-              <Text>
-                Loerm ipsum Loerm ipsum Loerm ipsum Loerm ipsum Loerm ipsum
-                Loerm ipsum Loerm ipsum Loerm ipsum
-              </Text>
+              <Text> Let's jump right into it !</Text>
             </ModalContent>
           </Modal>
         </View>
