@@ -30,7 +30,10 @@ import {useDispatch, useSelector} from 'react-redux'
 import * as Location from 'expo-location'
 import TopNavigation from '../components/TopNavigation'
 
-export default function SnapScreen() {
+export default function SnapScreen(props) {
+  // const {navigate} = props.navigation
+  // props.navigation.navigate('PlantInfo')
+
   const [isPlantInfoReceived, setIsPlantInfoReceived] = useState(false)
   const [hasCameraPermission, setHasCameraPermission] = useState('null')
   const client = useApolloClient()
@@ -103,11 +106,12 @@ export default function SnapScreen() {
       .post(`http://${ipAddressOfServer}:1234/image`, formData)
       .then(response => {
         console.log(response.data.commonName)
-        alert(
-          `Plant identified: ${response.data.commonName} \n probability: ${
-            response.data.score
-          }`
-        )
+        // alert(
+        //   `Plant identified: ${response.data.commonName} \n probability: ${
+        //     response.data.score
+        //   }`
+        // )
+
         // if (response.data.score < 0.5) { throw(new Error) }
 
         /*
@@ -217,6 +221,7 @@ export default function SnapScreen() {
                 dispatch(setPinSelected(newpin))
                 setIsPlantInfoReceived(true)
                 console.log('newpin.plants', newpin.plants)
+                props.navigation.navigate('PlantInfo', plantCopy)
               })
               .catch(() => {
                 // this is the catch for create pin plant
