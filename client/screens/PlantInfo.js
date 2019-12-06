@@ -54,7 +54,7 @@ class PlantInfo extends React.Component {
       imageURL,
       poisonous
     } = this.state.plant
-
+    const {navigate} = this.props.navigation
     imageURL =
       'https://www.petguide.com/wp-content/uploads/2019/03/poison-ivy-dogs-668x444.jpg'
 
