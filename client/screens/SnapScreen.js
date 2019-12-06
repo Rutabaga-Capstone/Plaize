@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {Text, View, TouchableOpacity} from 'react-native'
+import {Text, View, TouchableOpacity, StyleSheet} from 'react-native'
 import * as Permissions from 'expo-permissions'
 import {Camera} from 'expo-camera'
 import * as FileSystem from 'expo-file-system'
@@ -31,11 +31,18 @@ import {useDispatch, useSelector} from 'react-redux'
 import * as Location from 'expo-location'
 import TopNavigation from '../components/TopNavigation'
 
-export default function SnapScreen(props) {
-  // const {navigate} = props.navigation
-  // props.navigation.navigate('PlantInfo')
+import Modal, {
+  ModalTitle,
+  ModalContent,
+  ModalFooter,
+  ModalButton
+} from 'react-native-modals'
 
+
+export default function SnapScreen() {
   const [isPlantInfoReceived, setIsPlantInfoReceived] = useState(false)
+  const [isWelcomeModalVisible, setIsWelcomeModalVisible] = useState(true)
+
   const [hasCameraPermission, setHasCameraPermission] = useState('null')
   const client = useApolloClient()
   const [CreatePinPlant] = useMutation(CREATE_PIN_PLANT)
@@ -248,6 +255,116 @@ export default function SnapScreen(props) {
     return (
       <>
         <TopNavigation />
+        <View style={styles.container}>
+          <Modal
+            visible={isWelcomeModalVisible}
+            modalTitle={
+              <View style={{flexDirection: 'row'}}>
+                {/* <Ionicons name="ios-leaf" color="#6CC7BD" size={25} /> */}
+                <ModalTitle title="Welcome to Plaize" />
+                {/* <Ionicons name="ios-leaf" color="#6CC7BD" size={25} /> */}
+              </View>
+            }
+            width={0.7}
+            footer={
+              <ModalFooter>
+                <ModalButton
+                  text="OK"
+                  onPress={() => {
+                    setIsWelcomeModalVisible(false)
+                  }}
+                />
+              </ModalFooter>
+            }
+          >
+            <ModalContent>
+              <Text>
+                Loerm ipsum Loerm ipsum Loerm ipsum Loerm ipsum Loerm ipsum
+                Loerm ipsum Loerm ipsum Loerm ipsum
+              </Text>
+            </ModalContent>
+          </Modal>
+        </View>
+
+        {/* TOP 'NAVIGATION' */}
+        <View style={{flex: 0.07, flexDirection: 'row', marginTop: 15}}>
+          <View
+            style={{
+              width: '33.3%',
+              height: 40,
+              textAlign: 'left',
+              borderBottomColor: '#C7CAD4',
+              borderBottomWidth: 1,
+              marginBottom: 10
+            }}
+          >
+            <Text
+              style={{
+                textAlign: 'left',
+                marginLeft: 15
+              }}
+            >
+              <SimpleLineIcons
+                name="logout"
+                onPress={this.logoutUser}
+                size={25}
+                color="#C7CAD4"
+                style={{
+                  textAlign: 'left'
+                }}
+              />
+            </Text>
+          </View>
+
+          <View
+            style={{
+              width: '33.3%',
+              height: 40,
+              textAlign: 'middle',
+              borderBottomColor: '#C7CAD4',
+              borderBottomWidth: 1,
+              marginBottom: 10
+            }}
+          >
+            <Text
+              style={{
+                textAlign: 'center',
+                fontSize: 24,
+                fontFamily: 'yorkten',
+                color: '#C7CAD4'
+              }}
+            >
+              Plaze
+            </Text>
+          </View>
+
+          <View
+            style={{
+              width: '33.3%',
+              height: 40,
+              textAlign: 'right',
+              borderBottomColor: '#C7CAD4',
+              borderBottomWidth: 1,
+              marginBottom: 10
+            }}
+          >
+            <Text
+              style={{
+                textAlign: 'right',
+                marginRight: 15
+              }}
+            >
+              <Ionicons
+                name="ios-leaf"
+                size={25}
+                style={{
+                  color: '#C7CAD4'
+                }}
+              />
+            </Text>
+          </View>
+        </View>
+        {/* END TOP 'NAVIGATION' */}
 
         <View style={{flex: 1, borderTopWidth: 0}}>
           <Camera
@@ -300,3 +417,13 @@ const Container = styled.View`
   align-self: center;
   width: 80%;
 `
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    marginTop: 400,
+    marginLeft: 190,
+    position: 'absolute'
+  }
+})
