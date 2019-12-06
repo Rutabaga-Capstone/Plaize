@@ -36,13 +36,16 @@ class PlantInfo extends React.Component {
     }
   }
   render() {
-    const {
+    let {
       commonName,
       scientificName,
       description,
       imageURL,
       poisonous
     } = this.state.plant
+
+    imageURL =
+      'https://www.petguide.com/wp-content/uploads/2019/03/poison-ivy-dogs-668x444.jpg'
 
     return (
       <View style={{alignSelf: 'stretch', flex: 1}}>
