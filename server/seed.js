@@ -69,9 +69,6 @@ client
           email: "cc"
           password: "cc"
           leaves: 0
-          imageURL: "https://www.petguide.com/wp-content/uploads/2019/03/poison-ivy-dogs-668x444.jpg"
-          description: "A poisonous Asian and Eastern North American flowering plant in the genus Toxicodendron. Causes rashes when touched"
-          isPoisonous: true"
           regDate: {formatted: "2019-09-24"}
         ) {
           id
@@ -199,7 +196,6 @@ client
           lat
           lng
         }
-
         up1: AddUserPlants(from: {id: 1}, to: {id: 1}) {
           from {
             name

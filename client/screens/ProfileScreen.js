@@ -69,7 +69,8 @@ class ProfileScreen extends React.Component {
   render() {
     const {navigate} = this.props.navigation
     const {userPlants} = this.props.plantsReducer
-    const {name, leaves, regDate, plants} = this.state.user
+    const {name, regDate, plants} = this.state.user
+    const leaves = this.props.leavesReducer
     return (
       <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -514,6 +515,7 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(({plantsReducer}) => ({plantsReducer}))(
-  withApollo(ProfileScreen)
-)
+export default connect(({plantsReducer, leavesReducer}) => ({
+  plantsReducer,
+  leavesReducer
+}))(withApollo(ProfileScreen))
