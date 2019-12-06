@@ -12,6 +12,7 @@ import {
 import {withApollo} from 'react-apollo'
 import {Ionicons, SimpleLineIcons, Feather} from '@expo/vector-icons'
 import {GET_PLANT_BY_COMMON_NAME} from '../constants/GqlQueries'
+import TopNavigation from '../components/TopNavigation'
 
 class PlantInfo extends React.Component {
   state = {
@@ -46,94 +47,20 @@ class PlantInfo extends React.Component {
   }
 
   render() {
-    const {
+    let {
       commonName,
       scientificName,
       description,
       imageURL,
       poisonous
     } = this.state.plant
-    const {navigate} = this.props.navigation
-    return (
-      <View style={{alignSelf: 'stretch', flex: 1}}>
-        {/* START TOP NAVIGATION */}
-        <View style={{flex: 0.1, flexDirection: 'row', marginTop: 25}}>
-          <View
-            style={{
-              width: '33.3%',
-              height: 40,
-              textAlign: 'left',
-              borderBottomColor: '#C7CAD4',
-              borderBottomWidth: 1,
-              marginBottom: 10
-            }}
-          >
-            <Text
-              style={{
-                textAlign: 'left',
-                marginLeft: 15
-              }}
-            >
-              <SimpleLineIcons
-                name="logout"
-                onPress={this.logoutUser}
-                size={25}
-                color="#C7CAD4"
-                style={{
-                  textAlign: 'left'
-                }}
-              />
-            </Text>
-          </View>
-          <View
-            style={{
-              width: '33.3%',
-              height: 40,
-              textAlign: 'middle',
-              borderBottomColor: '#C7CAD4',
-              borderBottomWidth: 1,
-              marginBottom: 10
-            }}
-          >
-            <Text
-              style={{
-                textAlign: 'center',
-                fontSize: 24,
-                fontFamily: 'yorkten',
-                color: '#C7CAD4'
-              }}
-            >
-              Plaze
-            </Text>
-          </View>
-          <View
-            style={{
-              width: '33.3%',
-              height: 40,
-              textAlign: 'right',
-              borderBottomColor: '#C7CAD4',
-              borderBottomWidth: 1,
-              marginBottom: 10
-            }}
-          >
-            <Text
-              style={{
-                textAlign: 'right',
-                marginRight: 15
-              }}
-            >
-              <Ionicons
-                name="ios-leaf"
-                size={25}
-                style={{
-                  color: '#C7CAD4'
-                }}
-              />
-            </Text>
-          </View>
-        </View>
-        {/* END TOP 'NAVIGATION' */}
 
+    imageURL =
+      'https://www.petguide.com/wp-content/uploads/2019/03/poison-ivy-dogs-668x444.jpg'
+
+    return (
+      <View style={{alignSelf: 'stretch', flex: 1, marginTop: 0}}>
+        <TopNavigation />
         {/* START UPPER-RIGHT X */}
         <View style={{flex: 0.1, flexDirection: 'row', marginTop: -10}}>
           <View

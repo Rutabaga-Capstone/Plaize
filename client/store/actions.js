@@ -98,3 +98,16 @@ export const updateUserDataLeaves = leaves => ({
   type: UPDATE_USER_DATA_LEAVES,
   leaves
 })
+
+///LEAVES -- TEMP
+
+export const GET_LEAVES = 'GET_LEAVES'
+export const SET_LEAVES = 'SET_LEAVES'
+
+export const getLeaves = () => ({
+  type: GET_LEAVES
+})
+
+export const setLeaves = () => ({
+  type: SET_LEAVES
+})

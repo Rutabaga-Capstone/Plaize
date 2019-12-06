@@ -23,12 +23,17 @@ import {
   setLocation,
   addPlant,
   updateUserDataLeaves,
-  addPin
+  addPin,
+  setLeaves
 } from '../store/actions'
 import {useDispatch, useSelector} from 'react-redux'
 import * as Location from 'expo-location'
+import TopNavigation from '../components/TopNavigation'
 
-export default function SnapScreen() {
+export default function SnapScreen(props) {
+  // const {navigate} = props.navigation
+  // props.navigation.navigate('PlantInfo')
+
   const [isPlantInfoReceived, setIsPlantInfoReceived] = useState(false)
   const [hasCameraPermission, setHasCameraPermission] = useState('null')
   const client = useApolloClient()
@@ -96,15 +101,17 @@ export default function SnapScreen() {
       name: `photo.${fileType}`,
       type: `image/${fileType}`
     })
+
     axios
       .post(`http://${ipAddressOfServer}:1234/image`, formData)
       .then(response => {
         console.log(response.data.commonName)
-        alert(
-          `Plant identified: ${response.data.commonName} \n probability: ${
-            response.data.score
-          }`
-        )
+        // alert(
+        //   `Plant identified: ${response.data.commonName} \n probability: ${
+        //     response.data.score
+        //   }`
+        // )
+
         // if (response.data.score < 0.5) { throw(new Error) }
 
         /*
@@ -134,6 +141,7 @@ export default function SnapScreen() {
             delete plant.data.plant.__typename
             plantCopy = plant.data.plant
             dispatch(addPlant(plantCopy))
+            dispatch(setLeaves())
             console.log('plant:', plant)
 
             console.log('then after query', {
@@ -177,6 +185,7 @@ export default function SnapScreen() {
             CreatePinPlant({
               variables: {
                 ...plant.data.plant,
+                isPoisonous: true,
                 plantId: uuid(),
                 pinId: uuid(),
                 lat: location.coords.latitude,
@@ -212,6 +221,7 @@ export default function SnapScreen() {
                 dispatch(setPinSelected(newpin))
                 setIsPlantInfoReceived(true)
                 console.log('newpin.plants', newpin.plants)
+                props.navigation.navigate('PlantInfo', plantCopy)
               })
               .catch(() => {
                 // this is the catch for create pin plant
@@ -237,85 +247,7 @@ export default function SnapScreen() {
   } else {
     return (
       <>
-        {/* TOP 'NAVIGATION' */}
-        <View style={{flex: 0.07, flexDirection: 'row', marginTop: 15}}>
-          <View
-            style={{
-              width: '33.3%',
-              height: 40,
-              textAlign: 'left',
-              borderBottomColor: '#C7CAD4',
-              borderBottomWidth: 1,
-              marginBottom: 10
-            }}
-          >
-            <Text
-              style={{
-                textAlign: 'left',
-                marginLeft: 15
-              }}
-            >
-              <SimpleLineIcons
-                name="logout"
-                onPress={this.logoutUser}
-                size={25}
-                color="#C7CAD4"
-                style={{
-                  textAlign: 'left'
-                }}
-              />
-            </Text>
-          </View>
-
-          <View
-            style={{
-              width: '33.3%',
-              height: 40,
-              textAlign: 'middle',
-              borderBottomColor: '#C7CAD4',
-              borderBottomWidth: 1,
-              marginBottom: 10
-            }}
-          >
-            <Text
-              style={{
-                textAlign: 'center',
-                fontSize: 24,
-                fontFamily: 'yorkten',
-                color: '#C7CAD4'
-              }}
-            >
-              Plaze
-            </Text>
-          </View>
-
-          <View
-            style={{
-              width: '33.3%',
-              height: 40,
-              textAlign: 'right',
-              borderBottomColor: '#C7CAD4',
-              borderBottomWidth: 1,
-              marginBottom: 10
-            }}
-          >
-            <Text
-              style={{
-                textAlign: 'right',
-                marginRight: 15
-              }}
-            >
-              <Ionicons
-                name="ios-leaf"
-                size={25}
-                style={{
-                  color: '#C7CAD4'
-                }}
-              />
-            </Text>
-          </View>
-        </View>
-        {/* END TOP 'NAVIGATION' */}
+        <TopNavigation />
 
         <View style={{flex: 1}}>
           <Camera

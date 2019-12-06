@@ -23,14 +23,19 @@ import pinsData from '../store/pins' //fake data for now
 import {getPlants, getUserData, setUserData, setPins} from '../store/actions'
 
 const HomeScreen = props => {
-  const [isFetching, setIsFetching] = useState(false)
+  // const [isFetching, setIsFetching] = useState(false)
 
   const dispatch = useDispatch()
 
   const pinsReducer = useSelector(state => state.pinsReducer)
   const {pins} = pinsReducer
 
-  useEffect(() => getPins(), [])
+  useEffect(
+    () => {
+      setPins(pinsData)
+    },
+    [pins]
+  )
 
   useEffect(() => {
     dispatch(getPlants())
@@ -40,20 +45,21 @@ const HomeScreen = props => {
     dispatch(getUserData())
   }, [])
 
-  const getPins = () => {
-    setIsFetching(true)
+  // const getPins = () => {
+  // setIsFetching(true)
 
-    //OPTION 1 - LOCAL DATA from imported file
-    setTimeout(() => {
-      if (!pins) {
-        const allpins = pinsData
-        dispatch(setPins(allpins))
-        setIsFetching(false)
-      } else {
-        console.log('already have at least 1 pin')
-      }
-    }, 2000)
-  }
+  //   //OPTION 1 - LOCAL DATA from imported file
+  //   setTimeout(() => {
+  //     // if (!pins) {
+  //       // const allpins = pinsData
+  //       // dispatch(setPins(pinsData))
+  //       // // setIsFetching(false)
+  //       // console.log(allpins)
+  //     // } else {
+  //       // console.log('already have at least 1 pin')
+  //     }
+  //   }, 2000)
+  // }
 
   const {navigate} = props.navigation
   const [showAlert, setShowAlert] = useState(false)

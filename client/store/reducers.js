@@ -16,7 +16,9 @@ import {
   ADD_PLANT,
   GET_USER_DATA,
   SET_USER_DATA,
-  UPDATE_USER_DATA_LEAVES
+  UPDATE_USER_DATA_LEAVES,
+  GET_LEAVES,
+  SET_LEAVES
 } from './actions' //Import the actions types constant we defined in our actions
 
 let pinsState = {pins: []}
@@ -112,6 +114,17 @@ const userReducer = (state = userState, action) => {
   }
 }
 
+const leavesReducer = (state = {leaves: 0}, action) => {
+  switch (action.type) {
+    case GET_LEAVES:
+      return state
+    case SET_LEAVES:
+      return {leaves: state.leaves + 25}
+    default:
+      return state
+  }
+}
+
 // Combine all the reducers
 const rootReducer = combineReducers({
   pinsReducer,
@@ -120,7 +133,8 @@ const rootReducer = combineReducers({
   pinSelectedReducer,
   modalActionReducer,
   plantsReducer,
-  userReducer
+  userReducer,
+  leavesReducer
   // ,[ANOTHER REDUCER], [ANOTHER REDUCER] ....
 })
 
