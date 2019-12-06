@@ -15,13 +15,12 @@ import GradientButton from 'react-native-gradient-buttons'
 import {withApollo} from 'react-apollo'
 import {useApolloClient} from '@apollo/react-hooks'
 import {CHECK_USER_EXISTS} from '../constants/GqlQueries'
-import {gql} from 'apollo-boost'
 import Dialog from 'react-native-dialog'
 import * as Facebook from 'expo-facebook'
 import * as Google from 'expo-google-app-auth'
 import {useDispatch, useSelector} from 'react-redux'
 import pinsData from '../store/pins' //fake data for now
-import {setPins} from '../store/actions'
+import {getPlants, getUserData, setUserData, setPins} from '../store/actions'
 
 const HomeScreen = props => {
   // const [isFetching, setIsFetching] = useState(false)
@@ -31,23 +30,36 @@ const HomeScreen = props => {
   const pinsReducer = useSelector(state => state.pinsReducer)
   const {pins} = pinsReducer
 
-  useEffect(() => getPins(), [])
+  useEffect(
+    () => {
+      setPins(pinsData)
+    },
+    [pins]
+  )
 
-  const getPins = () => {
-    // setIsFetching(true)
+  useEffect(() => {
+    dispatch(getPlants())
+  }, [])
 
-    //OPTION 1 - LOCAL DATA from imported file
-    setTimeout(() => {
-      if (!pins) {
-        // const allpins = pinsData
-        dispatch(setPins(pinsData))
-        // // setIsFetching(false)
-        // console.log(allpins)
-      } else {
-        console.log('already have at least 1 pin')
-      }
-    }, 2000)
-  }
+  useEffect(() => {
+    dispatch(getUserData())
+  }, [])
+
+  // const getPins = () => {
+  // setIsFetching(true)
+
+  //   //OPTION 1 - LOCAL DATA from imported file
+  //   setTimeout(() => {
+  //     // if (!pins) {
+  //       // const allpins = pinsData
+  //       // dispatch(setPins(pinsData))
+  //       // // setIsFetching(false)
+  //       // console.log(allpins)
+  //     // } else {
+  //       // console.log('already have at least 1 pin')
+  //     }
+  //   }, 2000)
+  // }
 
   const {navigate} = props.navigation
   const [showAlert, setShowAlert] = useState(false)

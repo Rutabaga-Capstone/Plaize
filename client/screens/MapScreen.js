@@ -35,6 +35,8 @@ import {
 } from 'react-native'
 
 import {ListItem} from 'react-native-elements'
+import {Ionicons, SimpleLineIcons} from '@expo/vector-icons'
+
 // import TouchableScale from 'react-native-touchable-scale' // https://github.com/kohver/react-native-touchable-scale
 // import ExpoLinearGradient from 'react-native-linear-gradient'
 
@@ -49,6 +51,7 @@ import SwitchSelector from 'react-native-switch-selector'
 import {TagSelect} from 'react-native-tag-select'
 
 export default function MapScreen(props) {
+  let sortedPins = []
   const dispatch = useDispatch()
 
   //1 - DECLARE VARIABLES
@@ -129,7 +132,32 @@ export default function MapScreen(props) {
       pin.coordinate,
       accuracy
     )
+    pin.distance = distance
+    sortedPins.push(pin)
     return <Text>{distance.toString()} meters away</Text>
+  }
+
+  const sortPins = pinsToSort => {
+    var mapped = pinsToSort.map(function(el, i) {
+      return {index: i, value: el}
+    })
+
+    // sorting the mapped array containing the reduced values
+    mapped.sort(function(a, b) {
+      if (a.value.distance > b.value.distance) {
+        return 1
+      }
+      if (a.value.distance < b.value.distance) {
+        return -1
+      }
+      return 0
+    })
+
+    sortedPins = mapped.map(function(el) {
+      return pinsToSort[el.index]
+    })
+
+    return sortedPins
   }
 
   const handleMarkerOnPress = pin => {
@@ -164,83 +192,83 @@ export default function MapScreen(props) {
       </View>
     )
   } else {
+    sortPins(pinsData)
     return (
-      <View>
-        {location &&
-          pins && (
-            /* pinSelected.plants && */ <View>
-              <MapView
-                style={styles.mapStyle}
-                showsUserLocation={true}
-                showsMyLocationButton={true}
-                followsUserLocation={true}
-                zoomEnabled={true}
-                zoomTapEnabled={true}
-              >
-                {pins.map((pin, i) => (
-                  <Marker
+      <>
+        <View>
+          {{location} && {pins} && (
+              <View>
+                <MapView
+                  style={styles.mapStyle}
+                  showsUserLocation={true}
+                  showsMyLocationButton={true}
+                  followsUserLocation={true}
+                  zoomEnabled={true}
+                  zoomTapEnabled={true}
+                >
+                  {pinsData.map((pin, i) => (
+                    <Marker
+                      key={i}
+                      title={pin.title}
+                      coordinate={pin.coordinate}
+                      pinColor={pin.plants[0].isPoisonous ? 'red' : 'green'}
+                      description={pin.description}
+                      id={pin.id}
+                      onPress={() => handleMarkerOnPress(pin)}
+                      onSelect={() => handleMarkerOnPress(pin)}
+                      onDeselect={() => handleMarkerOnDeselect()}
+                    />
+                  ))}
+                </MapView>
+              </View>
+            )}
+          {!pinSelected.id &&
+            pins && (
+              <ScrollView>
+                {sortedPins.sort().map((pin, i) => (
+                  <ListItem
                     key={i}
                     title={pin.title}
-                    coordinate={pin.coordinate}
-                    pinColor={pin.plants[0].isPoisonous ? 'red' : 'green'}
-                    description={pin.description}
-                    id={pin.id}
-                    onPress={() => handleMarkerOnPress(pin)}
-                    onSelect={() => handleMarkerOnPress(pin)}
-                    onDeselect={() => handleMarkerOnDeselect()}
-                    // isPreselected={pin.id === '2'}
+                    // subtitle={() => distanceFromLocation(pin)}
+                    bottomDivider
+                    badge={{
+                      value: distanceFromLocation(pin),
+                      textStyle: {color: 'white'},
+                      // containerStyle: {
+                      //   marginTop: -20
+                      // },
+                      badgeStyle: {backgroundColor: '#6cc7bd'}
+                    }}
+                    onPress={() => handlePinItemOnPress(pin)}
                   />
                 ))}
-              </MapView>
-            </View>
-          )}
-        {!pinSelected.id &&
-          pins && (
+              </ScrollView>
+            )}
+          {pinSelected.id && (
             <ScrollView>
-              {pins.map((pin, i) => (
-                <ListItem
-                  key={i}
-                  title={pin.title}
-                  // subtitle={() => distanceFromLocation(pin)}
-                  bottomDivider
-                  badge={{
-                    value: distanceFromLocation(pin),
-                    textStyle: {color: 'white'},
-                    // containerStyle: {
-                    //   marginTop: -20
-                    // },
-                    badgeStyle: {backgroundColor: '#6cc7bd'}
-                  }}
-                  onPress={() => handlePinItemOnPress(pin)}
-                />
-              ))}
-            </ScrollView>
-          )}
-        {pinSelected.id && (
-          <ScrollView>
-            <ListItem
-              title={pinSelected.title}
-              // subtitle={distanceFromLocation(pinSelected)}
-              bottomDivider
-              badge={{
-                value: distanceFromLocation(pinSelected),
-                textStyle: {color: 'white'},
-                // containerStyle: {marginTop: -20},
-                badgeStyle: {backgroundColor: '#6cc7bd'}
-              }}
-            />
-
-            {/* {pinSelected.plants.map((plant, i) => (
+              <ListItem
+                title={pinSelected.title}
+                // subtitle={distanceFromLocation(pinSelected)}
+                bottomDivider
+                badge={{
+                  value: distanceFromLocation(pinSelected),
+                  textStyle: {color: 'white'},
+                  // containerStyle: {marginTop: -20},
+                  badgeStyle: {backgroundColor: '#6cc7bd'}
+                }}
+              />
+              {/* {pinSelected.plants.map((plant, i) => (
               <Text key={i}>{plant.commonName}</Text>
             ))} */}
-          </ScrollView>
-        )}
-        {pinSelected.id && (
-          <Container>
-            <PlantModal pinSelected={pinSelected} />
-          </Container>
-        )}
-      </View>
+            </ScrollView>
+          )}
+          {pinSelected.id && (
+            <Container>
+              <PlantModal pinSelected={pinSelected} />
+            </Container>
+          )}
+        </View>
+      </>
     )
   }
 }
@@ -265,7 +293,7 @@ const ButtonText = styled.Text`
 const styles = {
   container: {
     width: '100%',
-    height: '80%'
+    height: '100%'
   },
   // mapContainer: {
   //   flex: 1,
@@ -275,7 +303,8 @@ const styles = {
   // },
   mapStyle: {
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height / 2
+    height: Dimensions.get('window').height / 2,
+    marginTop: 0
   }
 }
 
@@ -339,156 +368,3 @@ const styles99 = StyleSheet.create({
     fontSize: 14
   }
 })
-
-//   <View>
-//     <SafeAreaView style={styles.container}>
-//       <Map
-//         region={this.state.region}
-//         pins={this.state.pins}
-//         location={this.state.location}
-//         center={this.state.center}
-//         radius={this.state.radius}
-//         onRegionChange={()=> dispatch(onRegionChange(location))}
-//         tagsSelected={this.state.tagsSelected}
-//       />
-//       <View style={styles2.container}>
-//         <TagSelect
-//           ref={tag => {
-//             this.tag = tag
-//           }}
-//           data={data}
-//           itemStyle={styles2.item}
-//           itemLabelStyle={styles2.label}
-//           itemStyleSelected={styles2.itemSelected}
-//           itemLabelStyleSelected={styles2.labelSelected}
-//           onItemPress={() =>
-//             this.filterMarkers(
-//               this.state.pins,
-//               this.tag.itemsSelected,
-//               this.state.radius
-//             )
-//           }
-//         />
-//       </View>
-//       <View
-//         style={{
-//           position: 'absolute',
-//           alignItems: 'stretch',
-//           top: 350,
-//           width: 320,
-//           alignSelf: 'center'
-//         }}
-//       >
-//         <Slider
-//           value={this.state.radius}
-//           mainimumValue={100}
-//           maximumValue={1000}
-//           step={100}
-//           onValueChange={radius =>
-//             this.filterMarkers(
-//               this.state.pins,
-//               this.state.tagsSelected,
-//               radius
-//             )
-//           }
-//           thumbTintColor={'black'}
-//           animateTransitions={true}
-//         />
-//         <Text style={{fontSize: 12}}>
-//           Radius in meters: {this.state.radius}
-//         </Text>
-//       </View>
-//     </SafeAreaView>
-//     <ScrollView>
-//       <Plants pins={this.state.pins} />
-//     </ScrollView>
-//   </View>
-// )
-//   )
-// }
-
-// state = {
-//   region: null,
-//   location: null,
-//   center: null,
-//   radius: 700, //in meters
-//   selectedPin: {},
-//   pins: [],
-//   plants: [],
-//   selectedPlant: {},
-//   tagsSelected: [
-//     {
-//       id: 1,
-//       label: 'Poisonous'
-//     },
-//     {
-//       id: 2,
-//       label: 'Nonpoisonous'
-//     }
-//   ]
-// }
-
-// onRegionChange(region) {
-//   this.setState({region})
-// }
-
-// const data = [
-//   {id: 1, label: 'Poisonous'},
-//   {id: 2, label: 'Nonpoisonous'}
-// ]
-
-// const initialRegion = {
-//   latitude: 41.888824,
-//   longitude: -87.647408,
-//   latitudeDelta: 0.0922,
-//   longitudeDelta: 0.0421
-// }
-
-// export function filterMarkers(currentPins, tagsSelected, radius) {
-//   const radiusFromCenter = radius
-//   const radiusCenter = {
-//     latitude: this.state.center.coords.latitude,
-//     longitude: this.state.center.coords.longitude
-//   }
-// console.log('tagsSelected: ', tagsSelected)
-// console.log(
-//   'haspoison plant:',
-//   tagsSelected.filter(tag => tag.label === 'Poisonous').length
-// )
-// console.log(
-//   'does not have poison plant:',
-//   tagsSelected.filter(tag => tag.label === 'Nonpoisonous').length
-// )
-
-//   const filteredPins = PINS.filter((pin, i) => {
-//     let pinCoord = {
-//       latitude: pin.coordinate.latitude,
-//       longitude: pin.coordinate.longitude
-//     }
-//     if (
-//       geolib.isPointWithinRadius(pinCoord, radiusCenter, radiusFromCenter) ===
-//       true
-//     ) {
-//       if (
-//         tagsSelected.filter(tag => tag.label === 'Nonpoisonous').length &&
-//         pin.isPoisonous === false
-//       ) {
-//         return pin
-//       }
-//       if (
-//         tagsSelected.filter(tag => tag.label === 'Poisonous').length &&
-//         pin.isPoisonous === true
-//       ) {
-//         return pin
-//       }
-//       if (!tagsSelected.length) {
-//         return pin
-//       }
-//     }
-//   })
-//   this.setState({
-//     pins: filteredPins,
-//     tagsSelected,
-//     radius: radius
-//   })
-// }

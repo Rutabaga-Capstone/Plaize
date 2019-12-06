@@ -8,6 +8,7 @@ import CreateAccountScreen from '../screens/CreateAccount'
 import SettingsScreen from '../screens/MapScreen'
 import SnapScreen from '../screens/SnapScreen'
 import ProfileScreen from '../screens/ProfileScreen'
+import PlantInfoScreen from '../screens/PlantInfo'
 import Colors from '../constants/Colors'
 
 const config = Platform.select({
@@ -68,7 +69,8 @@ SettingsStack.path = ''
 
 const SnapStack = createStackNavigator(
   {
-    Snap: SnapScreen
+    Snap: SnapScreen,
+    PlantInfo: PlantInfoScreen
   },
   config
 )
