@@ -181,6 +181,7 @@ export default function SnapScreen() {
             CreatePinPlant({
               variables: {
                 ...plant.data.plant,
+                isPoisonous: true,
                 plantId: uuid(),
                 pinId: uuid(),
                 lat: location.coords.latitude,
