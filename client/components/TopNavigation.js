@@ -21,7 +21,8 @@ export default function TopNavigation() {
           textAlign: 'left',
           borderBottomColor: '#C7CAD4',
           borderBottomWidth: 1,
-          marginBottom: 10
+          marginBottom: 10,
+          borderTopWidth: 0
         }}
       >
         <Text
