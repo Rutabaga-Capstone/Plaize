@@ -7,8 +7,7 @@ import {
   StyleSheet,
   Text,
   View,
-  AsyncStorage,
-  SafeAreaView
+  AsyncStorage
 } from 'react-native'
 import {withApollo} from 'react-apollo'
 import {Ionicons, SimpleLineIcons, Feather} from '@expo/vector-icons'
@@ -36,6 +35,17 @@ class PlantInfo extends React.Component {
       alert(JSON.stringify(error))
     }
   }
+
+  logoutUser = async () => {
+    const {navigate} = this.props.navigation
+    try {
+      await AsyncStorage.removeItem('LOGGED_IN_USER')
+      navigate('Home')
+    } catch (err) {
+      console.log('error removing item from storage', err)
+    }
+  }
+
   render() {
     let {
       commonName,
@@ -72,7 +82,13 @@ class PlantInfo extends React.Component {
             }}
           >
             <Text style={{textAlign: 'right', marginRight: 10, marginTop: 5}}>
-              <Feather name="x" size={30} color="#C7CAD4" />
+              <Feather
+                name="x"
+                size={30}
+                color="#C7CAD4"
+                onPress={() => this.props.navigation.navigate('Snap')}
+                //helloWorld
+              />
             </Text>
           </View>
         </View>

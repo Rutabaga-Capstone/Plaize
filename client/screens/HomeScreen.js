@@ -80,7 +80,7 @@ const HomeScreen = props => {
           }
         })
         const userData = result.data.user
-        // await AsyncStorage.setItem('LOGGED_IN_USER', userData.email)
+        await AsyncStorage.setItem('LOGGED_IN_USER', JSON.stringify(userData))
         navigation.navigate('Snap', userData)
       } catch (error) {
         setShowAlert(true)

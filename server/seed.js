@@ -1,12 +1,10 @@
 const ApolloClient = require('apollo-boost').default
 const gql = require('graphql-tag')
 const fetch = require('node-fetch')
-
 const client = new ApolloClient({
   uri: 'http://localhost:1234/graphql',
   fetch
 })
-
 client
   .mutate({
     mutation: gql`
@@ -224,7 +222,6 @@ client
             description
           }
         }
-
         up2: AddUserPlants(from: {id: 1}, to: {id: 2}) {
           from {
             name
@@ -253,7 +250,6 @@ client
             description
           }
         }
-
         up3: AddUserPlants(from: {id: 1}, to: {id: 3}) {
           from {
             name
@@ -282,7 +278,6 @@ client
             description
           }
         }
-
         up4: AddUserPlants(from: {id: 2}, to: {id: 4}) {
           from {
             name
@@ -311,7 +306,6 @@ client
             description
           }
         }
-
         up5: AddUserPlants(from: {id: 3}, to: {id: 5}) {
           from {
             name
@@ -340,7 +334,6 @@ client
             description
           }
         }
-
         up6: AddUserPlants(from: {id: 4}, to: {id: 6}) {
           from {
             name
@@ -373,4 +366,3 @@ client
     `
   })
   .then(() => console.log('Done seeding the DB!!!'))
-  .catch(error => console.error(error))

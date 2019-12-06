@@ -84,7 +84,7 @@ export default function TopNavigation() {
             name="ios-leaf"
             size={25}
             style={{
-              color: '#C7CAD4'
+              color: '#6CC7BD'
             }}
           />
           {leaves}
