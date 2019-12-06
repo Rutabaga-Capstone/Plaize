@@ -21,6 +21,21 @@ export const setRegion = region => ({
   type: SET_REGION,
   region
 })
+//PIN CREATED
+
+export const SET_PIN_CREATED = 'SET_PIN_CREATED'
+
+export const setPinCreated = pinCreated => ({
+  type: SET_PIN_CREATED,
+  pinCreated
+})
+
+export const CLEAR_PIN_CREATED = 'CLEAR_PIN_CREATED'
+
+export const clearPinCreated = pinCreated => ({
+  type: CLEAR_PIN_CREATED,
+  pinCreated
+})
 
 ///PIN SELECTED
 export const SET_PIN_SELECTED = 'SET_PIN_SELECTED'

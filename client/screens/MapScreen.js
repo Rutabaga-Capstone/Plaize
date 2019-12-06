@@ -80,7 +80,7 @@ export default function MapScreen(props) {
   //==================================================================================================
 
   //2 - EFFECTS
-  // useEffect(() => getPins(), [])
+  // useEffect(() => getPins(), [pinCreated])
   // useEffect(() => getLocation(), [])
   useEffect(() => getRegion(), [])
   // useEffect(() => handleMarkerOnPress(), [])
@@ -163,12 +163,10 @@ export default function MapScreen(props) {
   }
 
   const handleMarkerOnPress = pin => {
-    console.log(pin)
     dispatch(setPinSelected(pin))
   }
 
   const handlePinItemOnPress = pin => {
-    console.log(pin)
     dispatch(setPinSelected(pin))
   }
 

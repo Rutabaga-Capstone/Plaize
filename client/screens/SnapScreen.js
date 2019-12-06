@@ -19,6 +19,7 @@ import {
 import uuid from 'react-uuid'
 import styled from 'styled-components'
 import {
+  setPinCreated,
   setPinSelected,
   setLocation,
   addPlant,
@@ -42,6 +43,7 @@ export default function SnapScreen(props) {
   const [UpdateUserLeaves] = useMutation(UPDATE_USER_LEAVES)
   const dispatch = useDispatch()
   const pinSelected = useSelector(state => state.pinSelected)
+  const pinCreated = useSelector(state => state.pinCreated)
 
   let camera = null
 
@@ -206,8 +208,6 @@ export default function SnapScreen(props) {
                   plants: [plantCopy]
                 }
 
-                dispatch(setPinSelected(newpin))
-
                 newpin.title = plantCopy.commonName
                 newpin.description = ''
                 newpin.coordinate = {
@@ -218,7 +218,7 @@ export default function SnapScreen(props) {
                 dispatch(addPin(newpin))
 
                 // This is still the then for the client.query for create pin plant
-                dispatch(setPinSelected(newpin))
+                dispatch(setPinCreated(newpin))
                 setIsPlantInfoReceived(true)
                 console.log('newpin.plants', newpin.plants)
                 props.navigation.navigate('PlantInfo', plantCopy)
@@ -249,12 +249,12 @@ export default function SnapScreen(props) {
       <>
         <TopNavigation />
 
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, borderTopWidth: 0}}>
           <Camera
             ref={ref => {
               camera = ref
             }}
-            style={{flex: 1}}
+            style={{flex: 1, borderTopWidth: 0}}
             type={Camera.Constants.Type.back}
           >
             <View
@@ -282,7 +282,7 @@ export default function SnapScreen(props) {
           </Camera>
 
           {isPlantInfoReceived &&
-            pinSelected && (
+            pinCreated && (
               <Container>
                 <PlantModal disableModalCallback={buttonCallback} />
               </Container>

@@ -33,7 +33,8 @@ export default function TopNavigation(props) {
           textAlign: 'left',
           borderBottomColor: '#C7CAD4',
           borderBottomWidth: 1,
-          marginBottom: 10
+          marginBottom: 10,
+          borderTopWidth: 0
         }}
       >
         <TouchableOpacity onPress={logoutUser}>

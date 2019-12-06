@@ -39,7 +39,7 @@ export default class CustomModal extends React.Component {
 
   toggleModal = () => {
     Animated.spring(this.state.top, {
-      toValue: 174
+      toValue: screenHeight * 0.1
     }).start()
   }
 
