@@ -36,6 +36,7 @@ import {
 
 import {ListItem} from 'react-native-elements'
 import {Ionicons, SimpleLineIcons} from '@expo/vector-icons'
+import TopNavigation from '../components/TopNavigation'
 
 // import TouchableScale from 'react-native-touchable-scale' // https://github.com/kohver/react-native-touchable-scale
 // import ExpoLinearGradient from 'react-native-linear-gradient'
@@ -142,7 +143,6 @@ export default function MapScreen(props) {
       return {index: i, value: el}
     })
 
-    // sorting the mapped array containing the reduced values
     mapped.sort(function(a, b) {
       if (a.value.distance > b.value.distance) {
         return 1
@@ -194,81 +194,80 @@ export default function MapScreen(props) {
   } else {
     sortPins(pinsData)
     return (
-      <>
-        <View>
-          {{location} && {pins} && (
-              <View>
-                <MapView
-                  style={styles.mapStyle}
-                  showsUserLocation={true}
-                  showsMyLocationButton={true}
-                  followsUserLocation={true}
-                  zoomEnabled={true}
-                  zoomTapEnabled={true}
-                >
-                  {pinsData.map((pin, i) => (
-                    <Marker
-                      key={i}
-                      title={pin.title}
-                      coordinate={pin.coordinate}
-                      pinColor={pin.plants[0].isPoisonous ? 'red' : 'green'}
-                      description={pin.description}
-                      id={pin.id}
-                      onPress={() => handleMarkerOnPress(pin)}
-                      onSelect={() => handleMarkerOnPress(pin)}
-                      onDeselect={() => handleMarkerOnDeselect()}
-                    />
-                  ))}
-                </MapView>
-              </View>
-            )}
-          {!pinSelected.id &&
-            pins && (
-              <ScrollView>
-                {sortedPins.sort().map((pin, i) => (
-                  <ListItem
+      <View>
+        <TopNavigation />
+        {{location} && {pins} && (
+            <View>
+              <MapView
+                style={styles.mapStyle}
+                showsUserLocation={true}
+                showsMyLocationButton={true}
+                followsUserLocation={true}
+                zoomEnabled={true}
+                zoomTapEnabled={true}
+              >
+                {pinsData.map((pin, i) => (
+                  <Marker
                     key={i}
                     title={pin.title}
-                    // subtitle={() => distanceFromLocation(pin)}
-                    bottomDivider
-                    badge={{
-                      value: distanceFromLocation(pin),
-                      textStyle: {color: 'white'},
-                      // containerStyle: {
-                      //   marginTop: -20
-                      // },
-                      badgeStyle: {backgroundColor: '#6cc7bd'}
-                    }}
-                    onPress={() => handlePinItemOnPress(pin)}
+                    coordinate={pin.coordinate}
+                    pinColor={pin.plants[0].isPoisonous ? 'red' : 'green'}
+                    description={pin.description}
+                    id={pin.id}
+                    onPress={() => handleMarkerOnPress(pin)}
+                    onSelect={() => handleMarkerOnPress(pin)}
+                    onDeselect={() => handleMarkerOnDeselect()}
                   />
                 ))}
-              </ScrollView>
-            )}
-          {pinSelected.id && (
+              </MapView>
+            </View>
+          )}
+        {!pinSelected.id &&
+          pins && (
             <ScrollView>
-              <ListItem
-                title={pinSelected.title}
-                // subtitle={distanceFromLocation(pinSelected)}
-                bottomDivider
-                badge={{
-                  value: distanceFromLocation(pinSelected),
-                  textStyle: {color: 'white'},
-                  // containerStyle: {marginTop: -20},
-                  badgeStyle: {backgroundColor: '#6cc7bd'}
-                }}
-              />
-              {/* {pinSelected.plants.map((plant, i) => (
-              <Text key={i}>{plant.commonName}</Text>
-            ))} */}
+              {sortedPins.sort().map((pin, i) => (
+                <ListItem
+                  key={i}
+                  title={pin.title}
+                  // subtitle={() => distanceFromLocation(pin)}
+                  bottomDivider
+                  badge={{
+                    value: distanceFromLocation(pin),
+                    textStyle: {color: 'white'},
+                    // containerStyle: {
+                    //   marginTop: -20
+                    // },
+                    badgeStyle: {backgroundColor: '#6cc7bd'}
+                  }}
+                  onPress={() => handlePinItemOnPress(pin)}
+                />
+              ))}
             </ScrollView>
           )}
-          {pinSelected.id && (
-            <Container>
-              <PlantModal pinSelected={pinSelected} />
-            </Container>
-          )}
-        </View>
-      </>
+        {pinSelected.id && (
+          <ScrollView>
+            <ListItem
+              title={pinSelected.title}
+              // subtitle={distanceFromLocation(pinSelected)}
+              bottomDivider
+              badge={{
+                value: distanceFromLocation(pinSelected),
+                textStyle: {color: 'white'},
+                // containerStyle: {marginTop: -20},
+                badgeStyle: {backgroundColor: '#6cc7bd'}
+              }}
+            />
+            {/* {pinSelected.plants.map((plant, i) => (
+              <Text key={i}>{plant.commonName}</Text>
+            ))} */}
+          </ScrollView>
+        )}
+        {pinSelected.id && (
+          <Container>
+            <PlantModal pinSelected={pinSelected} />
+          </Container>
+        )}
+      </View>
     )
   }
 }

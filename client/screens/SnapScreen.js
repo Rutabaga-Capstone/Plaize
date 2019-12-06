@@ -28,6 +28,7 @@ import {
 } from '../store/actions'
 import {useDispatch, useSelector} from 'react-redux'
 import * as Location from 'expo-location'
+import TopNavigation from '../components/TopNavigation'
 
 export default function SnapScreen() {
   const [isPlantInfoReceived, setIsPlantInfoReceived] = useState(false)
@@ -98,8 +99,6 @@ export default function SnapScreen() {
       type: `image/${fileType}`
     })
 
-    dispatch(setLeaves)
-
     axios
       .post(`http://${ipAddressOfServer}:1234/image`, formData)
       .then(response => {
@@ -138,6 +137,7 @@ export default function SnapScreen() {
             delete plant.data.plant.__typename
             plantCopy = plant.data.plant
             dispatch(addPlant(plantCopy))
+            dispatch(setLeaves())
             console.log('plant:', plant)
 
             console.log('then after query', {
@@ -241,85 +241,7 @@ export default function SnapScreen() {
   } else {
     return (
       <>
-        {/* TOP 'NAVIGATION' */}
-        <View style={{flex: 0.07, flexDirection: 'row', marginTop: 15}}>
-          <View
-            style={{
-              width: '33.3%',
-              height: 40,
-              textAlign: 'left',
-              borderBottomColor: '#C7CAD4',
-              borderBottomWidth: 1,
-              marginBottom: 10
-            }}
-          >
-            <Text
-              style={{
-                textAlign: 'left',
-                marginLeft: 15
-              }}
-            >
-              <SimpleLineIcons
-                name="logout"
-                onPress={this.logoutUser}
-                size={25}
-                color="#C7CAD4"
-                style={{
-                  textAlign: 'left'
-                }}
-              />
-            </Text>
-          </View>
-
-          <View
-            style={{
-              width: '33.3%',
-              height: 40,
-              textAlign: 'middle',
-              borderBottomColor: '#C7CAD4',
-              borderBottomWidth: 1,
-              marginBottom: 10
-            }}
-          >
-            <Text
-              style={{
-                textAlign: 'center',
-                fontSize: 24,
-                fontFamily: 'yorkten',
-                color: '#C7CAD4'
-              }}
-            >
-              Plaze
-            </Text>
-          </View>
-
-          <View
-            style={{
-              width: '33.3%',
-              height: 40,
-              textAlign: 'right',
-              borderBottomColor: '#C7CAD4',
-              borderBottomWidth: 1,
-              marginBottom: 10
-            }}
-          >
-            <Text
-              style={{
-                textAlign: 'right',
-                marginRight: 15
-              }}
-            >
-              <Ionicons
-                name="ios-leaf"
-                size={25}
-                style={{
-                  color: '#C7CAD4'
-                }}
-              />
-            </Text>
-          </View>
-        </View>
-        {/* END TOP 'NAVIGATION' */}
+        <TopNavigation />
 
         <View style={{flex: 1}}>
           <Camera

@@ -14,6 +14,7 @@ import {withApollo} from 'react-apollo'
 import {connect} from 'react-redux'
 import {GET_USER_PROFILE_INFO} from '../constants/GqlQueries'
 import {Ionicons, SimpleLineIcons} from '@expo/vector-icons'
+import TopNavigation from '../components/TopNavigation'
 
 class ProfileScreen extends React.Component {
   state = {
@@ -35,7 +36,7 @@ class ProfileScreen extends React.Component {
       const {user} = result.data
       this.setState({user})
     } catch (err) {
-      alert(JSON.stringify(err))
+      console.log(err)
     }
   }
 
@@ -70,91 +71,13 @@ class ProfileScreen extends React.Component {
     const {navigate} = this.props.navigation
     const {userPlants} = this.props.plantsReducer
     const {name, regDate, plants} = this.state.user
-    const leaves = this.props.leavesReducer
+    const {leaves} = this.props.leavesReducer
     return (
       <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
           {/* Welcome Container */}
           <View style={styles.welcomeContainer}>
-            {/* TOP 'NAVIGATION' */}
-            <View style={{flex: 1, flexDirection: 'row', marginTop: 15}}>
-              <View
-                style={{
-                  width: '33.3%',
-                  height: 40,
-                  textAlign: 'left',
-                  borderBottomColor: '#C7CAD4',
-                  borderBottomWidth: 1,
-                  marginBottom: 10
-                }}
-              >
-                <Text
-                  style={{
-                    textAlign: 'left',
-                    marginLeft: 15
-                  }}
-                >
-                  <SimpleLineIcons
-                    name="logout"
-                    onPress={this.logoutUser}
-                    size={25}
-                    color="#C7CAD4"
-                    style={{
-                      textAlign: 'left'
-                    }}
-                  />
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  width: '33.3%',
-                  height: 40,
-                  textAlign: 'middle',
-                  borderBottomColor: '#C7CAD4',
-                  borderBottomWidth: 1,
-                  marginBottom: 10
-                }}
-              >
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    fontSize: 24,
-                    fontFamily: 'yorkten',
-                    color: '#C7CAD4'
-                  }}
-                >
-                  Plaze
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  width: '33.3%',
-                  height: 40,
-                  textAlign: 'right',
-                  borderBottomColor: '#C7CAD4',
-                  borderBottomWidth: 1,
-                  marginBottom: 10
-                }}
-              >
-                <Text
-                  style={{
-                    textAlign: 'right',
-                    marginRight: 15
-                  }}
-                >
-                  <Ionicons
-                    name="ios-leaf"
-                    size={25}
-                    style={{
-                      color: '#C7CAD4'
-                    }}
-                  />
-                </Text>
-              </View>
-            </View>
-            {/* END TOP 'NAVIGATION' */}
+            <TopNavigation />
 
             <Image
               source={

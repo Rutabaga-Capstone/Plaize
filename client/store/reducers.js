@@ -114,14 +114,14 @@ const userReducer = (state = userState, action) => {
   }
 }
 
-const leavesReducer = (state = 0, action) => {
+const leavesReducer = (state = {leaves: 0}, action) => {
   switch (action.type) {
     case GET_LEAVES:
       return state
     case SET_LEAVES:
-      return state + 25
+      return {leaves: state.leaves + 25}
     default:
-      return 25
+      return state
   }
 }
 
@@ -133,7 +133,8 @@ const rootReducer = combineReducers({
   pinSelectedReducer,
   modalActionReducer,
   plantsReducer,
-  userReducer
+  userReducer,
+  leavesReducer
   // ,[ANOTHER REDUCER], [ANOTHER REDUCER] ....
 })
 
