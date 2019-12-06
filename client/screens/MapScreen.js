@@ -195,9 +195,9 @@ export default function MapScreen(props) {
     sortPins(pinsData)
     return (
       <View>
+        <TopNavigation />
         {{location} && {pins} && (
             <View>
-              <TopNavigation />
               <MapView
                 style={styles.mapStyle}
                 showsUserLocation={true}

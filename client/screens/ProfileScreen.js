@@ -14,8 +14,8 @@ import {withApollo} from 'react-apollo'
 import {connect} from 'react-redux'
 import {GET_USER_PROFILE_INFO} from '../constants/GqlQueries'
 import {Ionicons, SimpleLineIcons} from '@expo/vector-icons'
-import RenderImages from './TempImageRender'
 import TopNavigation from '../components/TopNavigation'
+import RenderImages from './TempImageRender'
 
 class ProfileScreen extends React.Component {
   state = {
