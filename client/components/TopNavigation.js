@@ -1,16 +1,28 @@
 import React, {useState, useEffect} from 'react'
-import {Text, View, TouchableOpacity} from 'react-native'
+import {Text, View, TouchableOpacity, AsyncStorage} from 'react-native'
 import {Ionicons, SimpleLineIcons} from '@expo/vector-icons'
 import {useDispatch, useSelector} from 'react-redux'
 import {updateUserDataLeaves} from '../store/actions'
 import {UPDATE_USER_LEAVES} from '../constants/GqlMutations'
 // import {GET_USER_LEAVES} from '../constants/GqlQueries'
 
-export default function TopNavigation() {
+export default function TopNavigation(props) {
   const dispatch = useDispatch()
 
   const leavesReducer = useSelector(state => state.leavesReducer)
   const {leaves} = leavesReducer
+
+  const logoutUser = async () => {
+    //alert(JSON.stringify(props)
+
+    const {navigate} = props.navigation
+    try {
+      await AsyncStorage.removeItem('LOGGED_IN_USER')
+      navigate('Home')
+    } catch (err) {
+      console.log('error removing item from storage', err)
+    }
+  }
 
   return (
     <View style={{flex: 0.07, flexDirection: 'row', marginTop: 15}}>
@@ -24,22 +36,16 @@ export default function TopNavigation() {
           marginBottom: 10
         }}
       >
-        <Text
-          style={{
-            textAlign: 'left',
-            marginLeft: 15
-          }}
-        >
+        <TouchableOpacity onPress={logoutUser}>
           <SimpleLineIcons
             name="logout"
-            onPress={this.logoutUser}
             size={25}
             color="#C7CAD4"
             style={{
               textAlign: 'left'
             }}
           />
-        </Text>
+        </TouchableOpacity>
       </View>
 
       <View

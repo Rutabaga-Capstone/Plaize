@@ -1,5 +1,11 @@
 import React from 'react'
-import {View, Text, StyleSheet, Dimensions} from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions
+} from 'react-native'
 import MapView, {Marker, Circle} from 'react-native-maps'
 
 const styles = StyleSheet.create({

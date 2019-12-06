@@ -60,7 +60,7 @@ class PlantInfo extends React.Component {
 
     return (
       <View style={{alignSelf: 'stretch', flex: 1, marginTop: 0}}>
-        <TopNavigation />
+        <TopNavigation {...this.props} />
         {/* START UPPER-RIGHT X */}
         <View style={{flex: 0.1, flexDirection: 'row', marginTop: -10}}>
           <View
@@ -81,7 +81,7 @@ class PlantInfo extends React.Component {
               textAlign: 'right'
             }}
           >
-            <Text style={{textAlign: 'right', marginRight: 10, marginTop: 5}}>
+            <Text style={{textAlign: 'right', marginRight: 10, marginTop: 15}}>
               <Feather
                 name="x"
                 size={30}

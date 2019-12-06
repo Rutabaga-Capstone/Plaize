@@ -31,7 +31,9 @@ import {
   FlatList,
   List,
   ActivityIndicator,
-  Dimensions
+  Dimensions,
+  TouchableOpacity,
+  TouchableHighlight
 } from 'react-native'
 
 import {ListItem} from 'react-native-elements'
@@ -195,9 +197,11 @@ export default function MapScreen(props) {
     sortPins(pinsData)
     return (
       <View>
-        <TopNavigation />
         {{location} && {pins} && (
             <View>
+              <TouchableOpacity style={styles.overlay}>
+                <TopNavigation style={styles.topNav} />
+              </TouchableOpacity>
               <MapView
                 style={styles.mapStyle}
                 showsUserLocation={true}
@@ -229,14 +233,10 @@ export default function MapScreen(props) {
                 <ListItem
                   key={i}
                   title={pin.title}
-                  // subtitle={() => distanceFromLocation(pin)}
                   bottomDivider
                   badge={{
                     value: distanceFromLocation(pin),
                     textStyle: {color: 'white'},
-                    // containerStyle: {
-                    //   marginTop: -20
-                    // },
                     badgeStyle: {backgroundColor: '#6cc7bd'}
                   }}
                   onPress={() => handlePinItemOnPress(pin)}
@@ -294,12 +294,21 @@ const styles = {
     width: '100%',
     height: '100%'
   },
+  overlay: {
+    position: 'absolute',
+    top: 0
+  },
   // mapContainer: {
   //   flex: 1,
   //   backgroundColor: '#fff',
   //   alignItems: 'center',
   //   justifyContent: 'center'
   // },
+  topNav: {
+    position: 'absolute',
+    top: 0,
+    zIndex: 10000000
+  },
   mapStyle: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height / 2,
