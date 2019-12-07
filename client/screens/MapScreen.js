@@ -83,7 +83,6 @@ export default function MapScreen(props) {
 
   //2 - EFFECTS
   // useEffect(() => dispatch(pins), [pinCreated])
-  // useEffect(() => dispatch(pins), [pinCreated])
   // useEffect(() => getLocation(), [])
   useEffect(() => getRegion(), [])
   // useEffect(() => handleMarkerOnPress(), [])
