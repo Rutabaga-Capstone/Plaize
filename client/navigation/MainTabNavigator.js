@@ -5,7 +5,7 @@ import {createStackNavigator, createBottomTabNavigator} from 'react-navigation'
 import TabBarIcon from '../components/TabBarIcon'
 import HomeScreen from '../screens/HomeScreen'
 import CreateAccountScreen from '../screens/CreateAccount'
-import SettingsScreen from '../screens/MapScreen'
+import MapScreen from '../screens/MapScreen'
 import SnapScreen from '../screens/SnapScreen'
 import ProfileScreen from '../screens/ProfileScreen'
 import PlantInfoScreen from '../screens/PlantInfo'
@@ -46,14 +46,14 @@ HomeStack.path = ''
 
 /*----- MAP -----*/
 
-const SettingsStack = createStackNavigator(
+const MapStack = createStackNavigator(
   {
-    Settings: SettingsScreen
+    Map: MapScreen
   },
   config
 )
 
-SettingsStack.navigationOptions = {
+MapStack.navigationOptions = {
   tabBarLabel: 'Map',
   tabBarIcon: ({focused}) => (
     <TabBarIcon
@@ -63,14 +63,15 @@ SettingsStack.navigationOptions = {
   )
 }
 
-SettingsStack.path = ''
+MapStack.path = ''
 
 /*----- SNAP -----*/
 
 const SnapStack = createStackNavigator(
   {
     Snap: SnapScreen,
-    PlantInfo: PlantInfoScreen
+    PlantInfo: PlantInfoScreen,
+    Map: MapScreen
   },
   config
 )
@@ -107,7 +108,7 @@ const tabNavigator = createBottomTabNavigator(
   {
     ProfileStack,
     SnapStack,
-    SettingsStack
+    MapStack
   },
   {
     tabBarOptions: {

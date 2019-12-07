@@ -38,7 +38,12 @@ import Modal, {
   ModalButton
 } from 'react-native-modals'
 
-export default function SnapScreen() {
+
+export default function SnapScreen(props) {
+  // const {navigate} = props.navigation
+  // props.navigation.navigate('PlantInfo')
+  const locationReducer = useSelector(state => state.locationReducer)
+  const {location} = locationReducer
   const [isPlantInfoReceived, setIsPlantInfoReceived] = useState(false)
   const [isWelcomeModalVisible, setIsWelcomeModalVisible] = useState(true)
 
@@ -48,13 +53,10 @@ export default function SnapScreen() {
   const [AddPinPlantToUser] = useMutation(ADD_PIN_PLANT_TO_USER)
   const [UpdateUserLeaves] = useMutation(UPDATE_USER_LEAVES)
   const dispatch = useDispatch()
-  const pinSelected = useSelector(state => state.pinSelected)
+  // const pinSelected = useSelector(state => state.pinSelected)
   const pinCreated = useSelector(state => state.pinCreated)
 
   let camera = null
-
-  const locationReducer = useSelector(state => state.locationReducer)
-  const {location} = locationReducer
 
   useEffect(() => getLocation(), [])
   useEffect(() => {
@@ -219,14 +221,15 @@ export default function SnapScreen() {
                   latitude: newpin.lat,
                   longitude: newpin.lng
                 }
-
+                console.log('newpin before dispatch actions:', newpin)
                 dispatch(addPin(newpin))
 
                 // This is still the then for the client.query for create pin plant
                 dispatch(setPinCreated(newpin))
+                dispatch(setPinSelected(newpin))
                 setIsPlantInfoReceived(true)
                 console.log('newpin.plants', newpin.plants)
-                props.navigation.navigate('PlantInfo', plantCopy)
+                props.navigation.navigate('Map')
               })
               .catch(() => {
                 // this is the catch for create pin plant
