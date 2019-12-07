@@ -198,7 +198,7 @@ export default function MapScreen(props) {
         {{location} && {pins} && (
             <View>
               <TouchableOpacity style={styles.overlay}>
-                <TopNavigation style={styles.topNav} />
+                <TopNavigation style={styles.topNav} {...this.props} />
               </TouchableOpacity>
               <MapView
                 style={styles.mapStyle}

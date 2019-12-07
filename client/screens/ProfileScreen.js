@@ -78,7 +78,7 @@ class ProfileScreen extends React.Component {
         <ScrollView contentContainerStyle={styles.contentContainer}>
           {/* Welcome Container */}
           <View style={styles.welcomeContainer}>
-            <TopNavigation />
+            <TopNavigation {...this.props} />
             <Image
               source={
                 __DEV__

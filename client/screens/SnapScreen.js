@@ -92,7 +92,7 @@ export default function SnapScreen(props) {
   }
 
   const onPictureSaved = photo => {
-    const ipAddressOfServer = '172.17.23.197' // <--- PUT YOUR OWN IP HERE
+    const ipAddressOfServer = '172.17.20.209' // <--- PUT YOUR OWN IP HERE
     const uriParts = photo.uri.split('.')
     const fileType = uriParts[uriParts.length - 1]
     let plantCopy
@@ -247,7 +247,7 @@ export default function SnapScreen(props) {
   } else {
     return (
       <>
-        <TopNavigation />
+        <TopNavigation {...this.props} />
 
         <View style={{flex: 1, borderTopWidth: 0}}>
           <Camera

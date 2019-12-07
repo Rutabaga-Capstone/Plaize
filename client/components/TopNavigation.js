@@ -13,8 +13,6 @@ export default function TopNavigation(props) {
   const {leaves} = leavesReducer
 
   const logoutUser = async () => {
-    //alert(JSON.stringify(props)
-
     const {navigate} = props.navigation
     try {
       await AsyncStorage.removeItem('LOGGED_IN_USER')
