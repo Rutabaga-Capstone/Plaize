@@ -220,7 +220,7 @@ export default function SnapScreen(props) {
                 dispatch(setPinSelected(newpin))
                 setIsPlantInfoReceived(true)
                 console.log('newpin.plants', newpin.plants)
-                props.navigation.navigate('Map', newpin)
+                props.navigation.navigate('Map')
               })
               .catch(() => {
                 // this is the catch for create pin plant
