@@ -71,9 +71,9 @@ let pinCreatedState = {pinCreated: {}}
 const pinCreatedReducer = (state = pinCreatedState, action) => {
   switch (action.type) {
     case SET_PIN_CREATED:
-      return {...state, pinSelected: action.pinCreated}
+      return {...state, pinCreated: action.pinCreated}
     case CLEAR_PIN_CREATED:
-      return {...state, pinSelected: action.pinCreated}
+      return {...state, pinCreated: action.pinCreated}
     default:
       return state
   }

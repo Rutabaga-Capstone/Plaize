@@ -20,7 +20,7 @@ import uuid from 'react-uuid'
 import styled from 'styled-components'
 import {
   setPinCreated,
-  // setPinSelected,
+  setPinSelected,
   setLocation,
   addPlant,
   updateUserDataLeaves,
@@ -217,9 +217,10 @@ export default function SnapScreen(props) {
 
                 // This is still the then for the client.query for create pin plant
                 dispatch(setPinCreated(newpin))
+                dispatch(setPinSelected(newpin))
                 setIsPlantInfoReceived(true)
                 console.log('newpin.plants', newpin.plants)
-                props.navigation.navigate('PlantInfo', plantCopy)
+                props.navigation.navigate('Map', newpin)
               })
               .catch(() => {
                 // this is the catch for create pin plant

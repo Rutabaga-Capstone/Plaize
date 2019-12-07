@@ -14,7 +14,7 @@ import {
   // closeModal
 } from '../store/actions'
 
-import pinsData from '../store/pins' //fake data for now
+// import pinsData from '../store/pins' //fake data for now
 import PlantModal from '../components/PlantModal'
 
 import * as Permissions from 'expo-permissions'
