@@ -27,7 +27,7 @@ let pinsState = {pins: []}
 const pinsReducer = (state = pinsState, action) => {
   switch (action.type) {
     case SET_PINS:
-      return {...state, pins: [...state.pins, action.pins]}
+      return {...state, pins: action.pins}
     case ADD_PIN:
       return {...state, pins: [...state.pins, action.pin]}
     default:

@@ -20,7 +20,7 @@ import uuid from 'react-uuid'
 import styled from 'styled-components'
 import {
   setPinCreated,
-  setPinSelected,
+  // setPinSelected,
   setLocation,
   addPlant,
   updateUserDataLeaves,
@@ -34,7 +34,8 @@ import TopNavigation from '../components/TopNavigation'
 export default function SnapScreen(props) {
   // const {navigate} = props.navigation
   // props.navigation.navigate('PlantInfo')
-
+  const locationReducer = useSelector(state => state.locationReducer)
+  const {location} = locationReducer
   const [isPlantInfoReceived, setIsPlantInfoReceived] = useState(false)
   const [hasCameraPermission, setHasCameraPermission] = useState('null')
   const client = useApolloClient()
@@ -42,13 +43,10 @@ export default function SnapScreen(props) {
   const [AddPinPlantToUser] = useMutation(ADD_PIN_PLANT_TO_USER)
   const [UpdateUserLeaves] = useMutation(UPDATE_USER_LEAVES)
   const dispatch = useDispatch()
-  const pinSelected = useSelector(state => state.pinSelected)
+  // const pinSelected = useSelector(state => state.pinSelected)
   const pinCreated = useSelector(state => state.pinCreated)
 
   let camera = null
-
-  const locationReducer = useSelector(state => state.locationReducer)
-  const {location} = locationReducer
 
   useEffect(() => getLocation(), [])
   useEffect(() => {
@@ -214,7 +212,7 @@ export default function SnapScreen(props) {
                   latitude: newpin.lat,
                   longitude: newpin.lng
                 }
-
+                console.log('newpin before dispatch actions:', newpin)
                 dispatch(addPin(newpin))
 
                 // This is still the then for the client.query for create pin plant
