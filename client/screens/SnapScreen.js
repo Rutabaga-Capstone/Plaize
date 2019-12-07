@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
+import React, {useState, useEffect} from 'react'
+import {Text, View, TouchableOpacity, StyleSheet} from 'react-native'
 import * as Permissions from 'expo-permissions'
-import { Camera } from 'expo-camera'
+import {Camera} from 'expo-camera'
 import * as FileSystem from 'expo-file-system'
 import axios from 'axios'
-import { Ionicons, SimpleLineIcons } from '@expo/vector-icons'
+import {Ionicons, SimpleLineIcons} from '@expo/vector-icons'
 import PlantModal from '../components/PlantModal'
-import { useMutation, useApolloClient } from '@apollo/react-hooks'
+import {useMutation, useApolloClient} from '@apollo/react-hooks'
 import {
   CREATE_PIN_PLANT,
   ADD_PIN_PLANT_TO_USER,
@@ -27,13 +27,16 @@ import {
   addPin,
   setLeaves
 } from '../store/actions'
-import { useDispatch, useSelector } from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import * as Location from 'expo-location'
 import TopNavigation from '../components/TopNavigation'
 
-import Modal, { ModalTitle, ModalContent, ModalFooter, ModalButton } from 'react-native-modals';
-
-
+import Modal, {
+  ModalTitle,
+  ModalContent,
+  ModalFooter,
+  ModalButton
+} from 'react-native-modals'
 
 export default function SnapScreen() {
   const [isPlantInfoReceived, setIsPlantInfoReceived] = useState(false)
@@ -51,12 +54,12 @@ export default function SnapScreen() {
   let camera = null
 
   const locationReducer = useSelector(state => state.locationReducer)
-  const { location } = locationReducer
+  const {location} = locationReducer
 
   useEffect(() => getLocation(), [])
   useEffect(() => {
     async function startUp() {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA)
+      const {status} = await Permissions.askAsync(Permissions.CAMERA)
       setHasCameraPermission('granted')
       FileSystem.makeDirectoryAsync(FileSystem.cacheDirectory + 'photos').catch(
         e => {
@@ -69,7 +72,7 @@ export default function SnapScreen() {
 
   const fetchLocationAsync = async () => {
     try {
-      let { status } = await Permissions.askAsync(Permissions.LOCATION)
+      let {status} = await Permissions.askAsync(Permissions.LOCATION)
       if (status !== 'granted') {
         let errorMessage = 'Permission to access location was denied'
         console.log(errorMessage)
@@ -86,16 +89,16 @@ export default function SnapScreen() {
   }
   const takePicture = () => {
     if (camera) {
-      camera.takePictureAsync({ onPictureSaved })
+      camera.takePictureAsync({onPictureSaved})
     }
   }
 
-  const buttonCallback = function () {
+  const buttonCallback = function() {
     setIsPlantInfoReceived(false)
   }
 
   const onPictureSaved = photo => {
-    const ipAddressOfServer = '172.17.23.197' // <--- PUT YOUR OWN IP HERE
+    const ipAddressOfServer = '10.0.0.48' // <--- PUT YOUR OWN IP HERE
     const uriParts = photo.uri.split('.')
     const fileType = uriParts[uriParts.length - 1]
     let plantCopy
@@ -111,20 +114,11 @@ export default function SnapScreen() {
       .post(`http://${ipAddressOfServer}:1234/image`, formData)
       .then(response => {
         console.log(response.data.commonName)
-<<<<<<< HEAD
-        // alert(
-        //   `Plant identified: ${response.data.commonName} \n probability: ${
-        //     response.data.score
-        //   }`
-        // )
-
-=======
         alert(
           `Plant identified: ${response.data.commonName} \n probability: ${
-          response.data.score
+            response.data.score
           }`
         )
->>>>>>> same commit as before but without husky plugin
         // if (response.data.score < 0.5) { throw(new Error) }
 
         /*
@@ -260,19 +254,19 @@ export default function SnapScreen() {
       <>
         <TopNavigation />
         <View style={styles.container}>
-
           <Modal
             visible={isWelcomeModalVisible}
             modalTitle={
-              <View style={{ flexDirection: 'row' }}>
-                <ModalTitle  title=
-                {
-                <>
-                <Ionicons name="ios-leaf" color="#6CC7BD" size={25} />
-                <Text>       Welcome to Plaize       </Text>
-                <Ionicons name="ios-leaf" color="#6CC7BD" size={25} />
-                </>
-                } />
+              <View style={{flexDirection: 'row'}}>
+                <ModalTitle
+                  title={
+                    <>
+                      <Ionicons name="ios-leaf" color="#6CC7BD" size={25} />
+                      <Text> Welcome to Plaize </Text>
+                      <Ionicons name="ios-leaf" color="#6CC7BD" size={25} />
+                    </>
+                  }
+                />
               </View>
             }
             width={0.7}
@@ -280,111 +274,25 @@ export default function SnapScreen() {
               <ModalFooter>
                 <ModalButton
                   text="OK"
-                  onPress={() => { setIsWelcomeModalVisible(false) }}
+                  onPress={() => {
+                    setIsWelcomeModalVisible(false)
+                  }}
                 />
               </ModalFooter>
             }
           >
             <ModalContent>
-              <Text>                                                                    Let's jump right into it !</Text>
+              <Text> Let's jump right into it !</Text>
             </ModalContent>
           </Modal>
         </View>
 
-        {/* TOP 'NAVIGATION' */}
-        <View style={{ flex: 0.07, flexDirection: 'row', marginTop: 15 }}>
-          <View
-            style={{
-              width: '33.3%',
-              height: 40,
-              textAlign: 'left',
-              borderBottomColor: '#C7CAD4',
-              borderBottomWidth: 1,
-              marginBottom: 10
-            }}
-          >
-            <Text
-              style={{
-                textAlign: 'left',
-                marginLeft: 15
-              }}
-            >
-              <SimpleLineIcons
-                name="logout"
-                onPress={this.logoutUser}
-                size={25}
-                color="#C7CAD4"
-                style={{
-                  textAlign: 'left'
-                }}
-              />
-            </Text>
-          </View>
-
-          <View
-            style={{
-              width: '33.3%',
-              height: 40,
-              textAlign: 'middle',
-              borderBottomColor: '#C7CAD4',
-              borderBottomWidth: 1,
-              marginBottom: 10
-            }}
-          >
-            <Text
-              style={{
-                textAlign: 'center',
-                fontSize: 24,
-                fontFamily: 'yorkten',
-                color: '#C7CAD4'
-              }}
-            >
-              Plaze
-            </Text>
-          </View>
-
-          <View
-            style={{
-              width: '33.3%',
-              height: 40,
-              textAlign: 'right',
-              borderBottomColor: '#C7CAD4',
-              borderBottomWidth: 1,
-              marginBottom: 10
-            }}
-          >
-            <Text
-              style={{
-                textAlign: 'right',
-                marginRight: 15
-              }}
-            >
-              <Ionicons
-                name="ios-leaf"
-                size={25}
-                style={{
-                  color: '#C7CAD4'
-                }}
-              />
-            </Text>
-          </View>
-        </View>
-        {/* END TOP 'NAVIGATION' */}
-
-<<<<<<< HEAD
         <View style={{flex: 1, borderTopWidth: 0}}>
-=======
-        <View style={{ flex: 1 }}>
->>>>>>> same commit as before but without husky plugin
           <Camera
             ref={ref => {
               camera = ref
             }}
-<<<<<<< HEAD
             style={{flex: 1, borderTopWidth: 0}}
-=======
-            style={{ flex: 1 }}
->>>>>>> same commit as before but without husky plugin
             type={Camera.Constants.Type.back}
           >
             <View
@@ -405,7 +313,7 @@ export default function SnapScreen() {
                 <Ionicons
                   name="md-camera"
                   size={48}
-                  style={{ marginBottom: 30 }}
+                  style={{marginBottom: 30}}
                 />
               </TouchableOpacity>
             </View>
@@ -430,7 +338,6 @@ const Container = styled.View`
   align-self: center;
   width: 80%;
 `
-
 
 const styles = StyleSheet.create({
   container: {
