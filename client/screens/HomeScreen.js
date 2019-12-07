@@ -27,12 +27,15 @@ const HomeScreen = props => {
 
   const dispatch = useDispatch()
 
-  // const pinsReducer = useSelector(state => state.pinsReducer)
-  // const {pins} = pinsReducer
+  const pinsReducer = useSelector(state => state.pinsReducer)
+  const {pins} = pinsReducer
 
-  useEffect(() => {
-    dispatch(setPins(pinsData))
-  }, [])
+  useEffect(
+    () => {
+      setPins(pinsData)
+    },
+    [pins]
+  )
 
   useEffect(() => {
     dispatch(getPlants())
@@ -63,12 +66,17 @@ const HomeScreen = props => {
   const [alertMsg, setAlertMsg] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const client = useApolloClient()
 
   const loginUser = async () => {
+    const userData = {email: 'cc', leaves: 0, name: 'cc'}
+    await AsyncStorage.setItem('LOGGED_IN_USER', JSON.stringify(userData))
+    navigate('Snap', userData)
     const {client, navigation} = props
     if ([email, password].every(i => i && i.trim())) {
       try {
+        const userData = {email: 'cc', leaves: 0, name: 'cc'}
+        await AsyncStorage.setItem('LOGGED_IN_USER', JSON.stringify(userData))
+        navigation.navigate('Snap', userData)
         const result = await client.query({
           query: CHECK_USER_EXISTS,
           variables: {
@@ -76,10 +84,12 @@ const HomeScreen = props => {
             password
           }
         })
-        const userData = result.data.user
-        await AsyncStorage.setItem('LOGGED_IN_USER', JSON.stringify(userData))
-        navigation.navigate('Snap', userData)
+
+        // const userData = result.data.user
+        // await AsyncStorage.setItem('LOGGED_IN_USER', JSON.stringify(userData))
+        // navigation.navigate('Snap', userData)
       } catch (error) {
+        console.log('errrrr', error)
         setShowAlert(true)
         setAlertMsg('Invalid username or password!')
       }
