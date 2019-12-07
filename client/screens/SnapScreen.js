@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {Text, View, TouchableOpacity} from 'react-native'
+import {Text, View, TouchableOpacity, StyleSheet} from 'react-native'
 import * as Permissions from 'expo-permissions'
 import {Camera} from 'expo-camera'
 import * as FileSystem from 'expo-file-system'
@@ -31,12 +31,22 @@ import {useDispatch, useSelector} from 'react-redux'
 import * as Location from 'expo-location'
 import TopNavigation from '../components/TopNavigation'
 
+import Modal, {
+  ModalTitle,
+  ModalContent,
+  ModalFooter,
+  ModalButton
+} from 'react-native-modals'
+
+
 export default function SnapScreen(props) {
   // const {navigate} = props.navigation
   // props.navigation.navigate('PlantInfo')
   const locationReducer = useSelector(state => state.locationReducer)
   const {location} = locationReducer
   const [isPlantInfoReceived, setIsPlantInfoReceived] = useState(false)
+  const [isWelcomeModalVisible, setIsWelcomeModalVisible] = useState(true)
+
   const [hasCameraPermission, setHasCameraPermission] = useState('null')
   const client = useApolloClient()
   const [CreatePinPlant] = useMutation(CREATE_PIN_PLANT)
@@ -106,12 +116,11 @@ export default function SnapScreen(props) {
       .post(`http://${ipAddressOfServer}:1234/image`, formData)
       .then(response => {
         console.log(response.data.commonName)
-        // alert(
-        //   `Plant identified: ${response.data.commonName} \n probability: ${
-        //     response.data.score
-        //   }`
-        // )
-
+        alert(
+          `Plant identified: ${response.data.commonName} \n probability: ${
+            response.data.score
+          }`
+        )
         // if (response.data.score < 0.5) { throw(new Error) }
 
         /*
@@ -247,6 +256,39 @@ export default function SnapScreen(props) {
     return (
       <>
         <TopNavigation />
+        <View style={styles.container}>
+          <Modal
+            visible={isWelcomeModalVisible}
+            modalTitle={
+              <View style={{flexDirection: 'row'}}>
+                <ModalTitle
+                  title={
+                    <>
+                      <Ionicons name="ios-leaf" color="#6CC7BD" size={25} />
+                      <Text>       Welcome to Plaize      </Text>
+                      <Ionicons name="ios-leaf" color="#6CC7BD" size={25} />
+                    </>
+                  }
+                />
+              </View>
+            }
+            width={0.7}
+            footer={
+              <ModalFooter>
+                <ModalButton
+                  text="OK"
+                  onPress={() => {
+                    setIsWelcomeModalVisible(false)
+                  }}
+                />
+              </ModalFooter>
+            }
+          >
+            <ModalContent>
+              <Text>                                                              Let's jump right into it !</Text>
+            </ModalContent>
+          </Modal>
+        </View>
 
         <View style={{flex: 1, borderTopWidth: 0}}>
           <Camera
@@ -272,9 +314,10 @@ export default function SnapScreen(props) {
                 onPress={takePicture}
               >
                 <Ionicons
-                  name="md-camera"
-                  size={48}
-                  style={{marginBottom: 30}}
+                  name="md-radio-button-off"
+                  size={70}
+                  style={{marginBottom: 40}}
+                  color='white'
                 />
               </TouchableOpacity>
             </View>
@@ -299,3 +342,13 @@ const Container = styled.View`
   align-self: center;
   width: 80%;
 `
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    marginTop: 400,
+    marginLeft: 190,
+    position: 'absolute'
+  }
+})
