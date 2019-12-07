@@ -8,10 +8,8 @@ import {UPDATE_USER_LEAVES} from '../constants/GqlMutations'
 
 export default function TopNavigation(props) {
   const dispatch = useDispatch()
-
   const leavesReducer = useSelector(state => state.leavesReducer)
   const {leaves} = leavesReducer
-
   const logoutUser = async () => {
     const {navigate} = props.navigation
     try {
@@ -23,7 +21,15 @@ export default function TopNavigation(props) {
   }
 
   return (
-    <View style={{flex: 0.07, flexDirection: 'row', marginTop: 15}}>
+    <View
+      style={{
+        flex: 0.07,
+        flexDirection: 'row',
+        marginTop: 15,
+        zIndex: 1000,
+        backgroundColor: '#ffffff'
+      }}
+    >
       <View
         style={{
           width: '33.3%',
@@ -32,7 +38,8 @@ export default function TopNavigation(props) {
           borderBottomColor: '#C7CAD4',
           borderBottomWidth: 1,
           marginBottom: 10,
-          borderTopWidth: 0
+          borderTopWidth: 0,
+          backgroundColor: '#ffffff'
         }}
       >
         <TouchableOpacity onPress={logoutUser}>
@@ -41,7 +48,8 @@ export default function TopNavigation(props) {
             size={25}
             color="#C7CAD4"
             style={{
-              textAlign: 'left'
+              textAlign: 'left',
+              marginLeft: 5
             }}
           />
         </TouchableOpacity>
@@ -54,7 +62,8 @@ export default function TopNavigation(props) {
           textAlign: 'middle',
           borderBottomColor: '#C7CAD4',
           borderBottomWidth: 1,
-          marginBottom: 10
+          marginBottom: 10,
+          backgroundColor: '#ffffff'
         }}
       >
         <Text
@@ -76,7 +85,8 @@ export default function TopNavigation(props) {
           textAlign: 'right',
           borderBottomColor: '#C7CAD4',
           borderBottomWidth: 1,
-          marginBottom: 10
+          marginBottom: 10,
+          backgroundColor: '#ffffff'
         }}
       >
         <Text

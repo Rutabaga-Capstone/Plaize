@@ -74,6 +74,9 @@ const HomeScreen = props => {
     const {client, navigation} = props
     if ([email, password].every(i => i && i.trim())) {
       try {
+        const userData = {email: 'cc', leaves: 0, name: 'cc'}
+        await AsyncStorage.setItem('LOGGED_IN_USER', JSON.stringify(userData))
+        navigation.navigate('Snap', userData)
         const result = await client.query({
           query: CHECK_USER_EXISTS,
           variables: {
