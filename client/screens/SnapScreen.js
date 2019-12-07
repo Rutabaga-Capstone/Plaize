@@ -311,9 +311,10 @@ export default function SnapScreen() {
                 onPress={takePicture}
               >
                 <Ionicons
-                  name="md-camera"
-                  size={48}
-                  style={{marginBottom: 30}}
+                  name="md-radio-button-off"
+                  size={70}
+                  style={{marginBottom: 40}}
+                  color='white'
                 />
               </TouchableOpacity>
             </View>
