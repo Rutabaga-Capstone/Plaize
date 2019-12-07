@@ -13,7 +13,9 @@ export default function TopNavigation() {
   const {leaves} = leavesReducer
 
   return (
-    <View style={{flex: 0.07, flexDirection: 'row', marginTop: 15}}>
+    <View
+      style={{flex: 0.07, flexDirection: 'row', marginTop: 15, zIndex: 1000}}
+    >
       <View
         style={{
           width: '33.3%',
