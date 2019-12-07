@@ -98,7 +98,7 @@ export default function SnapScreen() {
   }
 
   const onPictureSaved = photo => {
-    const ipAddressOfServer = '10.0.0.48' // <--- PUT YOUR OWN IP HERE
+    const ipAddressOfServer = '172.17.23.197' // <--- PUT YOUR OWN IP HERE
     const uriParts = photo.uri.split('.')
     const fileType = uriParts[uriParts.length - 1]
     let plantCopy
@@ -262,7 +262,7 @@ export default function SnapScreen() {
                   title={
                     <>
                       <Ionicons name="ios-leaf" color="#6CC7BD" size={25} />
-                      <Text> Welcome to Plaize </Text>
+                      <Text>       Welcome to Plaize      </Text>
                       <Ionicons name="ios-leaf" color="#6CC7BD" size={25} />
                     </>
                   }
@@ -282,7 +282,7 @@ export default function SnapScreen() {
             }
           >
             <ModalContent>
-              <Text> Let's jump right into it !</Text>
+              <Text>                                                              Let's jump right into it !</Text>
             </ModalContent>
           </Modal>
         </View>

@@ -35,6 +35,13 @@ class ProfileScreen extends React.Component {
         }
       })
       const {user} = result.data
+
+      // Quick fix for demo
+      // TODO: to be fixed properly
+      let currentDate = new Date()
+      let regDate = currentDate.getDate() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getFullYear()
+      user.regDate = regDate
+
       this.setState({user})
     } catch (err) {
       console.log(err)
@@ -72,6 +79,7 @@ class ProfileScreen extends React.Component {
     const {navigate} = this.props.navigation
     const {userPlants} = this.props.plantsReducer
     const {name, regDate, plants} = this.state.user
+
     const {leaves} = this.props.leavesReducer
     return (
       <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
@@ -143,7 +151,7 @@ class ProfileScreen extends React.Component {
 
             {/* Joined Plaze on JoinDate Row */}
             <Text style={styles.subtitle}>
-              Joined Plaze on {regDate && regDate.formatted.slice(0, 10)}
+              Joined Plaze on {regDate}
             </Text>
 
             <View
