@@ -12,6 +12,7 @@ import AppNavigator from './navigation/AppNavigator'
 
 const client = new ApolloClient({uri: 'http://172.17.23.197:1234/graphql'})
 
+
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false)
 

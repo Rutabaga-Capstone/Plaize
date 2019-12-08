@@ -130,14 +130,14 @@ export default function MapScreen(props) {
   }
 
   const distanceFromLocation = (pin, accuracy = 1) => {
-    // const distance = geolib.getDistance(
-    //   location.coords,
-    //   pin.coordinate,
-    //   accuracy
-    // )
-    // pin.distance = distance
-    // sortedPins.push(pin)
-    // return <Text>{distance.toString()} meters away</Text>
+    const distance = geolib.getDistance(
+      location.coords,
+      pin.coordinate,
+      accuracy
+    )
+    pin.distance = distance
+    sortedPins.push(pin)
+    return <Text>{distance.toString()} meters away</Text>
   }
 
   const sortPins = pinsToSort => {
@@ -197,7 +197,8 @@ export default function MapScreen(props) {
       <>
         <TopNavigation />
         <View>
-          {{location} && {pins} && (
+          {location &&
+            sortedPins && (
               <View>
                 <MapView
                   style={styles.mapStyle}
@@ -207,7 +208,7 @@ export default function MapScreen(props) {
                   zoomEnabled={true}
                   zoomTapEnabled={true}
                 >
-                  {pinsData.map((pin, i) => (
+                  {sortedPins.map((pin, i) => (
                     <Marker
                       key={i}
                       title={pin.title}
@@ -223,21 +224,18 @@ export default function MapScreen(props) {
                 </MapView>
               </View>
             )}
+          
           {!pinSelected.id &&
-            pins && (
+            sortedPins && (
               <ScrollView>
                 {sortedPins.sort().map((pin, i) => (
                   <ListItem
                     key={i}
                     title={pin.title}
-                    // subtitle={() => distanceFromLocation(pin)}
                     bottomDivider
                     badge={{
                       value: distanceFromLocation(pin),
                       textStyle: {color: 'white'},
-                      // containerStyle: {
-                      //   marginTop: -20
-                      // },
                       badgeStyle: {backgroundColor: '#6cc7bd'}
                     }}
                     onPress={() => handlePinItemOnPress(pin)}
@@ -254,13 +252,9 @@ export default function MapScreen(props) {
                 badge={{
                   value: distanceFromLocation(pinSelected),
                   textStyle: {color: 'white'},
-                  // containerStyle: {marginTop: -20},
                   badgeStyle: {backgroundColor: '#6cc7bd'}
                 }}
               />
-              {/*{pinSelected.plants.map((plant, i) => (
-              <Text key={i}>{plant.commonName}</Text>
-            ))*/}
             </ScrollView>
           )}
           {pinSelected.id && (
@@ -273,6 +267,7 @@ export default function MapScreen(props) {
     )
   }
 }
+
 
 MapScreen.navigationOptions = {
   header: null,

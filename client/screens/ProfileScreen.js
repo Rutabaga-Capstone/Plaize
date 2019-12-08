@@ -39,7 +39,12 @@ class ProfileScreen extends React.Component {
       // Quick fix for demo
       // TODO: to be fixed properly
       let currentDate = new Date()
-      let regDate = currentDate.getDate() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getFullYear()
+      let regDate =
+        currentDate.getDate() +
+        '-' +
+        (currentDate.getMonth() + 1) +
+        '-' +
+        currentDate.getFullYear()
       user.regDate = regDate
 
       this.setState({ user })
@@ -99,6 +104,66 @@ class ProfileScreen extends React.Component {
                 style={styles.welcomeImage}
               />
               <Text style={styles.title}>{name}</Text>
+            {/* Rank Level, Rank Number Container */}
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row'
+              }}
+            >
+              <Text
+                style={{
+                  width: '50%',
+                  height: 50,
+                  textAlign: 'right',
+                  fontSize: 24
+                }}
+              >
+                {this.getRankLevel(leaves)}
+              </Text>
+              <Text
+                style={{
+                  width: '5%',
+                  height: 50,
+                  textAlign: 'center',
+                  fontSize: 24,
+                  color: '#C7CAD4'
+                }}
+              >
+                •
+              </Text>
+              <Text
+                style={{
+                  width: '5%',
+                  height: 50,
+                  textAlign: 'center',
+                  fontSize: 24,
+                  color: '#C7CAD4'
+                }}
+              >
+                <Ionicons name="ios-leaf" color="#6CC7BD" size={25} />
+              </Text>
+              <Text
+                style={{
+                  width: '40%',
+                  height: 50,
+                  textAlign: 'left',
+                  fontSize: 24
+                }}
+              >
+                {leaves}
+              </Text>
+            </View>
+
+            {/* Joined Plaze on JoinDate Row */}
+            <Text style={styles.subtitle}>Joined Plaze on {regDate}</Text>
+
+            <View
+              style={{
+                flex: 1,
+                marginTop: -40
+              }}
+            />
 
               {/* Rank Level, Rank Number Container */}
               <View
@@ -285,6 +350,16 @@ function handleHelpPress() {
 }
 
 const styles = StyleSheet.create({
+  plantText: {
+    marginTop: 190,
+    fontFamily: 'yorkten',
+    fontSize: 18
+  },
+  fakeView: {
+    height: 58,
+    borderBottomColor: '#C7CAD4',
+    borderBottomWidth: 0.5
+  },
   heading: {
     textAlign: 'left',
     marginLeft: -60
