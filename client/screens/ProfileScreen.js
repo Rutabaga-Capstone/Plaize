@@ -35,6 +35,18 @@ class ProfileScreen extends React.Component {
         }
       })
       const {user} = result.data
+
+      // Quick fix for demo
+      // TODO: to be fixed properly
+      let currentDate = new Date()
+      let regDate =
+        currentDate.getDate() +
+        '-' +
+        (currentDate.getMonth() + 1) +
+        '-' +
+        currentDate.getFullYear()
+      user.regDate = regDate
+
       this.setState({user})
     } catch (err) {
       console.log(err)
@@ -72,11 +84,13 @@ class ProfileScreen extends React.Component {
     const {navigate} = this.props.navigation
     const {userPlants} = this.props.plantsReducer
     const {name, regDate, plants} = this.state.user
+
     const {leaves} = this.props.leavesReducer
     return (
       <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
           {/* Welcome Container */}
+          <View style={styles.fakeView} />
           <View style={styles.welcomeContainer}>
             <TopNavigation />
             <Image
@@ -140,9 +154,7 @@ class ProfileScreen extends React.Component {
             </View>
 
             {/* Joined Plaze on JoinDate Row */}
-            <Text style={styles.subtitle}>
-              Joined Plaze on {regDate && regDate.formatted.slice(0, 10)}
-            </Text>
+            <Text style={styles.subtitle}>Joined Plaze on {regDate}</Text>
 
             <View
               style={{
@@ -224,6 +236,7 @@ class ProfileScreen extends React.Component {
               </View>
               {/* End Row of 'Poisonous Plants Identified' IMAGES*/}
             </View>
+            <Text style={styles.plantText}>Poison Ivy</Text>
             {/* Plaze Map Container */}
           </View>
           {/* End Parent Container View */}
@@ -272,6 +285,16 @@ function handleHelpPress() {
 }
 
 const styles = StyleSheet.create({
+  plantText: {
+    marginTop: 190,
+    fontFamily: 'yorkten',
+    fontSize: 18
+  },
+  fakeView: {
+    height: 58,
+    borderBottomColor: '#C7CAD4',
+    borderBottomWidth: 0.5
+  },
   heading: {
     textAlign: 'left',
     marginLeft: -60

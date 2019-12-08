@@ -60,7 +60,8 @@ class PlantInfo extends React.Component {
 
     return (
       <View style={{alignSelf: 'stretch', flex: 1, marginTop: 0}}>
-        <TopNavigation {...this.props} />
+        <View style={styles.fakeView} />
+        <TopNavigation {...this.props} style={styles.topNavOnPlantInfo} />
         {/* START UPPER-RIGHT X */}
         <View style={{flex: 0.1, flexDirection: 'row', marginTop: -10}}>
           <View
@@ -101,7 +102,8 @@ class PlantInfo extends React.Component {
               style={{
                 width: 100,
                 height: 100,
-                marginBottom: 20
+                marginBottom: 20,
+                borderRadius: 50
               }}
               source={{uri: imageURL}}
             />
@@ -117,6 +119,12 @@ class PlantInfo extends React.Component {
             </Text>
             <Text>{description}</Text>
             <Text>{poisonous}</Text>
+            <Text style={styles.congratulations}>Congratulations!</Text>
+            <Text style={styles.congratsMessage}>
+              • You have identified your first plant!
+              {`\n \n`}• You have ranked up from Novice to Explorer!
+              {`\n \n`}• Increase your rank by earning more leaves
+            </Text>
           </View>
         </ScrollView>
       </View>
@@ -163,6 +171,25 @@ function handleHelpPress() {
 }
 
 const styles = StyleSheet.create({
+  congratulations: {
+    fontFamily: 'yorkten',
+    fontSize: 22,
+    color: '#6CC7BD',
+    textAlign: 'center'
+  },
+  congratsMessage: {
+    fontFamily: 'yorkten',
+    fontSize: 14,
+    color: '#000000',
+    marginTop: 15,
+    textAlign: 'left',
+    width: '100%'
+  },
+  fakeView: {
+    height: 88,
+    borderBottomColor: '#C7CAD4',
+    borderBottomWidth: 0.5
+  },
   heading: {
     textAlign: 'left',
     marginLeft: -60
@@ -171,7 +198,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'grey'
   },
   welcomeContainer: {
-    // marginTop: -300,
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 40,

@@ -27,7 +27,7 @@ let pinsState = {pins: []}
 const pinsReducer = (state = pinsState, action) => {
   switch (action.type) {
     case SET_PINS:
-      return {...state, pins: [...state.pins, action.pins]}
+      return {...state, pins: action.pins}
     case ADD_PIN:
       return {...state, pins: [...state.pins, action.pin]}
     default:
@@ -71,9 +71,9 @@ let pinCreatedState = {pinCreated: {}}
 const pinCreatedReducer = (state = pinCreatedState, action) => {
   switch (action.type) {
     case SET_PIN_CREATED:
-      return {...state, pinSelected: action.pinCreated}
+      return {...state, pinCreated: action.pinCreated}
     case CLEAR_PIN_CREATED:
-      return {...state, pinSelected: action.pinCreated}
+      return {...state, pinCreated: action.pinCreated}
     default:
       return state
   }
@@ -128,12 +128,12 @@ const userReducer = (state = userState, action) => {
   }
 }
 
-const leavesReducer = (state = {leaves: 112}, action) => {
+const leavesReducer = (state = {leaves: 0}, action) => {
   switch (action.type) {
     case GET_LEAVES:
       return state
     case SET_LEAVES:
-      return {leaves: state.leaves + Math.floor(Math.random() * 25)}
+      return {leaves: state.leaves + 25 /*Math.floor(Math.random())*/}
     default:
       return state
   }

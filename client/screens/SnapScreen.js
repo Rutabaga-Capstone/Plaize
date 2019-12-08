@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {Text, View, TouchableOpacity} from 'react-native'
+import {Text, View, TouchableOpacity, StyleSheet} from 'react-native'
 import * as Permissions from 'expo-permissions'
 import {Camera} from 'expo-camera'
 import * as FileSystem from 'expo-file-system'
@@ -31,24 +31,31 @@ import {useDispatch, useSelector} from 'react-redux'
 import * as Location from 'expo-location'
 import TopNavigation from '../components/TopNavigation'
 
+import Modal, {
+  ModalTitle,
+  ModalContent,
+  ModalFooter,
+  ModalButton
+} from 'react-native-modals'
+
 export default function SnapScreen(props) {
   // const {navigate} = props.navigation
   // props.navigation.navigate('PlantInfo')
-
+  const locationReducer = useSelector(state => state.locationReducer)
+  const {location} = locationReducer
   const [isPlantInfoReceived, setIsPlantInfoReceived] = useState(false)
+  const [isWelcomeModalVisible, setIsWelcomeModalVisible] = useState(true)
+
   const [hasCameraPermission, setHasCameraPermission] = useState('null')
   const client = useApolloClient()
   const [CreatePinPlant] = useMutation(CREATE_PIN_PLANT)
   const [AddPinPlantToUser] = useMutation(ADD_PIN_PLANT_TO_USER)
   const [UpdateUserLeaves] = useMutation(UPDATE_USER_LEAVES)
   const dispatch = useDispatch()
-  const pinSelected = useSelector(state => state.pinSelected)
+  // const pinSelected = useSelector(state => state.pinSelected)
   const pinCreated = useSelector(state => state.pinCreated)
 
   let camera = null
-
-  const locationReducer = useSelector(state => state.locationReducer)
-  const {location} = locationReducer
 
   useEffect(() => getLocation(), [])
   useEffect(() => {
@@ -108,12 +115,12 @@ export default function SnapScreen(props) {
       .post(`http://${ipAddressOfServer}:1234/image`, formData)
       .then(response => {
         console.log(response.data.commonName)
+
         // alert(
         //   `Plant identified: ${response.data.commonName} \n probability: ${
         //     response.data.score
         //   }`
         // )
-
         // if (response.data.score < 0.5) { throw(new Error) }
 
         /*
@@ -214,11 +221,12 @@ export default function SnapScreen(props) {
                   latitude: newpin.lat,
                   longitude: newpin.lng
                 }
-
+                console.log('newpin before dispatch actions:', newpin)
                 dispatch(addPin(newpin))
 
                 // This is still the then for the client.query for create pin plant
                 dispatch(setPinCreated(newpin))
+                dispatch(setPinSelected(newpin))
                 setIsPlantInfoReceived(true)
                 console.log('newpin.plants', newpin.plants)
                 props.navigation.navigate('PlantInfo', plantCopy)
@@ -247,7 +255,55 @@ export default function SnapScreen(props) {
   } else {
     return (
       <>
-        <TopNavigation {...this.props} />
+        <TopNavigation />
+        <View style={styles.container}>
+          <Modal
+            visible={isWelcomeModalVisible}
+            modalTitle={
+              <View style={{flexDirection: 'row'}}>
+                <ModalTitle
+                  title={
+                    <>
+                      <Ionicons
+                        name="ios-leaf"
+                        color="#6CC7BD"
+                        size={25}
+                        style={styles.leafIcon}
+                      />
+                      <Text> Welcome to Plaze </Text>
+                      <Ionicons name="ios-leaf" color="#6CC7BD" size={25} />
+                    </>
+                  }
+                />
+              </View>
+            }
+            width={0.7}
+            footer={
+              <ModalFooter>
+                <ModalButton
+                  text="OK"
+                  onPress={() => {
+                    setIsWelcomeModalVisible(false)
+                  }}
+                />
+              </ModalFooter>
+            }
+          >
+            <ModalContent>
+              <Text style={styles.welcomeMessage}>
+                {' '}
+                Earn leaves and help your community by identifying plants -
+                poisonous and otherwise.
+                {'\n \n'}
+                View the map to see poisonous plants that others have identified
+                near you.
+                {'\n \n'}
+                Check your profile to see all the plants you've found and your
+                current ranking!
+              </Text>
+            </ModalContent>
+          </Modal>
+        </View>
 
         <View style={{flex: 1, borderTopWidth: 0}}>
           <Camera
@@ -273,9 +329,10 @@ export default function SnapScreen(props) {
                 onPress={takePicture}
               >
                 <Ionicons
-                  name="md-camera"
-                  size={48}
-                  style={{marginBottom: 30}}
+                  name="md-radio-button-off"
+                  size={70}
+                  style={{marginBottom: 15}}
+                  color="white"
                 />
               </TouchableOpacity>
             </View>
@@ -300,3 +357,19 @@ const Container = styled.View`
   align-self: center;
   width: 80%;
 `
+
+const styles = StyleSheet.create({
+  leafIcon: {
+    transform: [{rotateY: '180deg'}]
+  },
+  container: {
+    flex: 1,
+    backgroundColor: 'transparent',
+    marginTop: 400,
+    marginLeft: 190,
+    position: 'absolute'
+  },
+  welcomeMessage: {
+    textAlign: 'center'
+  }
+})

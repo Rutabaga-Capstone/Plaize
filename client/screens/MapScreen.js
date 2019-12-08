@@ -8,12 +8,13 @@ import {
   // setLocation,
   setRegion,
   setPinSelected,
-  clearPinSelected
+  clearPinSelected,
+  clearPinCreated
   // openModal,
   // closeModal
 } from '../store/actions'
 
-import pinsData from '../store/pins' //fake data for now
+// import pinsData from '../store/pins' //fake data for now
 import PlantModal from '../components/PlantModal'
 
 import * as Permissions from 'expo-permissions'
@@ -74,13 +75,16 @@ export default function MapScreen(props) {
   const pinSelectedReducer = useSelector(state => state.pinSelectedReducer)
   const {pinSelected} = pinSelectedReducer
 
+  const pinCreatedReducer = useSelector(state => state.pinCreatedReducer)
+  const {pinCreated} = pinCreatedReducer
+
   // const modalActionReducer = useSelector(state => state.modalActionReducer)
   // const {modalAction} = modalActionReducer
 
   //==================================================================================================
 
   //2 - EFFECTS
-  // useEffect(() => getPins(), [pinCreated])
+  // useEffect(() => dispatch(pins), [pinCreated])
   // useEffect(() => getLocation(), [])
   useEffect(() => getRegion(), [])
   // useEffect(() => handleMarkerOnPress(), [])
@@ -90,6 +94,7 @@ export default function MapScreen(props) {
   //==================================================================================================
 
   //3 - GET DATA AND DISPATCH ACTIONS
+
   // const getPins = () => {
   //   setIsFetching(true)
   //   //OPTION 1 - LOCAL DATA from imported file
@@ -192,12 +197,13 @@ export default function MapScreen(props) {
       </View>
     )
   } else {
-    sortPins(pinsData)
+    sortedPins = sortPins(pins)
     return (
       <>
         <TopNavigation />
         <View>
-          {{location} && {pins} && (
+          {location &&
+            sortedPins && (
               <View>
                 <MapView
                   style={styles.mapStyle}
@@ -207,7 +213,7 @@ export default function MapScreen(props) {
                   zoomEnabled={true}
                   zoomTapEnabled={true}
                 >
-                  {pinsData.map((pin, i) => (
+                  {sortedPins.map((pin, i) => (
                     <Marker
                       key={i}
                       title={pin.title}
@@ -245,6 +251,24 @@ export default function MapScreen(props) {
                 ))}
               </ScrollView>
             )}
+          {!pinSelected.id &&
+            sortedPins && (
+              <ScrollView>
+                {sortedPins.sort().map((pin, i) => (
+                  <ListItem
+                    key={i}
+                    title={pin.title}
+                    bottomDivider
+                    badge={{
+                      value: distanceFromLocation(pin),
+                      textStyle: {color: 'white'},
+                      badgeStyle: {backgroundColor: '#6cc7bd'}
+                    }}
+                    onPress={() => handlePinItemOnPress(pin)}
+                  />
+                ))}
+              </ScrollView>
+            )}
           {pinSelected.id && (
             <ScrollView>
               <ListItem
@@ -254,13 +278,9 @@ export default function MapScreen(props) {
                 badge={{
                   value: distanceFromLocation(pinSelected),
                   textStyle: {color: 'white'},
-                  // containerStyle: {marginTop: -20},
                   badgeStyle: {backgroundColor: '#6cc7bd'}
                 }}
               />
-              {/*{pinSelected.plants.map((plant, i) => (
-              <Text key={i}>{plant.commonName}</Text>
-            ))*/}
             </ScrollView>
           )}
           {pinSelected.id && (
