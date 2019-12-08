@@ -23,7 +23,7 @@ export default function TopNavigation(props) {
   return (
     <View
       style={{
-        flex: 0.01,
+        flex: 0.07,
         flexDirection: 'row',
         marginTop: 15,
         zIndex: 1000,
@@ -45,7 +45,7 @@ export default function TopNavigation(props) {
         <TouchableOpacity onPress={logoutUser}>
           <SimpleLineIcons
             name="logout"
-            size={20}
+            size={25}
             color="#C7CAD4"
             style={{
               textAlign: 'left',
@@ -71,7 +71,7 @@ export default function TopNavigation(props) {
             textAlign: 'center',
             fontSize: 24,
             fontFamily: 'yorkten',
-            color: '#000000'
+            color: '#C7CAD4'
           }}
         >
           Plaze
@@ -93,7 +93,6 @@ export default function TopNavigation(props) {
           style={{
             textAlign: 'right',
             marginRight: 15,
-            color: '#C7CAD4'
           }}
         >
           <Ionicons
@@ -103,7 +102,7 @@ export default function TopNavigation(props) {
               color: '#6CC7BD'
             }}
           />
-            <Text>  </Text>{leaves}
+         {leaves}
         </Text>
       </View>
     </View>
