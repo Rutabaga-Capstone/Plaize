@@ -1,5 +1,5 @@
 import React from 'react'
-import {Image, TouchableHighlight} from 'react-native'
+import {Image, TouchableHighlight, Text} from 'react-native'
 import plants from './plants.json'
 
 const RenderImages = ({navigation}) => {
@@ -10,10 +10,12 @@ const RenderImages = ({navigation}) => {
         <TouchableHighlight key={i} onPress={() => navigate('PlantInfo', p)}>
           <Image
             style={{
-              width: 60,
-              height: 60,
+              width: 80,
+              height: 80,
               marginRight: 20,
-              marginBottom: 5
+              marginBottom: 5,
+              borderRadius: 40,
+              marginLeft: 20
             }}
             source={{uri: p.imageURL}}
           />

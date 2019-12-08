@@ -128,12 +128,12 @@ const userReducer = (state = userState, action) => {
   }
 }
 
-const leavesReducer = (state = {leaves: 112}, action) => {
+const leavesReducer = (state = {leaves: 0}, action) => {
   switch (action.type) {
     case GET_LEAVES:
       return state
     case SET_LEAVES:
-      return {leaves: state.leaves + Math.floor(Math.random() * 25)}
+      return {leaves: state.leaves + 25 /*Math.floor(Math.random())*/}
     default:
       return state
   }

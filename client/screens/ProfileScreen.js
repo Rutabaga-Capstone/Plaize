@@ -39,7 +39,12 @@ class ProfileScreen extends React.Component {
       // Quick fix for demo
       // TODO: to be fixed properly
       let currentDate = new Date()
-      let regDate = currentDate.getDate() + "-" + (currentDate.getMonth() + 1) + "-" + currentDate.getFullYear()
+      let regDate =
+        currentDate.getDate() +
+        '-' +
+        (currentDate.getMonth() + 1) +
+        '-' +
+        currentDate.getFullYear()
       user.regDate = regDate
 
       this.setState({user})
@@ -85,9 +90,9 @@ class ProfileScreen extends React.Component {
       <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
           {/* Welcome Container */}
+          <View style={styles.fakeView} />
           <View style={styles.welcomeContainer}>
             <TopNavigation />
-
             <Image
               source={
                 __DEV__
@@ -97,7 +102,6 @@ class ProfileScreen extends React.Component {
               style={styles.welcomeImage}
             />
             <Text style={styles.title}>{name}</Text>
-
             {/* Rank Level, Rank Number Container */}
             <View
               style={{
@@ -150,9 +154,7 @@ class ProfileScreen extends React.Component {
             </View>
 
             {/* Joined Plaze on JoinDate Row */}
-            <Text style={styles.subtitle}>
-              Joined Plaze on {regDate}
-            </Text>
+            <Text style={styles.subtitle}>Joined Plaze on {regDate}</Text>
 
             <View
               style={{
@@ -234,6 +236,7 @@ class ProfileScreen extends React.Component {
               </View>
               {/* End Row of 'Poisonous Plants Identified' IMAGES*/}
             </View>
+            <Text style={styles.plantText}>Poison Ivy</Text>
             {/* Plaze Map Container */}
           </View>
           {/* End Parent Container View */}
@@ -282,6 +285,16 @@ function handleHelpPress() {
 }
 
 const styles = StyleSheet.create({
+  plantText: {
+    marginTop: 190,
+    fontFamily: 'yorkten',
+    fontSize: 18
+  },
+  fakeView: {
+    height: 58,
+    borderBottomColor: '#C7CAD4',
+    borderBottomWidth: 0.5
+  },
   heading: {
     textAlign: 'left',
     marginLeft: -60

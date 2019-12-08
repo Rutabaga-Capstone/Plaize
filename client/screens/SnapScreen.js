@@ -38,7 +38,6 @@ import Modal, {
   ModalButton
 } from 'react-native-modals'
 
-
 export default function SnapScreen(props) {
   // const {navigate} = props.navigation
   // props.navigation.navigate('PlantInfo')
@@ -116,11 +115,12 @@ export default function SnapScreen(props) {
       .post(`http://${ipAddressOfServer}:1234/image`, formData)
       .then(response => {
         console.log(response.data.commonName)
-        alert(
-          `Plant identified: ${response.data.commonName} \n probability: ${
-            response.data.score
-          }`
-        )
+
+        // alert(
+        //   `Plant identified: ${response.data.commonName} \n probability: ${
+        //     response.data.score
+        //   }`
+        // )
         // if (response.data.score < 0.5) { throw(new Error) }
 
         /*
@@ -229,7 +229,7 @@ export default function SnapScreen(props) {
                 dispatch(setPinSelected(newpin))
                 setIsPlantInfoReceived(true)
                 console.log('newpin.plants', newpin.plants)
-                props.navigation.navigate('Map')
+                props.navigation.navigate('PlantInfo', plantCopy)
               })
               .catch(() => {
                 // this is the catch for create pin plant
@@ -264,8 +264,13 @@ export default function SnapScreen(props) {
                 <ModalTitle
                   title={
                     <>
-                      <Ionicons name="ios-leaf" color="#6CC7BD" size={25} />
-                      <Text>       Welcome to Plaize      </Text>
+                      <Ionicons
+                        name="ios-leaf"
+                        color="#6CC7BD"
+                        size={25}
+                        style={styles.leafIcon}
+                      />
+                      <Text> Welcome to Plaze </Text>
                       <Ionicons name="ios-leaf" color="#6CC7BD" size={25} />
                     </>
                   }
@@ -285,7 +290,17 @@ export default function SnapScreen(props) {
             }
           >
             <ModalContent>
-              <Text>                                                              Let's jump right into it !</Text>
+              <Text style={styles.welcomeMessage}>
+                {' '}
+                Earn leaves and help your community by identifying plants -
+                poisonous and otherwise.
+                {'\n \n'}
+                View the map to see poisonous plants that others have identified
+                near you.
+                {'\n \n'}
+                Check your profile to see all the plants you've found and your
+                current ranking!
+              </Text>
             </ModalContent>
           </Modal>
         </View>
@@ -316,8 +331,8 @@ export default function SnapScreen(props) {
                 <Ionicons
                   name="md-radio-button-off"
                   size={70}
-                  style={{marginBottom: 40}}
-                  color='white'
+                  style={{marginBottom: 15}}
+                  color="white"
                 />
               </TouchableOpacity>
             </View>
@@ -349,11 +364,17 @@ const Container = styled.View`
 `
 
 const styles = StyleSheet.create({
+  leafIcon: {
+    transform: [{rotateY: '180deg'}]
+  },
   container: {
     flex: 1,
     backgroundColor: 'transparent',
     marginTop: 400,
     marginLeft: 190,
     position: 'absolute'
+  },
+  welcomeMessage: {
+    textAlign: 'center'
   }
 })
