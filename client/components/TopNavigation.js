@@ -92,7 +92,7 @@ export default function TopNavigation(props) {
         <Text
           style={{
             textAlign: 'right',
-            marginRight: 15
+            marginRight: 15,
           }}
         >
           <Ionicons
@@ -102,7 +102,7 @@ export default function TopNavigation(props) {
               color: '#6CC7BD'
             }}
           />
-          {leaves}
+         {leaves}
         </Text>
       </View>
     </View>

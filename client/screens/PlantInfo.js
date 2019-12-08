@@ -60,8 +60,10 @@ class PlantInfo extends React.Component {
 
     return (
       <View style={{alignSelf: 'stretch', flex: 1, marginTop: 0}}>
+
         <View style={styles.fakeView} />
         <TopNavigation {...this.props} style={styles.topNavOnPlantInfo} />
+
         {/* START UPPER-RIGHT X */}
         <View style={{flex: 0.1, flexDirection: 'row', marginTop: -10}}>
           <View

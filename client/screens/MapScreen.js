@@ -8,13 +8,12 @@ import {
   // setLocation,
   setRegion,
   setPinSelected,
-  clearPinSelected,
-  clearPinCreated
+  clearPinSelected
   // openModal,
   // closeModal
 } from '../store/actions'
 
-// import pinsData from '../store/pins' //fake data for now
+//import pinsData from '../store/pins' //fake data for now
 import PlantModal from '../components/PlantModal'
 
 import * as Permissions from 'expo-permissions'
@@ -75,16 +74,13 @@ export default function MapScreen(props) {
   const pinSelectedReducer = useSelector(state => state.pinSelectedReducer)
   const {pinSelected} = pinSelectedReducer
 
-  const pinCreatedReducer = useSelector(state => state.pinCreatedReducer)
-  const {pinCreated} = pinCreatedReducer
-
   // const modalActionReducer = useSelector(state => state.modalActionReducer)
   // const {modalAction} = modalActionReducer
 
   //==================================================================================================
 
   //2 - EFFECTS
-  // useEffect(() => dispatch(pins), [pinCreated])
+  // useEffect(() => getPins(), [pinCreated])
   // useEffect(() => getLocation(), [])
   useEffect(() => getRegion(), [])
   // useEffect(() => handleMarkerOnPress(), [])
@@ -94,7 +90,6 @@ export default function MapScreen(props) {
   //==================================================================================================
 
   //3 - GET DATA AND DISPATCH ACTIONS
-
   // const getPins = () => {
   //   setIsFetching(true)
   //   //OPTION 1 - LOCAL DATA from imported file
@@ -135,14 +130,14 @@ export default function MapScreen(props) {
   }
 
   const distanceFromLocation = (pin, accuracy = 1) => {
-    // const distance = geolib.getDistance(
-    //   location.coords,
-    //   pin.coordinate,
-    //   accuracy
-    // )
-    // pin.distance = distance
-    // sortedPins.push(pin)
-    // return <Text>{distance.toString()} meters away</Text>
+//     const distance = geolib.getDistance(
+//       location.coords,
+//       pin.coordinate,
+//       accuracy
+//     )
+//     pin.distance = distance
+//     sortedPins.push(pin)
+//     return <Text>{distance.toString()} meters away</Text>
   }
 
   const sortPins = pinsToSort => {
@@ -229,28 +224,7 @@ export default function MapScreen(props) {
                 </MapView>
               </View>
             )}
-          {!pinSelected.id &&
-            pins && (
-              <ScrollView>
-                {sortedPins.sort().map((pin, i) => (
-                  <ListItem
-                    key={i}
-                    title={pin.title}
-                    // subtitle={() => distanceFromLocation(pin)}
-                    bottomDivider
-                    badge={{
-                      value: distanceFromLocation(pin),
-                      textStyle: {color: 'white'},
-                      // containerStyle: {
-                      //   marginTop: -20
-                      // },
-                      badgeStyle: {backgroundColor: '#6cc7bd'}
-                    }}
-                    onPress={() => handlePinItemOnPress(pin)}
-                  />
-                ))}
-              </ScrollView>
-            )}
+          
           {!pinSelected.id &&
             sortedPins && (
               <ScrollView>
