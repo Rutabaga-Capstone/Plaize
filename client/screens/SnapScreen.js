@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react'
-import {Text, View, TouchableOpacity, StyleSheet} from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { Text, View, TouchableOpacity, StyleSheet, StatusBar } from 'react-native'
 import * as Permissions from 'expo-permissions'
-import {Camera} from 'expo-camera'
+import { Camera } from 'expo-camera'
 import * as FileSystem from 'expo-file-system'
 import axios from 'axios'
-import {Ionicons, SimpleLineIcons} from '@expo/vector-icons'
+import { Ionicons, SimpleLineIcons } from '@expo/vector-icons'
 import PlantModal from '../components/PlantModal'
-import {useMutation, useApolloClient} from '@apollo/react-hooks'
+import { useMutation, useApolloClient } from '@apollo/react-hooks'
 import {
   CREATE_PIN_PLANT,
   ADD_PIN_PLANT_TO_USER,
@@ -27,7 +27,7 @@ import {
   addPin,
   setLeaves
 } from '../store/actions'
-import {useDispatch, useSelector} from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import * as Location from 'expo-location'
 import TopNavigation from '../components/TopNavigation'
 
@@ -43,7 +43,7 @@ export default function SnapScreen(props) {
   // const {navigate} = props.navigation
   // props.navigation.navigate('PlantInfo')
   const locationReducer = useSelector(state => state.locationReducer)
-  const {location} = locationReducer
+  const { location } = locationReducer
   const [isPlantInfoReceived, setIsPlantInfoReceived] = useState(false)
   const [isWelcomeModalVisible, setIsWelcomeModalVisible] = useState(true)
 
@@ -61,7 +61,7 @@ export default function SnapScreen(props) {
   useEffect(() => getLocation(), [])
   useEffect(() => {
     async function startUp() {
-      const {status} = await Permissions.askAsync(Permissions.CAMERA)
+      const { status } = await Permissions.askAsync(Permissions.CAMERA)
       setHasCameraPermission('granted')
       FileSystem.makeDirectoryAsync(FileSystem.cacheDirectory + 'photos').catch(
         e => {
@@ -74,7 +74,7 @@ export default function SnapScreen(props) {
 
   const fetchLocationAsync = async () => {
     try {
-      let {status} = await Permissions.askAsync(Permissions.LOCATION)
+      let { status } = await Permissions.askAsync(Permissions.LOCATION)
       if (status !== 'granted') {
         let errorMessage = 'Permission to access location was denied'
         console.log(errorMessage)
@@ -91,11 +91,11 @@ export default function SnapScreen(props) {
   }
   const takePicture = () => {
     if (camera) {
-      camera.takePictureAsync({onPictureSaved})
+      camera.takePictureAsync({ onPictureSaved })
     }
   }
 
-  const buttonCallback = function() {
+  const buttonCallback = function () {
     setIsPlantInfoReceived(false)
   }
 
@@ -256,12 +256,13 @@ export default function SnapScreen(props) {
   } else {
     return (
       <>
-        <TopNavigation {...this.props} />
+        <StatusBar hidden={true} />
+        <TopNavigation />
         <View style={styles.container}>
           <Modal
             visible={isWelcomeModalVisible}
             modalTitle={
-              <View style={{flexDirection: 'row'}}>
+              <View style={{ flexDirection: 'row' }}>
                 <ModalTitle
                   title={
                     <>
@@ -291,50 +292,54 @@ export default function SnapScreen(props) {
           </Modal>
         </View>
 
-        <View style={{flex: 1, borderTopWidth: 0}}>
-          <Camera
-            ref={ref => {
-              camera = ref
+        <Camera
+          ref={ref => {
+            camera = ref
+          }}
+          style={{ flex: 1, borderTopWidth: 0 }}
+          type={Camera.Constants.Type.back}
+        >
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: 'transparent',
+              flexDirection: 'row'
             }}
-            style={{flex: 1, borderTopWidth: 0}}
-            type={Camera.Constants.Type.back}
           >
-            <View
+            <TouchableOpacity
               style={{
                 flex: 1,
-                backgroundColor: 'transparent',
-                flexDirection: 'row'
+                alignSelf: 'flex-end',
+                alignItems: 'center'
               }}
+              onPress={takePicture}
             >
-              <TouchableOpacity
-                style={{
-                  flex: 1,
-                  alignSelf: 'flex-end',
-                  alignItems: 'center'
-                }}
-                onPress={takePicture}
-              >
-                <Ionicons
-                  name="md-radio-button-off"
-                  size={70}
-                  style={{marginBottom: 40}}
-                  color='white'
-                />
-              </TouchableOpacity>
-            </View>
-          </Camera>
+              <Ionicons
+                name="md-radio-button-off"
+                size={70}
+                style={{ marginBottom: 40 }}
+                color='white'
+              />
+            </TouchableOpacity>
+          </View>
+        </Camera>
 
-          {isPlantInfoReceived &&
-            pinCreated && (
-              <Container>
-                <PlantModal disableModalCallback={buttonCallback} />
-              </Container>
-            )}
-        </View>
+        {isPlantInfoReceived &&
+          pinCreated && (
+            <Container>
+              <PlantModal disableModalCallback={buttonCallback} />
+            </Container>
+          )}
       </>
     )
   }
 }
+
+SnapScreen.navigationOptions = {
+  header: null,
+};
+
+
 
 const Container = styled.View`
   position: absolute;
@@ -346,7 +351,6 @@ const Container = styled.View`
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: 'transparent',
     marginTop: 400,
     marginLeft: 190,
