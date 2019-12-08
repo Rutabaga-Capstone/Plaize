@@ -268,6 +268,12 @@ export default function MapScreen(props) {
   }
 }
 
+
+MapScreen.navigationOptions = {
+  header: null,
+};
+
+
 //==================================================================================================
 
 //5 - STYLING
