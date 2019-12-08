@@ -13,7 +13,7 @@ import {
   // closeModal
 } from '../store/actions'
 
-import pinsData from '../store/pins' //fake data for now
+//import pinsData from '../store/pins' //fake data for now
 import PlantModal from '../components/PlantModal'
 
 import * as Permissions from 'expo-permissions'
@@ -130,14 +130,14 @@ export default function MapScreen(props) {
   }
 
   const distanceFromLocation = (pin, accuracy = 1) => {
-    const distance = geolib.getDistance(
-      location.coords,
-      pin.coordinate,
-      accuracy
-    )
-    pin.distance = distance
-    sortedPins.push(pin)
-    return <Text>{distance.toString()} meters away</Text>
+//     const distance = geolib.getDistance(
+//       location.coords,
+//       pin.coordinate,
+//       accuracy
+//     )
+//     pin.distance = distance
+//     sortedPins.push(pin)
+//     return <Text>{distance.toString()} meters away</Text>
   }
 
   const sortPins = pinsToSort => {
@@ -192,7 +192,7 @@ export default function MapScreen(props) {
       </View>
     )
   } else {
-    sortPins(pinsData)
+    sortedPins = sortPins(pins)
     return (
       <>
         <TopNavigation />
