@@ -166,7 +166,6 @@ class ProfileScreen extends React.Component {
             <View
               style={{
                 flex: 1,
-                flexDirection: 'col',
                 justifyContent: 'space-between'
               }}
             >
@@ -174,7 +173,6 @@ class ProfileScreen extends React.Component {
               <View
                 style={{
                   flex: 1,
-                  //flexDirection: 'col'
                   marginBottom: 20
                 }}
               >
@@ -218,7 +216,6 @@ class ProfileScreen extends React.Component {
                 <View
                   style={{
                     flex: 1,
-                    //flexDirection: 'col',
                     flexWrap: 'wrap'
                   }}
                 >
