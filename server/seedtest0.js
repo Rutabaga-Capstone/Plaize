@@ -10,8 +10,7 @@ client
     mutation: gql`
       mutation {
         u1: CreateUser(
-          id: 79
-
+          id: 17
           name: "Randy"
           email: "randydxp@gmail.com"
           password: "1234"
@@ -24,7 +23,7 @@ client
           leaves
         }
         u2: CreateUser(
-          id: 55
+          id: 24
           name: "Fernando"
           email: "fer@innovaresip.com"
           password: "1234"
@@ -37,7 +36,7 @@ client
           leaves
         }
         u3: CreateUser(
-          id: 41
+          id: 8
           name: "Sean"
           email: "gatewaywebdesign18@gmail.com"
           password: "1234"
@@ -50,7 +49,7 @@ client
           leaves
         }
         u4: CreateUser(
-          id: 28
+          id: 4
           name: "Pawel"
           email: "pawel3ala@gmail.com"
           password: "1234"
@@ -63,7 +62,7 @@ client
           leaves
         }
         u5: CreateUser(
-          id: 62
+          id: 1
           name: "cc"
           email: "cc"
           password: "cc"
@@ -76,7 +75,7 @@ client
           leaves
         }
         p1: CreatePlant(
-          id: 38
+          id: 12
           commonName: "Poison Ivy"
           scientificName: "Toxicodendron radicans"
           imageURL: "https://www.petguide.com/wp-content/uploads/2019/03/poison-ivy-dogs-668x444.jpg"
@@ -91,7 +90,7 @@ client
           isPoisonous
         }
         p2: CreatePlant(
-          id: 57
+          id: 24
           commonName: "Poison Oak"
           scientificName: "Toxicodendron diversilobum"
           imageURL: "http://nativeplantspnw.com/wp-content/uploads/2017/01/Poison-Oak-624x470.png"
@@ -106,7 +105,7 @@ client
           isPoisonous
         }
         p3: CreatePlant(
-          id: 99
+          id: 23
           commonName: "Poison Sumac"
           scientificName: "Toxicodendron diversilobum"
           imageURL: "https://cdn.britannica.com/50/198250-050-2D0D4360/Poison-sumac-Massachusetts.jpg"
@@ -121,7 +120,7 @@ client
           isPoisonous
         }
         p4: CreatePlant(
-          id: 100
+          id: 12
           commonName: "Fly Agaric"
           scientificName: "Amanita Muscaria"
           imageURL: "https://cdn.britannica.com/50/198250-050-2D0D4360/Poison-sumac-Massachusetts.jpg"
@@ -136,7 +135,7 @@ client
           isPoisonous
         }
         p5: CreatePlant(
-          id: 45
+          id: 24
           commonName: "Locoweed"
           scientificName: "Oxytropis"
           imageURL: "https://www.aspca.org/sites/default/files/styles/medium_image_300x200/public/field/image/plants/loco-weed-r.jpg?itok=vq-D8CBK"
@@ -151,7 +150,7 @@ client
           isPoisonous
         }
         p6: CreatePlant(
-          id: 96
+          id: 6
           commonName: "Morning Glory"
           scientificName: "Oxytropis"
           imageURL: "https://smhttp-ssl-17653.nexcesscdn.net/media/catalog/product/cache/1/thumbnail/9df78eab33525d08d6e5fb8d27136e95/m/o/morn-glory-mailbox.jpg"
@@ -165,7 +164,206 @@ client
           description
           isPoisonous
         }
+        pin1: CreatePin(id: 3, lat: 41.895506, lng: -87.639014) {
+          id
+          lat
+          lng
+        }
+        pin2: CreatePin(id: 5, lat: 41.896461, lng: -87.641228) {
+          id
+          lat
+          lng
+        }
+        pin3: CreatePin(id: 2, lat: 41.895506, lng: -87.639014) {
+          id
+          lat
+          lng
+        }
+        pin4: CreatePin(id: 4, lat: 41.895060, lng: -87.639914) {
+          id
+          lat
+          lng
+        }
+        pin5: CreatePin(id: 16, lat: 41.897461, lng: -87.641328) {
+          id
+          lat
+          lng
+        }
+        pin6: CreatePin(id: 25, lat: 41.896506, lng: -87.632014) {
+          id
+          lat
+          lng
+        }
+        up1: AddUserPlants(from: {id: 22}, to: {id: 24}) {
+          from {
+            name
+          }
+          to {
+            commonName
+            description
+          }
+        }
+        upin1: AddUserPins(from: {id: 15}, to: {id: 24}) {
+          from {
+            name
+          }
+          to {
+            lat
+            lng
+          }
+        }
+        pp1: AddPinPlants(from: {id: 18}, to: {id: 7}) {
+          from {
+            lat
+            lng
+          }
+          to {
+            commonName
+            description
+          }
+        }
+        up2: AddUserPlants(from: {id: 24}, to: {id: 5}) {
+          from {
+            name
+          }
+          to {
+            commonName
+            description
+          }
+        }
+        upin2: AddUserPins(from: {id: 18}, to: {id: 13}) {
+          from {
+            name
+          }
+          to {
+            lat
+            lng
+          }
+        }
+        pp2: AddPinPlants(from: {id: 13}, to: {id: 12}) {
+          from {
+            lat
+            lng
+          }
+          to {
+            commonName
+            description
+          }
+        }
+        up3: AddUserPlants(from: {id: 11}, to: {id: 8}) {
+          from {
+            name
+          }
+          to {
+            commonName
+            description
+          }
+        }
+        upin3: AddUserPins(from: {id: 1}, to: {id: 5}) {
+          from {
+            name
+          }
+          to {
+            lat
+            lng
+          }
+        }
+        pp3: AddPinPlants(from: {id: 12}, to: {id: 10}) {
+          from {
+            lat
+            lng
+          }
+          to {
+            commonName
+            description
+          }
+        }
+        up4: AddUserPlants(from: {id: 6}, to: {id: 15}) {
+          from {
+            name
+          }
+          to {
+            commonName
+            description
+          }
+        }
+        upin4: AddUserPins(from: {id: 11}, to: {id: 13}) {
+          from {
+            name
+          }
+          to {
+            lat
+            lng
+          }
+        }
+        pp4: AddPinPlants(from: {id: 11}, to: {id: 9}) {
+          from {
+            lat
+            lng
+          }
+          to {
+            commonName
+            description
+          }
+        }
+        up5: AddUserPlants(from: {id: 12}, to: {id: 21}) {
+          from {
+            name
+          }
+          to {
+            commonName
+            description
+          }
+        }
+        upin5: AddUserPins(from: {id: 3}, to: {id: 22}) {
+          from {
+            name
+          }
+          to {
+            lat
+            lng
+          }
+        }
+        pp5: AddPinPlants(from: {id: 1}, to: {id: 21}) {
+          from {
+            lat
+            lng
+          }
+          to {
+            commonName
+            description
+          }
+        }
+        up6: AddUserPlants(from: {id: 20}, to: {id: 24}) {
+          from {
+            name
+          }
+          to {
+            commonName
+            description
+          }
+        }
+        upin6: AddUserPins(from: {id: 10}, to: {id: 4}) {
+          from {
+            name
+          }
+          to {
+            lat
+            lng
+          }
+        }
+        pp6: AddPinPlants(from: {id: 4}, to: {id: 6}) {
+          from {
+            lat
+            lng
+          }
+          to {
+            commonName
+            description
+          }
+        }
       }
     `
   })
   .then(() => console.log('Done seeding the DB!!!'))
+  .catch(error => console.error(error))

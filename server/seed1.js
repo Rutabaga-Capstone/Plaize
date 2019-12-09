@@ -1,19 +1,17 @@
 const ApolloClient = require('apollo-boost').default
 const gql = require('graphql-tag')
 const fetch = require('node-fetch')
-
 const client = new ApolloClient({
   uri: 'http://localhost:1234/graphql',
   fetch
 })
-
 client
   .mutate({
     mutation: gql`
       mutation {
         u1: CreateUser(
-          id: 11
-          name: "Jerry"
+          id: 7
+          name: "Randy"
           email: "randydxp@gmail.com"
           password: "1234"
           leaves: 0
@@ -25,8 +23,8 @@ client
           leaves
         }
         u2: CreateUser(
-          id: 12
-          name: "Perry"
+          id: 5
+          name: "Fernando"
           email: "fer@innovaresip.com"
           password: "1234"
           leaves: 0
@@ -38,8 +36,8 @@ client
           leaves
         }
         u3: CreateUser(
-          id: 13
-          name: "Terry"
+          id: 9
+          name: "Sean"
           email: "gatewaywebdesign18@gmail.com"
           password: "1234"
           leaves: 0
@@ -51,8 +49,8 @@ client
           leaves
         }
         u4: CreateUser(
-          id: 14
-          name: "Larry"
+          id: 2
+          name: "Pawel"
           email: "pawel3ala@gmail.com"
           password: "1234"
           leaves: 0
@@ -64,8 +62,8 @@ client
           leaves
         }
         u5: CreateUser(
-          id: 15
-          name: "Mary"
+          id: 8
+          name: "cc"
           email: "cc"
           password: "cc"
           leaves: 0
@@ -77,7 +75,7 @@ client
           leaves
         }
         p1: CreatePlant(
-          id: 13
+          id: 19
           commonName: "Poison Ivy"
           scientificName: "Toxicodendron radicans"
           imageURL: "https://www.petguide.com/wp-content/uploads/2019/03/poison-ivy-dogs-668x444.jpg"
@@ -92,7 +90,7 @@ client
           isPoisonous
         }
         p2: CreatePlant(
-          id: 14
+          id: 23
           commonName: "Poison Oak"
           scientificName: "Toxicodendron diversilobum"
           imageURL: "http://nativeplantspnw.com/wp-content/uploads/2017/01/Poison-Oak-624x470.png"
@@ -107,7 +105,7 @@ client
           isPoisonous
         }
         p3: CreatePlant(
-          id: 15
+          id: 25
           commonName: "Poison Sumac"
           scientificName: "Toxicodendron diversilobum"
           imageURL: "https://cdn.britannica.com/50/198250-050-2D0D4360/Poison-sumac-Massachusetts.jpg"
@@ -122,7 +120,7 @@ client
           isPoisonous
         }
         p4: CreatePlant(
-          id: 16
+          id: 18
           commonName: "Fly Agaric"
           scientificName: "Amanita Muscaria"
           imageURL: "https://cdn.britannica.com/50/198250-050-2D0D4360/Poison-sumac-Massachusetts.jpg"
@@ -137,7 +135,7 @@ client
           isPoisonous
         }
         p5: CreatePlant(
-          id: 17
+          id: 18
           commonName: "Locoweed"
           scientificName: "Oxytropis"
           imageURL: "https://www.aspca.org/sites/default/files/styles/medium_image_300x200/public/field/image/plants/loco-weed-r.jpg?itok=vq-D8CBK"
@@ -166,37 +164,37 @@ client
           description
           isPoisonous
         }
-        pin1: CreatePin(id: 13, lat: 41.895506, lng: -87.639014) {
+        pin1: CreatePin(id: 7, lat: 41.895506, lng: -87.639014) {
           id
           lat
           lng
         }
-        pin2: CreatePin(id: 14, lat: 41.896461, lng: -87.641228) {
+        pin2: CreatePin(id: 7, lat: 41.896461, lng: -87.641228) {
           id
           lat
           lng
         }
-        pin3: CreatePin(id: 15, lat: 41.895506, lng: -87.639014) {
+        pin3: CreatePin(id: 25, lat: 41.895506, lng: -87.639014) {
           id
           lat
           lng
         }
-        pin4: CreatePin(id: 16, lat: 41.895060, lng: -87.639914) {
+        pin4: CreatePin(id: 8, lat: 41.895060, lng: -87.639914) {
           id
           lat
           lng
         }
-        pin5: CreatePin(id: 17, lat: 41.897461, lng: -87.641328) {
+        pin5: CreatePin(id: 5, lat: 41.897461, lng: -87.641328) {
           id
           lat
           lng
         }
-        pin6: CreatePin(id: 18, lat: 41.896506, lng: -87.632014) {
+        pin6: CreatePin(id: 24, lat: 41.896506, lng: -87.632014) {
           id
           lat
           lng
         }
-        up1: AddUserPlants(from: {id: 12}, to: {id: 12}) {
+        up1: AddUserPlants(from: {id: 17}, to: {id: 20}) {
           from {
             name
           }
@@ -205,7 +203,7 @@ client
             description
           }
         }
-        upin1: AddUserPins(from: {id: 13}, to: {id: 13}) {
+        upin1: AddUserPins(from: {id: 3}, to: {id: 3}) {
           from {
             name
           }
@@ -214,35 +212,7 @@ client
             lng
           }
         }
-        pp1: AddPinPlants(from: {id: 15}, to: {id: 16}) {
-          from {
-            lat
-            lng
-          }
-          to {
-            commonName
-            description
-          }
-        }
-        up2: AddUserPlants(from: {id: 15}, to: {id: 18}) {
-          from {
-            name
-          }
-          to {
-            commonName
-            description
-          }
-        }
-        upin2: AddUserPins(from: {id: 15}, to: {id: 16}) {
-          from {
-            name
-          }
-          to {
-            lat
-            lng
-          }
-        }
-        pp2: AddPinPlants(from: {id: 17}, to: {id: 17}) {
+        pp1: AddPinPlants(from: {id: 2}, to: {id: 7}) {
           from {
             lat
             lng
@@ -252,7 +222,7 @@ client
             description
           }
         }
-        up3: AddUserPlants(from: {id: 11}, to: {id: 15}) {
+        up2: AddUserPlants(from: {id: 20}, to: {id: 24}) {
           from {
             name
           }
@@ -261,7 +231,7 @@ client
             description
           }
         }
-        upin3: AddUserPins(from: {id: 12}, to: {id: 14}) {
+        upin2: AddUserPins(from: {id: 25}, to: {id: 6}) {
           from {
             name
           }
@@ -270,35 +240,7 @@ client
             lng
           }
         }
-        pp3: AddPinPlants(from: {id: 18}, to: {id: 18}) {
-          from {
-            lat
-            lng
-          }
-          to {
-            commonName
-            description
-          }
-        }
-        up4: AddUserPlants(from: {id: 4}, to: {id: 18}) {
-          from {
-            name
-          }
-          to {
-            commonName
-            description
-          }
-        }
-        upin4: AddUserPins(from: {id: 6}, to: {id: 15}) {
-          from {
-            name
-          }
-          to {
-            lat
-            lng
-          }
-        }
-        pp4: AddPinPlants(from: {id: 17}, to: {id: 16}) {
+        pp2: AddPinPlants(from: {id: 12}, to: {id: 2}) {
           from {
             lat
             lng
@@ -308,7 +250,7 @@ client
             description
           }
         }
-        up5: AddUserPlants(from: {id: 7}, to: {id: 10}) {
+        up3: AddUserPlants(from: {id: 2}, to: {id: 15}) {
           from {
             name
           }
@@ -317,7 +259,7 @@ client
             description
           }
         }
-        upin5: AddUserPins(from: {id: 11}, to: {id: 12}) {
+        upin3: AddUserPins(from: {id: 13}, to: {id: 21}) {
           from {
             name
           }
@@ -326,7 +268,7 @@ client
             lng
           }
         }
-        pp5: AddPinPlants(from: {id: 12}, to: {id: 14}) {
+        pp3: AddPinPlants(from: {id: 7}, to: {id: 21}) {
           from {
             lat
             lng
@@ -336,7 +278,7 @@ client
             description
           }
         }
-        up6: AddUserPlants(from: {id: 14}, to: {id: 14}) {
+        up4: AddUserPlants(from: {id: 16}, to: {id: 5}) {
           from {
             name
           }
@@ -345,7 +287,7 @@ client
             description
           }
         }
-        upin6: AddUserPins(from: {id: 14}, to: {id: 14}) {
+        upin4: AddUserPins(from: {id: 9}, to: {id: 9}) {
           from {
             name
           }
@@ -354,7 +296,63 @@ client
             lng
           }
         }
-        pp6: AddPinPlants(from: {id: 16}, to: {id: 15}) {
+        pp4: AddPinPlants(from: {id: 3}, to: {id: 19}) {
+          from {
+            lat
+            lng
+          }
+          to {
+            commonName
+            description
+          }
+        }
+        up5: AddUserPlants(from: {id: 20}, to: {id: 12}) {
+          from {
+            name
+          }
+          to {
+            commonName
+            description
+          }
+        }
+        upin5: AddUserPins(from: {id: 21}, to: {id: 6}) {
+          from {
+            name
+          }
+          to {
+            lat
+            lng
+          }
+        }
+        pp5: AddPinPlants(from: {id: 6}, to: {id: 10}) {
+          from {
+            lat
+            lng
+          }
+          to {
+            commonName
+            description
+          }
+        }
+        up6: AddUserPlants(from: {id: 16}, to: {id: 7}) {
+          from {
+            name
+          }
+          to {
+            commonName
+            description
+          }
+        }
+        upin6: AddUserPins(from: {id: 23}, to: {id: 22}) {
+          from {
+            name
+          }
+          to {
+            lat
+            lng
+          }
+        }
+        pp6: AddPinPlants(from: {id: 22}, to: {id: 21}) {
           from {
             lat
             lng

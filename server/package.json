@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "seed": "node seed.js seed0.js seed1.js"
+    "seed": "node seed.js seed0.js seed1.js seed2.js seed3.js seed4.js"
   },
   "author": "",
   "license": "ISC"
