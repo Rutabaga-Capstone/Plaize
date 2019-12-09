@@ -130,14 +130,14 @@ export default function MapScreen(props) {
   }
 
   const distanceFromLocation = (pin, accuracy = 1) => {
-//     const distance = geolib.getDistance(
-//       location.coords,
-//       pin.coordinate,
-//       accuracy
-//     )
-//     pin.distance = distance
-//     sortedPins.push(pin)
-//     return <Text>{distance.toString()} meters away</Text>
+    const distance = geolib.getDistance(
+      location.coords,
+      pin.coordinate,
+      accuracy
+    )
+    pin.distance = distance
+    sortedPins.push(pin)
+    return <Text>{distance.toString()} meters away</Text>
   }
 
   const sortPins = pinsToSort => {
@@ -224,7 +224,7 @@ export default function MapScreen(props) {
                 </MapView>
               </View>
             )}
-          
+
           {!pinSelected.id &&
             sortedPins && (
               <ScrollView>
@@ -247,7 +247,7 @@ export default function MapScreen(props) {
             <ScrollView>
               <ListItem
                 title={pinSelected.title}
-                // subtitle={distanceFromLocation(pinSelected)}
+                subtitle={distanceFromLocation(pinSelected)}
                 bottomDivider
                 badge={{
                   value: distanceFromLocation(pinSelected),
@@ -268,11 +268,9 @@ export default function MapScreen(props) {
   }
 }
 
-
 MapScreen.navigationOptions = {
-  header: null,
-};
-
+  header: null
+}
 
 //==================================================================================================
 
