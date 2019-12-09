@@ -381,7 +381,8 @@ def create_seed_files(filename):
           .catch(error => console.error(error))""")
     f.close()
 
-create_seed_files("seed1.js")
-create_seed_files("seed2.js")
-create_seed_files("seed3.js")
-create_seed_files("seed4.js")
+create_seed_files("seed5.js")
+create_seed_files("seed6.js")
+create_seed_files("seed7.js")
+create_seed_files("seed8.js")
+create_seed_files("seed9.js")
