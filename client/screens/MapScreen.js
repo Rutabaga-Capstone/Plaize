@@ -135,9 +135,9 @@ export default function MapScreen(props) {
       pin.coordinate,
       accuracy
     )
-    pin.distance = distance
+    pin.distance = Math.floor(distance * 3.28084)
     sortedPins.push(pin)
-    return <Text>{distance.toString()} meters away</Text>
+    return <Text>{`  ${distance.toString()} feet away  `}</Text>
   }
 
   const sortPins = pinsToSort => {
