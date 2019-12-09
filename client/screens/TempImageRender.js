@@ -7,7 +7,7 @@ const RenderImages = ({navigation}) => {
   return (
     <>
       {plants.slice(0, 8).map((p, i) => (
-        <TouchableHighlight key={i} onPress={() => navigate('PlantInfo', p)}>
+        <TouchableHighlight key={i} onPress={() => navigate('PlantInfoReg', p)}>
           <Image
             style={{
               width: 80,

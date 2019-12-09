@@ -9,6 +9,7 @@ import MapScreen from '../screens/MapScreen'
 import SnapScreen from '../screens/SnapScreen'
 import ProfileScreen from '../screens/ProfileScreen'
 import PlantInfoScreen from '../screens/PlantInfo'
+import PlantInfoReg from '../screens/PlantInfoReg'
 import Colors from '../constants/Colors'
 
 const config = Platform.select({
@@ -71,6 +72,7 @@ const SnapStack = createStackNavigator(
   {
     Snap: SnapScreen,
     PlantInfo: PlantInfoScreen,
+    PlantInfoReg: PlantInfoReg,
     Map: MapScreen
   },
   config
@@ -95,7 +97,8 @@ SnapStack.navigationOptions = ({navigation}) => {
 const ProfileStack = createStackNavigator(
   {
     Profile: ProfileScreen,
-    PlantInfo: PlantInfoScreen
+    PlantInfo: PlantInfoScreen,
+    PlantInfoReg: PlantInfoReg
   },
   config
 )
