@@ -90,7 +90,6 @@ class ProfileScreen extends React.Component {
       <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
           {/* Welcome Container */}
-          <View style={styles.fakeView} />
           <View style={styles.welcomeContainer}>
             <TopNavigation />
             <Image
@@ -348,7 +347,6 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   contentContainer: {
-    paddingTop: 30,
     flex: 1,
     textAlign: 'center'
   },
