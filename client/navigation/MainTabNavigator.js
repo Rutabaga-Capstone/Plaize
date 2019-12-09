@@ -94,7 +94,8 @@ SnapStack.navigationOptions = ({navigation}) => {
 
 const ProfileStack = createStackNavigator(
   {
-    Profile: ProfileScreen
+    Profile: ProfileScreen,
+    PlantInfo: PlantInfoScreen
   },
   config
 )

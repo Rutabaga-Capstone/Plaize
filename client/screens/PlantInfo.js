@@ -15,8 +15,8 @@ import {GET_PLANT_BY_COMMON_NAME} from '../constants/GqlQueries'
 import TopNavigation from '../components/TopNavigation'
 
 class PlantInfo extends React.Component {
-  state = {
-    plant: {}
+  state = { 
+    plant: {},
   }
 
   async componentDidMount() {
@@ -87,7 +87,7 @@ class PlantInfo extends React.Component {
                 name="x"
                 size={30}
                 color="#C7CAD4"
-                onPress={() => this.props.navigation.navigate('Snap')}
+                onPress={() => this.props.navigation.goBack()}
                 //helloWorld
               />
             </Text>
