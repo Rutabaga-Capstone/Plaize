@@ -15,8 +15,8 @@ import {GET_PLANT_BY_COMMON_NAME} from '../constants/GqlQueries'
 import TopNavigation from '../components/TopNavigation'
 
 class PlantInfo extends React.Component {
-  state = { 
-    plant: {},
+  state = {
+    plant: {}
   }
 
   async componentDidMount() {

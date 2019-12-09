@@ -148,6 +148,7 @@ class ProfileScreen extends React.Component {
                   fontSize: 24
                 }}
               >
+                <Text> </Text>
                 {leaves}
               </Text>
             </View>
