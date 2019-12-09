@@ -271,7 +271,7 @@ export default function SnapScreen(props) {
                         size={25}
                         style={styles.leafIcon}
                       />
-                      <Text> Welcome to Plaze </Text>
+                      <Text>        Welcome to Plaze       </Text>
                       <Ionicons name="ios-leaf" color="#6CC7BD" size={25} />
                     </>
                   }
