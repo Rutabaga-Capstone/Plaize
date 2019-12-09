@@ -45,7 +45,7 @@ export default function TopNavigation(props) {
         <TouchableOpacity onPress={logoutUser}>
           <SimpleLineIcons
             name="logout"
-            size={25}
+            size={21}
             color="#C7CAD4"
             style={{
               textAlign: 'left',
@@ -92,7 +92,7 @@ export default function TopNavigation(props) {
         <Text
           style={{
             textAlign: 'right',
-            marginRight: 15,
+            marginRight: 15
           }}
         >
           <Ionicons
@@ -102,7 +102,8 @@ export default function TopNavigation(props) {
               color: '#6CC7BD'
             }}
           />
-         {leaves}
+          <Text> </Text>
+          {leaves}
         </Text>
       </View>
     </View>
