@@ -27,8 +27,8 @@ const HomeScreen = props => {
 
   const dispatch = useDispatch()
 
-  // const pinsReducer = useSelector(state => state.pinsReducer)
-  // const {pins} = pinsReducer
+  //const pinsReducer = useSelector(state => state.pinsReducer)
+  //const {pins} = pinsReducer
 
   useEffect(() => {
     dispatch(setPins(pinsData))

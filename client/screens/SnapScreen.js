@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {Text, View, TouchableOpacity, StyleSheet} from 'react-native'
+import {Text, View, TouchableOpacity, StyleSheet, StatusBar} from 'react-native'
 import * as Permissions from 'expo-permissions'
 import {Camera} from 'expo-camera'
 import * as FileSystem from 'expo-file-system'
@@ -99,7 +99,7 @@ export default function SnapScreen(props) {
   }
 
   const onPictureSaved = photo => {
-    const ipAddressOfServer = '10.0.0.48' // <--- PUT YOUR OWN IP HERE
+    const ipAddressOfServer = '172.17.23.197' // <--- PUT YOUR OWN IP HERE
     const uriParts = photo.uri.split('.')
     const fileType = uriParts[uriParts.length - 1]
     let plantCopy
@@ -114,7 +114,7 @@ export default function SnapScreen(props) {
     axios
       .post(`http://${ipAddressOfServer}:1234/image`, formData)
       .then(response => {
-        console.log(response.data.commonName)
+        console.log('Plant identification response', response.data.commonName)
 
         // alert(
         //   `Plant identified: ${response.data.commonName} \n probability: ${
@@ -255,6 +255,7 @@ export default function SnapScreen(props) {
   } else {
     return (
       <>
+        <StatusBar hidden={true} />
         <TopNavigation />
         <View style={styles.container}>
           <Modal
@@ -305,55 +306,52 @@ export default function SnapScreen(props) {
           </Modal>
         </View>
 
-        <View style={{flex: 1, borderTopWidth: 0}}>
-          <Camera
-            ref={ref => {
-              camera = ref
+        <Camera
+          ref={ref => {
+            camera = ref
+          }}
+          style={{flex: 1, borderTopWidth: 0}}
+          type={Camera.Constants.Type.back}
+        >
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: 'transparent',
+              flexDirection: 'row'
             }}
-            style={{flex: 1, borderTopWidth: 0}}
-            type={Camera.Constants.Type.back}
           >
-            <View
+            <TouchableOpacity
               style={{
                 flex: 1,
-                backgroundColor: 'transparent',
-                flexDirection: 'row'
+                alignSelf: 'flex-end',
+                alignItems: 'center'
               }}
+              onPress={takePicture}
             >
-              <TouchableOpacity
-                style={{
-                  flex: 1,
-                  alignSelf: 'flex-end',
-                  alignItems: 'center'
-                }}
-                onPress={takePicture}
-              >
-                <Ionicons
-                  name="md-radio-button-off"
-                  size={70}
-                  style={{marginBottom: 15}}
-                  color="white"
-                />
-              </TouchableOpacity>
-            </View>
-          </Camera>
+              <Ionicons
+                name="md-radio-button-off"
+                size={70}
+                style={{marginBottom: 15}}
+                color="white"
+              />
+            </TouchableOpacity>
+          </View>
+        </Camera>
 
-          {isPlantInfoReceived &&
-            pinCreated && (
-              <Container>
-                <PlantModal disableModalCallback={buttonCallback} />
-              </Container>
-            )}
-        </View>
+        {isPlantInfoReceived &&
+          pinCreated && (
+            <Container>
+              <PlantModal disableModalCallback={buttonCallback} />
+            </Container>
+          )}
       </>
     )
   }
 }
 
 SnapScreen.navigationOptions = {
-  header: null,
-};
-
+  header: null
+}
 
 const Container = styled.View`
   position: absolute;
@@ -368,7 +366,6 @@ const styles = StyleSheet.create({
     transform: [{rotateY: '180deg'}]
   },
   container: {
-    flex: 1,
     backgroundColor: 'transparent',
     marginTop: 400,
     marginLeft: 190,
