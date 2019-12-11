@@ -14,6 +14,8 @@ import {withApollo} from 'react-apollo'
 import {connect} from 'react-redux'
 import {GET_USER_PROFILE_INFO} from '../constants/GqlQueries'
 import {Ionicons, SimpleLineIcons} from '@expo/vector-icons'
+import TopNavigation from '../components/TopNavigation'
+import RenderImages from './TempImageRender'
 
 class ProfileScreen extends React.Component {
   state = {
@@ -33,9 +35,21 @@ class ProfileScreen extends React.Component {
         }
       })
       const {user} = result.data
+
+      // Quick fix for demo
+      // TODO: to be fixed properly
+      let currentDate = new Date()
+      let regDate =
+        currentDate.getDate() +
+        '-' +
+        (currentDate.getMonth() + 1) +
+        '-' +
+        currentDate.getFullYear()
+      user.regDate = regDate
+
       this.setState({user})
     } catch (err) {
-      alert(JSON.stringify(err))
+      console.log(err)
     }
   }
 
@@ -69,92 +83,15 @@ class ProfileScreen extends React.Component {
   render() {
     const {navigate} = this.props.navigation
     const {userPlants} = this.props.plantsReducer
-    const {name, leaves, regDate, plants} = this.state.user
+    const {name, regDate, plants} = this.state.user
+
+    const {leaves} = this.props.leavesReducer
     return (
       <View style={{alignItems: 'center', alignSelf: 'stretch', flex: 1}}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
           {/* Welcome Container */}
           <View style={styles.welcomeContainer}>
-            {/* TOP 'NAVIGATION' */}
-            <View style={{flex: 1, flexDirection: 'row', marginTop: 15}}>
-              <View
-                style={{
-                  width: '33.3%',
-                  height: 40,
-                  textAlign: 'left',
-                  borderBottomColor: '#C7CAD4',
-                  borderBottomWidth: 1,
-                  marginBottom: 10
-                }}
-              >
-                <Text
-                  style={{
-                    textAlign: 'left',
-                    marginLeft: 15
-                  }}
-                >
-                  <SimpleLineIcons
-                    name="logout"
-                    onPress={this.logoutUser}
-                    size={25}
-                    color="#C7CAD4"
-                    style={{
-                      textAlign: 'left'
-                    }}
-                  />
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  width: '33.3%',
-                  height: 40,
-                  textAlign: 'middle',
-                  borderBottomColor: '#C7CAD4',
-                  borderBottomWidth: 1,
-                  marginBottom: 10
-                }}
-              >
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    fontSize: 24,
-                    fontFamily: 'yorkten',
-                    color: '#C7CAD4'
-                  }}
-                >
-                  Plaze
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  width: '33.3%',
-                  height: 40,
-                  textAlign: 'right',
-                  borderBottomColor: '#C7CAD4',
-                  borderBottomWidth: 1,
-                  marginBottom: 10
-                }}
-              >
-                <Text
-                  style={{
-                    textAlign: 'right',
-                    marginRight: 15
-                  }}
-                >
-                  <Ionicons
-                    name="ios-leaf"
-                    size={25}
-                    style={{
-                      color: '#C7CAD4'
-                    }}
-                  />
-                </Text>
-              </View>
-            </View>
-            {/* END TOP 'NAVIGATION' */}
-
+            <TopNavigation />
             <Image
               source={
                 __DEV__
@@ -164,7 +101,6 @@ class ProfileScreen extends React.Component {
               style={styles.welcomeImage}
             />
             <Text style={styles.title}>{name}</Text>
-
             {/* Rank Level, Rank Number Container */}
             <View
               style={{
@@ -212,14 +148,13 @@ class ProfileScreen extends React.Component {
                   fontSize: 24
                 }}
               >
+                <Text> </Text>
                 {leaves}
               </Text>
             </View>
 
             {/* Joined Plaze on JoinDate Row */}
-            <Text style={styles.subtitle}>
-              Joined Plaze on {regDate && regDate.formatted.slice(0, 10)}
-            </Text>
+            <Text style={styles.subtitle}>Joined Plaze on {regDate}</Text>
 
             <View
               style={{
@@ -232,7 +167,6 @@ class ProfileScreen extends React.Component {
             <View
               style={{
                 flex: 1,
-                flexDirection: 'col',
                 justifyContent: 'space-between'
               }}
             >
@@ -240,7 +174,6 @@ class ProfileScreen extends React.Component {
               <View
                 style={{
                   flex: 1,
-                  //flexDirection: 'col'
                   marginBottom: 20
                 }}
               >
@@ -284,7 +217,6 @@ class ProfileScreen extends React.Component {
                 <View
                   style={{
                     flex: 1,
-                    //flexDirection: 'col',
                     flexWrap: 'wrap'
                   }}
                 >
@@ -295,28 +227,13 @@ class ProfileScreen extends React.Component {
                       flexWrap: 'wrap'
                     }}
                   >
-                    {plants &&
-                      plants.slice(0, 8).map((p, i) => (
-                        <TouchableHighlight
-                          key={i}
-                          onPress={() => navigate('PlantInfo', p)}
-                        >
-                          <Image
-                            style={{
-                              width: 100,
-                              height: 100,
-                              marginRight: 20,
-                              marginBottom: 20
-                            }}
-                            source={{uri: p.imageURL}}
-                          />
-                        </TouchableHighlight>
-                      ))}
+                    <RenderImages {...this.props} />
                   </View>
                 </View>
               </View>
               {/* End Row of 'Poisonous Plants Identified' IMAGES*/}
             </View>
+            <Text style={styles.plantText}>Poison Ivy</Text>
             {/* Plaze Map Container */}
           </View>
           {/* End Parent Container View */}
@@ -330,41 +247,17 @@ ProfileScreen.navigationOptions = {
   header: null
 }
 
-function DevelopmentModeNotice() {
-  if (__DEV__) {
-    const learnMoreButton = (
-      <Text onPress={handleLearnMorePress} style={styles.helpLinkText}>
-        Learn more
-      </Text>
-    )
-    return (
-      <Text style={styles.developmentModeText}>
-        Development mode is enabled: your app will be slower but you can use
-        useful development tools. {learnMoreButton}
-      </Text>
-    )
-  } else {
-    return (
-      <Text style={styles.developmentModeText}>
-        You are not in development mode: your app will run at full speed.
-      </Text>
-    )
-  }
-}
-
-function handleLearnMorePress() {
-  WebBrowser.openBrowserAsync(
-    'https://docs.expo.io/versions/latest/workflow/development-mode/'
-  )
-}
-
-function handleHelpPress() {
-  WebBrowser.openBrowserAsync(
-    'https://docs.expo.io/versions/latest/workflow/up-and-running/#cant-see-your-changes'
-  )
-}
-
 const styles = StyleSheet.create({
+  plantText: {
+    marginTop: 190,
+    fontFamily: 'yorkten',
+    fontSize: 18
+  },
+  fakeView: {
+    height: 58,
+    borderBottomColor: '#C7CAD4',
+    borderBottomWidth: 0.5
+  },
   heading: {
     textAlign: 'left',
     marginLeft: -60
@@ -452,7 +345,6 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   contentContainer: {
-    paddingTop: 30,
     flex: 1,
     textAlign: 'center'
   },
@@ -514,6 +406,7 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(({plantsReducer}) => ({plantsReducer}))(
-  withApollo(ProfileScreen)
-)
+export default connect(({plantsReducer, leavesReducer}) => ({
+  plantsReducer,
+  leavesReducer
+}))(withApollo(ProfileScreen))

@@ -26,7 +26,7 @@ const screenHeight = Dimensions.get('window').height
 
 // const dispatch = useDispatch()
 
-class CustomModal extends React.Component {
+export default class CustomModal extends React.Component {
   state = {
     top: new Animated.Value(900)
   }
@@ -39,7 +39,7 @@ class CustomModal extends React.Component {
 
   toggleModal = () => {
     Animated.spring(this.state.top, {
-      toValue: 174
+      toValue: screenHeight * 0.1
     }).start()
   }
 
@@ -51,67 +51,70 @@ class CustomModal extends React.Component {
   }
 
   render(props) {
-    if (!this.props.pinSelected) return null
-    return (
-      <Container>
-        <AnimatedContainer style={{top: this.state.top}}>
-          <Header>
-            {this.props.pinSelected.plants.map((plant, i) => (
-              <View key={i}>
-                <Text style={styles.title}> {plant.commonName} </Text>
-                <Image
-                  source={{uri: plant.imageURL}}
-                  style={styles.welcomeImage}
-                />
-              </View>
-            ))}
-          </Header>
-          <TouchableOpacity
-            onPress={this.closeModal}
-            style={{
-              position: 'absolute',
-              top: -80,
-              right: '-5%',
-              marginLeft: -22,
-              zIndex: 1
-            }}
-          >
-            <CloseView style={{elevation: 10}}>
-              <Icon.Ionicons name="ios-close" size={44} color="#6cc7bd" />
-            </CloseView>
-          </TouchableOpacity>
-          <Body>
-            {this.props.pinSelected.plants.map((plant, i) => (
-              <View key={i} style={styles.subtitle}>
-                <Text style={styles.screenText}>
-                  {' '}
-                  {plant.isPoisonous ? (
-                    <Image
-                      source={require('../assets/images/poisonous3.png')}
-                      style={styles.poisonImage}
-                    />
-                  ) : (
-                    'Nonpoisonous'
-                  )}
-                </Text>
-              </View>
-            ))}
-            {this.props.pinSelected.plants.map((plant, i) => (
-              <View key={i} style={styles.subtitle}>
-                <Text style={styles.subtitle}>Scientific Name</Text>
-                <Text style={styles.screenText}>{plant.scientificName}</Text>
-              </View>
-            ))}
-            {this.props.pinSelected.plants.map((plant, i) => (
-              <View key={i} style={styles.subtitle}>
-                <Text style={styles.subtitle}>Description</Text>
-                <Text style={styles.screenText}>{plant.description}</Text>
-              </View>
-            ))}
-          </Body>
-        </AnimatedContainer>
-      </Container>
-    )
+    if (!this.props.pinSelected) {
+      return null
+    } else {
+      return (
+        <Container>
+          <AnimatedContainer style={{top: this.state.top}}>
+            <Header>
+              {this.props.pinSelected.plants.map((plant, i) => (
+                <View key={i}>
+                  <Text style={styles.title}> {plant.commonName} </Text>
+                  <Image
+                    source={{uri: plant.imageURL}}
+                    style={styles.welcomeImage}
+                  />
+                </View>
+              ))}
+            </Header>
+            <TouchableOpacity
+              onPress={this.closeModal}
+              style={{
+                position: 'absolute',
+                top: -80,
+                right: '-5%',
+                marginLeft: -22,
+                zIndex: 1
+              }}
+            >
+              <CloseView style={{elevation: 10}}>
+                <Icon.Ionicons name="ios-close" size={44} color="#6cc7bd" />
+              </CloseView>
+            </TouchableOpacity>
+            <Body>
+              {this.props.pinSelected.plants.map((plant, i) => (
+                <View key={i} style={styles.subtitle}>
+                  <Text style={styles.screenText}>
+                    {' '}
+                    {plant.isPoisonous ? (
+                      <Image
+                        source={require('../assets/images/poisonous3.png')}
+                        style={styles.poisonImage}
+                      />
+                    ) : (
+                      'Nonpoisonous'
+                    )}
+                  </Text>
+                </View>
+              ))}
+              {this.props.pinSelected.plants.map((plant, i) => (
+                <View key={i} style={styles.subtitle}>
+                  <Text style={styles.subtitle}>Scientific Name</Text>
+                  <Text style={styles.screenText}>{plant.scientificName}</Text>
+                </View>
+              ))}
+              {this.props.pinSelected.plants.map((plant, i) => (
+                <View key={i} style={styles.subtitle}>
+                  <Text style={styles.subtitle}>Description</Text>
+                  <Text style={styles.screenText}>{plant.description}</Text>
+                </View>
+              ))}
+            </Body>
+          </AnimatedContainer>
+        </Container>
+      )
+    }
   }
 }
 
@@ -217,4 +220,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default connect(({pinSelected}) => ({pinSelected}))(CustomModal)
+// export default connect(({pinSelected}) => ({pinSelected}))(CustomModal)

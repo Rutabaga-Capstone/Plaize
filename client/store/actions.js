@@ -21,6 +21,21 @@ export const setRegion = region => ({
   type: SET_REGION,
   region
 })
+//PIN CREATED
+
+export const SET_PIN_CREATED = 'SET_PIN_CREATED'
+
+export const setPinCreated = pinCreated => ({
+  type: SET_PIN_CREATED,
+  pinCreated
+})
+
+export const CLEAR_PIN_CREATED = 'CLEAR_PIN_CREATED'
+
+export const clearPinCreated = pinCreated => ({
+  type: CLEAR_PIN_CREATED,
+  pinCreated
+})
 
 ///PIN SELECTED
 export const SET_PIN_SELECTED = 'SET_PIN_SELECTED'
@@ -97,4 +112,17 @@ export const setUserData = user => ({
 export const updateUserDataLeaves = leaves => ({
   type: UPDATE_USER_DATA_LEAVES,
   leaves
+})
+
+///LEAVES -- TEMP
+
+export const GET_LEAVES = 'GET_LEAVES'
+export const SET_LEAVES = 'SET_LEAVES'
+
+export const getLeaves = () => ({
+  type: GET_LEAVES
+})
+
+export const setLeaves = () => ({
+  type: SET_LEAVES
 })

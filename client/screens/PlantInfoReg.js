@@ -60,8 +60,8 @@ class PlantInfo extends React.Component {
 
     return (
       <View style={{alignSelf: 'stretch', flex: 1, marginTop: 0}}>
-        <TopNavigation {...this.props} />
-
+        {/* <View style={styles.fakeView} /> */}
+        <TopNavigation {...this.props} style={styles.topNavOnPlantInfo} />
         {/* START UPPER-RIGHT X */}
         <View style={{flex: 0.1, flexDirection: 'row', marginTop: -10}}>
           <View
@@ -87,7 +87,7 @@ class PlantInfo extends React.Component {
                 name="x"
                 size={30}
                 color="#C7CAD4"
-                onPress={() => this.props.navigation.goBack()}
+                onPress={() => this.props.navigation.navigate('Snap')}
                 //helloWorld
               />
             </Text>
@@ -119,12 +119,6 @@ class PlantInfo extends React.Component {
             </Text>
             <Text>{description}</Text>
             <Text>{poisonous}</Text>
-            <Text style={styles.congratulations}>Congratulations!</Text>
-            <Text style={styles.congratsMessage}>
-              • You have identified your first plant!
-              {`\n \n`}• You have ranked up from Novice to Explorer!
-              {`\n \n`}• Increase your rank by earning more leaves
-            </Text>
           </View>
         </ScrollView>
       </View>
@@ -134,6 +128,40 @@ class PlantInfo extends React.Component {
 
 PlantInfo.navigationOptions = {
   header: null
+}
+
+function DevelopmentModeNotice() {
+  if (__DEV__) {
+    const learnMoreButton = (
+      <Text onPress={handleLearnMorePress} style={styles.helpLinkText}>
+        Learn more
+      </Text>
+    )
+    return (
+      <Text style={styles.developmentModeText}>
+        Development mode is enabled: your app will be slower but you can use
+        useful development tools. {learnMoreButton}
+      </Text>
+    )
+  } else {
+    return (
+      <Text style={styles.developmentModeText}>
+        You are not in development mode: your app will run at full speed.
+      </Text>
+    )
+  }
+}
+
+function handleLearnMorePress() {
+  WebBrowser.openBrowserAsync(
+    'https://docs.expo.io/versions/latest/workflow/development-mode/'
+  )
+}
+
+function handleHelpPress() {
+  WebBrowser.openBrowserAsync(
+    'https://docs.expo.io/versions/latest/workflow/up-and-running/#cant-see-your-changes'
+  )
 }
 
 const styles = StyleSheet.create({

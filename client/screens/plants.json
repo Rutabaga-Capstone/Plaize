@@ -1,0 +1,42 @@
+[
+  {
+    "id": "1",
+    "commonName": "Poison Ivy",
+    "scientificName": "Toxicodendron radicans",
+    "imageURL":
+      "https://www.petguide.com/wp-content/uploads/2019/03/poison-ivy-dogs-668x444.jpg",
+    "description":
+      "A poisonous Asian and Eastern North American flowering plant in the genus Toxicodendron. Causes rashes when touched",
+    "isPoisonous": true
+  }
+  // {
+  //   "id": "2",
+  //   "commonName": "Poison Oak",
+  //   "scientificName": "Toxicodendron diversilobum",
+  //   "imageURL":
+  //     "http://nativeplantspnw.com/wp-content/uploads/2017/01/Poison-Oak-624x470.png",
+  //   "description":
+  //     "A woody vine or shrub in the sumac family, Anacardiaceae. Causes rashes when touched",
+  //   "isPoisonous": true
+  // },
+  // {
+  //   "id": "3",
+  //   "commonName": "Poison Sumac",
+  //   "scientificName": "Toxicodendron diversilobum",
+  //   "imageURL":
+  //     "https://cdn.britannica.com/50/198250-050-2D0D4360/Poison-sumac-Massachusetts.jpg",
+  //   "description":
+  //     "A woody shrub or small tree growing to 9 m (30 ft) tall. Causes a rash when touch",
+  //   "isPoisonous": true
+  // },
+  // {
+  //   "id": "4",
+  //   "commonName": "Fly Agaric",
+  //   "scientificName": "Amanita Muscaria",
+  //   "imageURL":
+  //     "https://cdn.mos.cms.futurecdn.net/S7Jyi2NDHX5iCBGrd63Uyh-320-80.jpg",
+  //   "description":
+  //     "Commonly known to be the mushroom which Mario Mario's Growth mushroom is based off of, fly agaric is a basidiomycete of the genus Amanita. It is also a muscimol mushroom. It can cause liver toxicity, hallucinations, and death when eaten",
+  //   "isPoisonous": true
+  // }
+]

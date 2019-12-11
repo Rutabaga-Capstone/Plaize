@@ -16,14 +16,18 @@ import {
   ADD_PLANT,
   GET_USER_DATA,
   SET_USER_DATA,
-  UPDATE_USER_DATA_LEAVES
+  UPDATE_USER_DATA_LEAVES,
+  GET_LEAVES,
+  SET_LEAVES,
+  SET_PIN_CREATED,
+  CLEAR_PIN_CREATED
 } from './actions' //Import the actions types constant we defined in our actions
 
 let pinsState = {pins: []}
 const pinsReducer = (state = pinsState, action) => {
   switch (action.type) {
     case SET_PINS:
-      return {...state, pins: [...state.pins, action.pins]}
+      return {...state, pins: action.pins}
     case ADD_PIN:
       return {...state, pins: [...state.pins, action.pin]}
     default:
@@ -58,6 +62,18 @@ const pinSelectedReducer = (state = pinSelectedState, action) => {
       return {...state, pinSelected: action.pinSelected}
     case CLEAR_PIN_SELECTED:
       return {...state, pinSelected: action.pinSelected}
+    default:
+      return state
+  }
+}
+
+let pinCreatedState = {pinCreated: {}}
+const pinCreatedReducer = (state = pinCreatedState, action) => {
+  switch (action.type) {
+    case SET_PIN_CREATED:
+      return {...state, pinCreated: action.pinCreated}
+    case CLEAR_PIN_CREATED:
+      return {...state, pinCreated: action.pinCreated}
     default:
       return state
   }
@@ -112,6 +128,17 @@ const userReducer = (state = userState, action) => {
   }
 }
 
+const leavesReducer = (state = {leaves: 0}, action) => {
+  switch (action.type) {
+    case GET_LEAVES:
+      return state
+    case SET_LEAVES:
+      return {leaves: state.leaves + 25 /*Math.floor(Math.random())*/}
+    default:
+      return state
+  }
+}
+
 // Combine all the reducers
 const rootReducer = combineReducers({
   pinsReducer,
@@ -120,7 +147,9 @@ const rootReducer = combineReducers({
   pinSelectedReducer,
   modalActionReducer,
   plantsReducer,
-  userReducer
+  userReducer,
+  leavesReducer,
+  pinCreatedReducer
   // ,[ANOTHER REDUCER], [ANOTHER REDUCER] ....
 })
 

@@ -5,10 +5,11 @@ import {createStackNavigator, createBottomTabNavigator} from 'react-navigation'
 import TabBarIcon from '../components/TabBarIcon'
 import HomeScreen from '../screens/HomeScreen'
 import CreateAccountScreen from '../screens/CreateAccount'
-import SettingsScreen from '../screens/MapScreen'
+import MapScreen from '../screens/MapScreen'
 import SnapScreen from '../screens/SnapScreen'
 import ProfileScreen from '../screens/ProfileScreen'
 import PlantInfoScreen from '../screens/PlantInfo'
+import PlantInfoReg from '../screens/PlantInfoReg'
 import Colors from '../constants/Colors'
 
 const config = Platform.select({
@@ -46,14 +47,14 @@ HomeStack.path = ''
 
 /*----- MAP -----*/
 
-const SettingsStack = createStackNavigator(
+const MapStack = createStackNavigator(
   {
-    Settings: SettingsScreen
+    Map: MapScreen
   },
   config
 )
 
-SettingsStack.navigationOptions = {
+MapStack.navigationOptions = {
   tabBarLabel: 'Map',
   tabBarIcon: ({focused}) => (
     <TabBarIcon
@@ -63,34 +64,41 @@ SettingsStack.navigationOptions = {
   )
 }
 
-SettingsStack.path = ''
+MapStack.path = ''
 
 /*----- SNAP -----*/
 
 const SnapStack = createStackNavigator(
   {
     Snap: SnapScreen,
-    PlantInfo: PlantInfoScreen
+    PlantInfo: PlantInfoScreen,
+    PlantInfoReg: PlantInfoReg,
+    Map: MapScreen
   },
   config
 )
 
-SnapStack.navigationOptions = {
-  tabBarLabel: 'Snap',
-  tabBarIcon: ({focused}) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-camera' : 'md-camera'}
-      color={Colors.activeTintColor}
-    />
-  )
+SnapStack.navigationOptions = ({navigation}) => {
+  //alert(JSON.stringify(navigation))
+  return {
+    tabBarLabel: 'Snap',
+    tabBarIcon: ({focused}) => (
+      <TabBarIcon
+        focused={focused}
+        name={Platform.OS === 'ios' ? 'ios-camera' : 'md-camera'}
+        color={Colors.activeTintColor}
+      />
+    )
+  }
 }
 
 /*----- PROFILE -----*/
 
 const ProfileStack = createStackNavigator(
   {
-    Profile: ProfileScreen
+    Profile: ProfileScreen,
+    PlantInfo: PlantInfoScreen,
+    PlantInfoReg: PlantInfoReg
   },
   config
 )
@@ -104,7 +112,7 @@ const tabNavigator = createBottomTabNavigator(
   {
     ProfileStack,
     SnapStack,
-    SettingsStack
+    MapStack
   },
   {
     tabBarOptions: {

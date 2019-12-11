@@ -13,7 +13,7 @@ import {
   // closeModal
 } from '../store/actions'
 
-import pinsData from '../store/pins' //fake data for now
+//import pinsData from '../store/pins' //fake data for now
 import PlantModal from '../components/PlantModal'
 
 import * as Permissions from 'expo-permissions'
@@ -31,11 +31,14 @@ import {
   FlatList,
   List,
   ActivityIndicator,
-  Dimensions
+  Dimensions,
+  TouchableOpacity,
+  TouchableHighlight
 } from 'react-native'
 
 import {ListItem} from 'react-native-elements'
 import {Ionicons, SimpleLineIcons} from '@expo/vector-icons'
+import TopNavigation from '../components/TopNavigation'
 
 // import TouchableScale from 'react-native-touchable-scale' // https://github.com/kohver/react-native-touchable-scale
 // import ExpoLinearGradient from 'react-native-linear-gradient'
@@ -51,10 +54,11 @@ import SwitchSelector from 'react-native-switch-selector'
 import {TagSelect} from 'react-native-tag-select'
 
 export default function MapScreen(props) {
+  let sortedPins = []
   const dispatch = useDispatch()
 
   //1 - DECLARE VARIABLES
-  // const [isFetching, setIsFetching] = useState(false)
+  const [isFetching, setIsFetching] = useState(false)
 
   //Access Redux Store State
 
@@ -76,11 +80,11 @@ export default function MapScreen(props) {
   //==================================================================================================
 
   //2 - EFFECTS
-  // useEffect(() => getPins(), [pins])
+  // useEffect(() => getPins(), [pinCreated])
   // useEffect(() => getLocation(), [])
   useEffect(() => getRegion(), [])
-  useEffect(() => handleMarkerOnPress(), [])
-  useEffect(() => handleMarkerOnDeselect(), [])
+  // useEffect(() => handleMarkerOnPress(), [])
+  // useEffect(() => handleMarkerOnDeselect(), [])
   // useEffect(() => getModal(), [])
 
   //==================================================================================================
@@ -88,18 +92,13 @@ export default function MapScreen(props) {
   //3 - GET DATA AND DISPATCH ACTIONS
   // const getPins = () => {
   //   setIsFetching(true)
-
   //   //OPTION 1 - LOCAL DATA from imported file
   //   setTimeout(() => {
-  //     if (!pins) {
-  //       const pins = pinsData
-  //       dispatch(setPins(pins))
-  //       setIsFetching(false)
-  //     } else {
-  //       console.log('already have at least 1 pin')
-  //     }
+  //     const allpins = pinsData
+  //     dispatch(setPins(allpins))
+  //     console.log(pins)
+  //     setIsFetching(false)
   //   }, 2000)
-
   //   //OPTION 2 - API CALL, i.e. axios
   //   // let url = "https://my-json-server.typicode.com/mesandigital/demo/instructions";
   //   // axios.get(url)
@@ -107,10 +106,8 @@ export default function MapScreen(props) {
   //   //     .then((data) => dispatch(addData(data)))
   //   //     .catch(error => alert(error.message))
   //   //     .finally(() => setIsFetching(false));
-
-  //   //OPTION 3 - GRAPHQL - TBD
+  //OPTION 3 - GRAPHQL - TBD
   // }
-
   // const fetchLocationAsync = async () => {
   //   try {
   //     let {status} = await Permissions.askAsync(Permissions.LOCATION)
@@ -124,7 +121,6 @@ export default function MapScreen(props) {
   //     console.log(err)
   //   }
   // }
-
   // const getLocation = () => {
   //   fetchLocationAsync() //use this indirect func because useEffect does not accept promises as callbacks directly
   // }
@@ -139,7 +135,31 @@ export default function MapScreen(props) {
       pin.coordinate,
       accuracy
     )
-    return <Text>{distance.toString()} meters away</Text>
+    pin.distance = Math.floor(distance * 3.28084)
+    sortedPins.push(pin)
+    return <Text>{`  ${distance.toString()} feet away  `}</Text>
+  }
+
+  const sortPins = pinsToSort => {
+    var mapped = pinsToSort.map(function(el, i) {
+      return {index: i, value: el}
+    })
+
+    mapped.sort(function(a, b) {
+      if (a.value.distance > b.value.distance) {
+        return 1
+      }
+      if (a.value.distance < b.value.distance) {
+        return -1
+      }
+      return 0
+    })
+
+    sortedPins = mapped.map(function(el) {
+      return pinsToSort[el.index]
+    })
+
+    return sortedPins
   }
 
   const handleMarkerOnPress = pin => {
@@ -172,89 +192,13 @@ export default function MapScreen(props) {
       </View>
     )
   } else {
+    sortedPins = sortPins(pins)
     return (
       <>
-        {/* TOP 'NAVIGATION' */}
-        <View style={{flex: 0.7, flexDirection: 'row', marginTop: 15}}>
-          <View
-            style={{
-              width: '33.3%',
-              height: 40,
-              textAlign: 'left',
-              borderBottomColor: '#C7CAD4',
-              borderBottomWidth: 1,
-              marginBottom: 10
-            }}
-          >
-            <Text
-              style={{
-                textAlign: 'left',
-                marginLeft: 15
-              }}
-            >
-              <SimpleLineIcons
-                name="logout"
-                onPress={this.logoutUser}
-                size={25}
-                color="#C7CAD4"
-                style={{
-                  textAlign: 'left'
-                }}
-              />
-            </Text>
-          </View>
-
-          <View
-            style={{
-              width: '33.3%',
-              height: 40,
-              textAlign: 'middle',
-              borderBottomColor: '#C7CAD4',
-              borderBottomWidth: 1,
-              marginBottom: 10
-            }}
-          >
-            <Text
-              style={{
-                textAlign: 'center',
-                fontSize: 24,
-                fontFamily: 'yorkten',
-                color: '#C7CAD4'
-              }}
-            >
-              Plaze
-            </Text>
-          </View>
-
-          <View
-            style={{
-              width: '33.3%',
-              height: 40,
-              textAlign: 'right',
-              borderBottomColor: '#C7CAD4',
-              borderBottomWidth: 1,
-              marginBottom: 10
-            }}
-          >
-            <Text
-              style={{
-                textAlign: 'right',
-                marginRight: 15
-              }}
-            >
-              <Ionicons
-                name="ios-leaf"
-                size={25}
-                style={{
-                  color: '#C7CAD4'
-                }}
-              />
-            </Text>
-          </View>
-        </View>
-        {/* END TOP 'NAVIGATION' */}
+        <TopNavigation />
         <View>
-          {{location} && {pins} && (
+          {location &&
+            sortedPins && (
               <View>
                 <MapView
                   style={styles.mapStyle}
@@ -264,12 +208,12 @@ export default function MapScreen(props) {
                   zoomEnabled={true}
                   zoomTapEnabled={true}
                 >
-                  {pins.map((pin, i) => (
+                  {sortedPins.map((pin, i) => (
                     <Marker
                       key={i}
                       title={pin.title}
                       coordinate={pin.coordinate}
-                      pinColor={pin.hasPoisonousPlants ? 'red' : 'green'}
+                      pinColor={pin.plants[0].isPoisonous ? 'red' : 'green'}
                       description={pin.description}
                       id={pin.id}
                       onPress={() => handleMarkerOnPress(pin)}
@@ -280,22 +224,19 @@ export default function MapScreen(props) {
                 </MapView>
               </View>
             )}
+
           {!pinSelected.id &&
-            pins && (
+            sortedPins && (
               <ScrollView>
-                {pins.map((pin, i) => (
+                {sortedPins.sort().map((pin, i) => (
                   <ListItem
                     key={i}
                     title={pin.title}
-                    //subtitle={() => distanceFromLocation(pin)}
                     bottomDivider
                     badge={{
-                      value: pin.plants.length,
-                      textStyle: {color: '#fff'},
-                      containerStyle: {
-                        marginTop: -20
-                      },
-                      badgeStyle: {backgroundColor: 'green'}
+                      value: distanceFromLocation(pin),
+                      textStyle: {color: 'white'},
+                      badgeStyle: {backgroundColor: '#6cc7bd'}
                     }}
                     onPress={() => handlePinItemOnPress(pin)}
                   />
@@ -306,18 +247,14 @@ export default function MapScreen(props) {
             <ScrollView>
               <ListItem
                 title={pinSelected.title}
-                //subtitle={pinSelected.description}
+                subtitle={distanceFromLocation(pinSelected)}
                 bottomDivider
                 badge={{
-                  value: pinSelected.plants.length,
-                  textStyle: {color: '#fff'},
-                  containerStyle: {marginTop: -20},
-                  badgeStyle: {backgroundColor: 'green'}
+                  value: distanceFromLocation(pinSelected),
+                  textStyle: {color: 'white'},
+                  badgeStyle: {backgroundColor: '#6cc7bd'}
                 }}
               />
-              {/* {pinSelected.plants.map((plant, i) => (
-              <Text key={i}>{plant.commonName}</Text>
-            ))} */}
             </ScrollView>
           )}
           {pinSelected.id && (
@@ -329,6 +266,10 @@ export default function MapScreen(props) {
       </>
     )
   }
+}
+
+MapScreen.navigationOptions = {
+  header: null
 }
 
 //==================================================================================================
@@ -351,7 +292,11 @@ const ButtonText = styled.Text`
 const styles = {
   container: {
     width: '100%',
-    height: '80%'
+    height: '100%'
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0
   },
   // mapContainer: {
   //   flex: 1,
@@ -359,9 +304,15 @@ const styles = {
   //   alignItems: 'center',
   //   justifyContent: 'center'
   // },
+  topNav: {
+    position: 'absolute',
+    top: 0,
+    zIndex: 10000000
+  },
   mapStyle: {
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height / 2
+    height: Dimensions.get('window').height / 2,
+    marginTop: 0
   }
 }
 
@@ -425,156 +376,3 @@ const styles99 = StyleSheet.create({
     fontSize: 14
   }
 })
-
-//   <View>
-//     <SafeAreaView style={styles.container}>
-//       <Map
-//         region={this.state.region}
-//         pins={this.state.pins}
-//         location={this.state.location}
-//         center={this.state.center}
-//         radius={this.state.radius}
-//         onRegionChange={()=> dispatch(onRegionChange(location))}
-//         tagsSelected={this.state.tagsSelected}
-//       />
-//       <View style={styles2.container}>
-//         <TagSelect
-//           ref={tag => {
-//             this.tag = tag
-//           }}
-//           data={data}
-//           itemStyle={styles2.item}
-//           itemLabelStyle={styles2.label}
-//           itemStyleSelected={styles2.itemSelected}
-//           itemLabelStyleSelected={styles2.labelSelected}
-//           onItemPress={() =>
-//             this.filterMarkers(
-//               this.state.pins,
-//               this.tag.itemsSelected,
-//               this.state.radius
-//             )
-//           }
-//         />
-//       </View>
-//       <View
-//         style={{
-//           position: 'absolute',
-//           alignItems: 'stretch',
-//           top: 350,
-//           width: 320,
-//           alignSelf: 'center'
-//         }}
-//       >
-//         <Slider
-//           value={this.state.radius}
-//           mainimumValue={100}
-//           maximumValue={1000}
-//           step={100}
-//           onValueChange={radius =>
-//             this.filterMarkers(
-//               this.state.pins,
-//               this.state.tagsSelected,
-//               radius
-//             )
-//           }
-//           thumbTintColor={'black'}
-//           animateTransitions={true}
-//         />
-//         <Text style={{fontSize: 12}}>
-//           Radius in meters: {this.state.radius}
-//         </Text>
-//       </View>
-//     </SafeAreaView>
-//     <ScrollView>
-//       <Plants pins={this.state.pins} />
-//     </ScrollView>
-//   </View>
-// )
-//   )
-// }
-
-// state = {
-//   region: null,
-//   location: null,
-//   center: null,
-//   radius: 700, //in meters
-//   selectedPin: {},
-//   pins: [],
-//   plants: [],
-//   selectedPlant: {},
-//   tagsSelected: [
-//     {
-//       id: 1,
-//       label: 'Poisonous'
-//     },
-//     {
-//       id: 2,
-//       label: 'Nonpoisonous'
-//     }
-//   ]
-// }
-
-// onRegionChange(region) {
-//   this.setState({region})
-// }
-
-// const data = [
-//   {id: 1, label: 'Poisonous'},
-//   {id: 2, label: 'Nonpoisonous'}
-// ]
-
-// const initialRegion = {
-//   latitude: 41.888824,
-//   longitude: -87.647408,
-//   latitudeDelta: 0.0922,
-//   longitudeDelta: 0.0421
-// }
-
-// export function filterMarkers(currentPins, tagsSelected, radius) {
-//   const radiusFromCenter = radius
-//   const radiusCenter = {
-//     latitude: this.state.center.coords.latitude,
-//     longitude: this.state.center.coords.longitude
-//   }
-// console.log('tagsSelected: ', tagsSelected)
-// console.log(
-//   'haspoison plant:',
-//   tagsSelected.filter(tag => tag.label === 'Poisonous').length
-// )
-// console.log(
-//   'does not have poison plant:',
-//   tagsSelected.filter(tag => tag.label === 'Nonpoisonous').length
-// )
-
-//   const filteredPins = PINS.filter((pin, i) => {
-//     let pinCoord = {
-//       latitude: pin.coordinate.latitude,
-//       longitude: pin.coordinate.longitude
-//     }
-//     if (
-//       geolib.isPointWithinRadius(pinCoord, radiusCenter, radiusFromCenter) ===
-//       true
-//     ) {
-//       if (
-//         tagsSelected.filter(tag => tag.label === 'Nonpoisonous').length &&
-//         pin.isPoisonous === false
-//       ) {
-//         return pin
-//       }
-//       if (
-//         tagsSelected.filter(tag => tag.label === 'Poisonous').length &&
-//         pin.isPoisonous === true
-//       ) {
-//         return pin
-//       }
-//       if (!tagsSelected.length) {
-//         return pin
-//       }
-//     }
-//   })
-//   this.setState({
-//     pins: filteredPins,
-//     tagsSelected,
-//     radius: radius
-//   })
-// }
