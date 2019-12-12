@@ -10,7 +10,7 @@ import {Provider} from 'react-redux'
 import store from './store/store'
 import AppNavigator from './navigation/AppNavigator'
 
-const client = new ApolloClient({uri: 'http://172.17.22.211:1234/graphql'})
+const client = new ApolloClient({uri: 'http://plaze.herokuapp.com/'})
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false)
