@@ -31,6 +31,11 @@ import {useDispatch, useSelector} from 'react-redux'
 import * as Location from 'expo-location'
 import TopNavigation from '../components/TopNavigation'
 
+import {
+  BACKEND_SERVER_IP_ADDRESS,
+  EXPRESS_SERVER_PORT
+} from 'react-native-dotenv'
+
 import Modal, {
   ModalTitle,
   ModalContent,
@@ -99,7 +104,6 @@ export default function SnapScreen(props) {
   }
 
   const onPictureSaved = photo => {
-    const ipAddressOfServer = '172.17.22.211' // <--- PUT YOUR OWN IP HERE
     const uriParts = photo.uri.split('.')
     const fileType = uriParts[uriParts.length - 1]
     let plantCopy
@@ -112,7 +116,10 @@ export default function SnapScreen(props) {
     })
 
     axios
-      .post(`http://${ipAddressOfServer}:1234/image`, formData)
+      .post(
+        `http://${BACKEND_SERVER_IP_ADDRESS}:${EXPRESS_SERVER_PORT}/image`,
+        formData
+      )
       .then(response => {
         console.log('Plant identification response', response.data.commonName)
 
@@ -242,9 +249,12 @@ export default function SnapScreen(props) {
           })
       })
       .catch(err => {
-        // this is the catch for axios.post for autoML
+        console.log(
+          'Tried to send an AJAX request to: ',
+          BACKEND_SERVER_IP_ADDRESS
+        )
         console.log(err)
-        alert('Plant has not been identified')
+        alert('Sending image to server failed')
       })
   }
 
@@ -271,7 +281,7 @@ export default function SnapScreen(props) {
                         size={25}
                         style={styles.leafIcon}
                       />
-                      <Text>        Welcome to Plaze       </Text>
+                      <Text> Welcome to Plaze </Text>
                       <Ionicons name="ios-leaf" color="#6CC7BD" size={25} />
                     </>
                   }
