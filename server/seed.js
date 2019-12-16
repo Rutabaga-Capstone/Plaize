@@ -1,10 +1,10 @@
 const ApolloClient = require('apollo-boost').default
 const gql = require('graphql-tag')
 const fetch = require('node-fetch')
-const GRAPHQL_PORT = process.env.GRAPHQL_PORT
+const EXPRESS_SERVER_PORT = process.env.EXPRESS_SERVER_PORT
 
 const client = new ApolloClient({
-  uri: `http://localhost:${GRAPHQL_PORT}/graphql`,
+  uri: `http://localhost:${EXPRESS_SERVER_PORT}/graphql`,
   fetch
 })
 client
