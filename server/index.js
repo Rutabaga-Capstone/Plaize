@@ -7,10 +7,10 @@ const {typeDefs, resolvers} = require('./schema')
 const neo4j = require('neo4j-driver').v1
 const {makeAugmentedSchema} = require('neo4j-graphql-js')
 require('dotenv').config()
-const PORT = process.env.PORT
-const GRAPHQL_PORT = process.env.GRAPHQL_PORT
+const EXPRESS_SERVER_PORT = process.env.EXPRESS_SERVER_PORT
+const BACKEND_SERVER_IP_ADDRESS = process.env.BACKEND_SERVER_IP_ADDRESS
+
 const app = express()
-module.exports = app
 
 const graphqlPath = '/graphql'
 
@@ -65,9 +65,10 @@ const createApp = () => {
 }
 
 const startListening = () => {
-  // start listening
-  app.listen(PORT, () =>
-    console.log(`Graphql at http://localhost:${PORT}${graphqlPath}`)
+  app.listen(EXPRESS_SERVER_PORT, () =>
+    console.log(
+      `Express server listening for API calls at http://${BACKEND_SERVER_IP_ADDRESS}:${EXPRESS_SERVER_PORT}`
+    )
   )
 }
 
@@ -76,3 +77,5 @@ async function bootApp() {
   await startListening()
 }
 bootApp()
+
+module.exports = app

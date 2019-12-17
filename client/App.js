@@ -9,8 +9,14 @@ import ApolloClient from 'apollo-boost'
 import {Provider} from 'react-redux'
 import store from './store/store'
 import AppNavigator from './navigation/AppNavigator'
+import {
+  BACKEND_SERVER_IP_ADDRESS,
+  EXPRESS_SERVER_PORT
+} from 'react-native-dotenv'
 
-const client = new ApolloClient({uri: 'http://172.17.22.211:1234/graphql'})
+const client = new ApolloClient({
+  uri: `http://${BACKEND_SERVER_IP_ADDRESS}:${EXPRESS_SERVER_PORT}/graphql`
+})
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false)
