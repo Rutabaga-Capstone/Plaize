@@ -7,7 +7,7 @@ const {typeDefs, resolvers} = require('./schema')
 const neo4j = require('neo4j-driver').v1
 const {makeAugmentedSchema} = require('neo4j-graphql-js')
 require('dotenv').config()
-const EXPRESS_SERVER_PORT = process.env.EXPRESS_SERVER_PORT
+const EXPRESS_SERVER_PORT = process.env.PORT || process.env.EXPRESS_SERVER_PORT
 const EXPRESS_SERVER_ADDRESS = process.env.EXPRESS_SERVER_ADDRESS
 
 const app = express()
