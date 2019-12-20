@@ -8,7 +8,7 @@ const neo4j = require('neo4j-driver').v1
 const {makeAugmentedSchema} = require('neo4j-graphql-js')
 require('dotenv').config()
 const EXPRESS_SERVER_PORT = process.env.EXPRESS_SERVER_PORT
-const BACKEND_SERVER_IP_ADDRESS = process.env.BACKEND_SERVER_IP_ADDRESS
+const EXPRESS_SERVER_ADDRESS = process.env.EXPRESS_SERVER_ADDRESS
 
 const app = express()
 
@@ -67,7 +67,7 @@ const createApp = () => {
 const startListening = () => {
   app.listen(EXPRESS_SERVER_PORT, () =>
     console.log(
-      `Express server listening for API calls at http://${BACKEND_SERVER_IP_ADDRESS}:${EXPRESS_SERVER_PORT}`
+      `Express server listening for API calls at http://${EXPRESS_SERVER_ADDRESS}:${EXPRESS_SERVER_PORT}`
     )
   )
 }
