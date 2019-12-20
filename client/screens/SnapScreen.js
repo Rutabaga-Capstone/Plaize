@@ -169,7 +169,7 @@ export default function SnapScreen(props) {
                   }
                 })
                 const newpin = {
-                  ...data.CreatePin.id,
+                  ...data.CreatePin,
                   plants: [plant],
                   title: plant.commonName,
                   description: ''
