@@ -160,16 +160,16 @@ export default function SnapScreen(props) {
                 lng: location.coords.longitude
               }
             })
-              .then(({data: {CreatePin: {id}}}) => {
+              .then(({data}) => {
                 AddPinPlantToUser({
                   variables: {
-                    pinId: id,
-                    plantId: id,
+                    pinId: data.CreatePin.id,
+                    plantId: data.CreatePlant.id,
                     userId: '5' // needs to be related to currentUser ID
                   }
                 })
                 const newpin = {
-                  ...id,
+                  ...data.CreatePin.id,
                   plants: [plant],
                   title: plant.commonName,
                   description: ''
