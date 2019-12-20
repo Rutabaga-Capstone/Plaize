@@ -20,8 +20,11 @@ const schema = makeAugmentedSchema({
 })
 
 const driver = neo4j.driver(
-  process.env.NEO4J_URI,
-  neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PASSWORD)
+  process.env.GRAPHENEDB_BOLT_URL || process.env.NEO4J_URI,
+  neo4j.auth.basic(
+    process.env.GRAPHENEDB_BOLT_USER || process.env.NEO4J_USER,
+    process.env.GRAPHENEDB_BOLT_PASSWORD || process.env.NEO4J_PASSWORD
+  )
 )
 const server = new ApolloServer({
   schema,
