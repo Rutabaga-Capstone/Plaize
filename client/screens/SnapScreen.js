@@ -31,10 +31,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import * as Location from 'expo-location'
 import TopNavigation from '../components/TopNavigation'
 
-import {
-  BACKEND_SERVER_IP_ADDRESS,
-  EXPRESS_SERVER_PORT
-} from 'react-native-dotenv'
+import {EXPRESS_SERVER_ADDRESS, EXPRESS_SERVER_PORT} from 'react-native-dotenv'
 
 import Modal, {
   ModalTitle,
@@ -106,7 +103,6 @@ export default function SnapScreen(props) {
   const onPictureSaved = photo => {
     const uriParts = photo.uri.split('.')
     const fileType = uriParts[uriParts.length - 1]
-    let plantCopy
 
     let formData = new FormData()
     formData.append('formKeyName', {
@@ -117,59 +113,21 @@ export default function SnapScreen(props) {
 
     axios
       .post(
-        `http://${BACKEND_SERVER_IP_ADDRESS}:${EXPRESS_SERVER_PORT}/image`,
+        `http://${EXPRESS_SERVER_ADDRESS}:${EXPRESS_SERVER_PORT}/image`,
         formData
       )
-      .then(response => {
-        console.log('Plant identification response', response.data.commonName)
-
-        // alert(
-        //   `Plant identified: ${response.data.commonName} \n probability: ${
-        //     response.data.score
-        //   }`
-        // )
-        // if (response.data.score < 0.5) { throw(new Error) }
-
-        /*
-        1. Take photo
-        2. On mobile device , via axios upload the photo to backend
-        3. Backend will hit Google API and respond with  i.e.
-
-        {
-        commonName: 'Poison Ivy',
-        score: 0.5741239190101624
-        }
-
-        if the score is not high enough I will show alert that plant has not been recognized
-        4. Frontend client will shoot querry asking for more info about 'Poison Ivy'
-        5. Once I have info about posion ivy, location, I am ready to create pin
-        6. PIN creation
-        */
+      .then(({data: {commonName}}) => {
+        console.log('Plant identification response', commonName)
         client
           .query({
             query: GET_PLANT_BY_COMMON_NAME,
             variables: {
-              // commonName: response.data.commonName
-              commonName: 'Poison Ivy'
+              commonName
             }
           })
-          .then(plant => {
-            delete plant.data.plant.__typename
-            plantCopy = plant.data.plant
-            dispatch(addPlant(plantCopy))
+          .then(({data: {plant}}) => {
+            dispatch(addPlant(plant))
             dispatch(setLeaves())
-            console.log('plant:', plant)
-
-            console.log('then after query', {
-              ...plant.data.plant,
-              plantId: uuid(),
-              pinId: uuid(),
-              lat: location.coords.latitude,
-              lng: location.coords.longitude
-            })
-
-            //This is all new
-
             client
               .query({
                 query: GET_USER_LEAVES,
@@ -177,30 +135,24 @@ export default function SnapScreen(props) {
                   email: 'cc'
                 }
               })
-              .then(response => {
-                console.log('XXXXXXXXXXXgetUserLeaves', response)
+              .then(({data: {user: {leaves}}}) => {
                 UpdateUserLeaves({
                   variables: {
                     id: '5',
-                    leaves: response.data.user.leaves
+                    leaves
                   }
                 })
-                  .then(response => {
-                    console.log('YYYYYYYYYUpdateUserLeaves', response)
-                    dispatch(
-                      updateUserDataLeaves(response.data.UpdateUser.leaves)
-                    )
+                  .then(({data: {UpdateUser: {leaves}}}) => {
+                    dispatch(updateUserDataLeaves(leaves))
                   })
-                  .catch(() => {
-                    console.log('Could not update user')
+                  .catch(err => {
+                    console.error(err)
                   })
               })
 
-            //this is not new
-
             CreatePinPlant({
               variables: {
-                ...plant.data.plant,
+                ...plant,
                 isPoisonous: true,
                 plantId: uuid(),
                 pinId: uuid(),
@@ -208,52 +160,44 @@ export default function SnapScreen(props) {
                 lng: location.coords.longitude
               }
             })
-              .then(creations => {
-                console.log('creations: ', creations)
+              .then(({data}) => {
                 AddPinPlantToUser({
                   variables: {
-                    pinId: creations.data.CreatePin.id,
-                    plantId: creations.data.CreatePlant.id,
+                    pinId: data.CreatePin.id,
+                    plantId: data.CreatePlant.id,
                     userId: '5' // needs to be related to currentUser ID
                   }
                 })
                 const newpin = {
-                  ...creations.data.CreatePin,
-                  plants: [plantCopy]
+                  ...data.CreatePin,
+                  plants: [plant],
+                  title: plant.commonName,
+                  description: ''
                 }
 
-                newpin.title = plantCopy.commonName
-                newpin.description = ''
                 newpin.coordinate = {
                   latitude: newpin.lat,
                   longitude: newpin.lng
                 }
-                console.log('newpin before dispatch actions:', newpin)
                 dispatch(addPin(newpin))
-
-                // This is still the then for the client.query for create pin plant
                 dispatch(setPinCreated(newpin))
-                // dispatch(setPinSelected(newpin))
                 setIsPlantInfoReceived(true)
-                console.log('newpin.plants', newpin.plants)
-                props.navigation.navigate('PlantInfo', plantCopy)
+                props.navigation.navigate('PlantInfo', plant)
               })
-              .catch(() => {
-                // this is the catch for create pin plant
-                console.log('Unable to associate plant with user')
+              .catch(err => {
+                console.error(err)
               })
           })
-          .catch(() => {
-            // this is the then for client.query for get plant
-            console.log('Could not query for plant')
+          .catch(err => {
+            console.error(err)
           })
       })
       .catch(err => {
         console.log(
           'Tried to send an AJAX request to: ',
-          BACKEND_SERVER_IP_ADDRESS
+          EXPRESS_SERVER_ADDRESS
         )
-        console.log(err)
+        console.error(err)
         alert('Sending image to server failed')
       })
   }
