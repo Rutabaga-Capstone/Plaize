@@ -7,8 +7,9 @@ const {typeDefs, resolvers} = require('./schema')
 const neo4j = require('neo4j-driver').v1
 const {makeAugmentedSchema} = require('neo4j-graphql-js')
 require('dotenv').config()
-const EXPRESS_SERVER_PORT = process.env.EXPRESS_SERVER_PORT
-const EXPRESS_SERVER_ADDRESS = process.env.EXPRESS_SERVER_ADDRESS
+const EXPRESS_SERVER_PORT =
+  process.env.PORT || process.env.EXPRESS_SERVER_PORT || '1234'
+const EXPRESS_SERVER_ADDRESS = process.env.EXPRESS_SERVER_ADDRESS || 'localhost'
 
 const app = express()
 
@@ -20,8 +21,11 @@ const schema = makeAugmentedSchema({
 })
 
 const driver = neo4j.driver(
-  process.env.NEO4J_URI,
-  neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PASSWORD)
+  process.env.NEO4J_URI || process.env.GRAPHENEDB_BOLT_URL,
+  neo4j.auth.basic(
+    process.env.NEO4J_USER || process.env.GRAPHENEDB_BOLT_USER,
+    process.env.NEO4J_PASSWORD || process.env.GRAPHENEDB_BOLT_PASSWORD
+  )
 )
 const server = new ApolloServer({
   schema,
