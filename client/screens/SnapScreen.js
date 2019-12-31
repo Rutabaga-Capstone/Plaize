@@ -40,6 +40,8 @@ import Modal, {
   ModalButton
 } from 'react-native-modals'
 
+import styles from '../styles/SnapScreenStyles'
+
 export default function SnapScreen(props) {
   // const {navigate} = props.navigation
   // props.navigation.navigate('PlantInfo')
@@ -314,19 +316,3 @@ const Container = styled.View`
   align-self: center;
   width: 80%;
 `
-
-const styles = StyleSheet.create({
-  leafIcon: {
-    transform: [{rotateY: '180deg'}]
-  },
-  container: {
-    backgroundColor: 'transparent',
-    marginTop: 400,
-    marginLeft: 190,
-    position: 'absolute'
-  },
-  welcomeMessage: {
-    textAlign: 'center',
-    marginTop: 10
-  }
-})
