@@ -2,7 +2,7 @@ const ApolloClient = require('apollo-boost').default
 const gql = require('graphql-tag')
 const fetch = require('node-fetch')
 const client = new ApolloClient({
-  uri: 'http://localhost:1234/graphql',
+  uri: 'http://plaze.herokuapp.com/graphql',
   fetch
 })
 client
