@@ -1,135 +1,101 @@
-import * as WebBrowser from 'expo-web-browser'
-import React from 'react'
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  AsyncStorage
-} from 'react-native'
+import React, {useState, useEffect} from 'react'
+import {Image, Platform, ScrollView, StyleSheet, Text, View} from 'react-native'
 import {withApollo} from 'react-apollo'
-import {Ionicons, SimpleLineIcons, Feather} from '@expo/vector-icons'
+import {Feather} from '@expo/vector-icons'
 import {GET_PLANT_BY_COMMON_NAME} from '../constants/GqlQueries'
 import TopNavigation from '../components/TopNavigation'
 
-class PlantInfo extends React.Component {
-  state = {
-    plant: {}
-  }
+function PlantInfo(props) {
+  const [plant, setPlant] = useState('')
 
-  async componentDidMount() {
-    const {client, navigation} = this.props
-    const {commonName} = navigation.state.params
-    try {
-      const result = await client.query({
-        query: GET_PLANT_BY_COMMON_NAME,
-        variables: {
-          commonName
-        }
-      })
-      const {plant} = result.data
-      this.setState({plant})
-    } catch (error) {
-      alert(JSON.stringify(error))
+  useEffect(() => {
+    const getPlantInfo = function() {
+      const {client, navigation} = props
+      const {commonName} = navigation.state.params
+      client
+        .query({
+          query: GET_PLANT_BY_COMMON_NAME,
+          variables: {
+            commonName
+          }
+        })
+        .then(({data: {plant}}) => setPlant(plant))
+        .catch(err => console.error(err))
     }
-  }
+    getPlantInfo()
+  })
 
-  logoutUser = async () => {
-    const {navigate} = this.props.navigation
-    try {
-      await AsyncStorage.removeItem('LOGGED_IN_USER')
-      navigate('Home')
-    } catch (err) {
-      console.log('error removing item from storage', err)
-    }
-  }
+  return (
+    <View style={{alignSelf: 'stretch', flex: 1, marginTop: 0}}>
+      <TopNavigation {...props} />
 
-  render() {
-    let {
-      commonName,
-      scientificName,
-      description,
-      imageURL,
-      poisonous
-    } = this.state.plant
-
-    imageURL =
-      'https://www.petguide.com/wp-content/uploads/2019/03/poison-ivy-dogs-668x444.jpg'
-
-    return (
-      <View style={{alignSelf: 'stretch', flex: 1, marginTop: 0}}>
-        <TopNavigation {...this.props} />
-
-        {/* START UPPER-RIGHT X */}
-        <View style={{flex: 0.1, flexDirection: 'row', marginTop: -10}}>
-          <View
-            style={{
-              width: '33.3%',
-              textAlign: 'left'
-            }}
-          />
-          <View
-            style={{
-              width: '33.3%',
-              textAlign: 'middle'
-            }}
-          />
-          <View
-            style={{
-              width: '33.3%',
-              textAlign: 'right'
-            }}
-          >
-            <Text style={{textAlign: 'right', marginRight: 10, marginTop: 15}}>
-              <Feather
-                name="x"
-                size={30}
-                color="#C7CAD4"
-                onPress={() => this.props.navigation.goBack()}
-                //helloWorld
-              />
-            </Text>
-          </View>
-        </View>
-        {/* END UPPER-RIGHT X */}
-
-        <ScrollView contentContainerStyle={styles.contentContainer}>
-          {/* Welcome Container */}
-          <View style={styles.welcomeContainer}>
-            <Image
-              style={{
-                width: 100,
-                height: 100,
-                marginBottom: 20,
-                borderRadius: 50
-              }}
-              source={{uri: imageURL}}
+      {/* START UPPER-RIGHT X */}
+      <View style={{flex: 0.1, flexDirection: 'row', marginTop: -10}}>
+        <View
+          style={{
+            width: '33.3%',
+            textAlign: 'left'
+          }}
+        />
+        <View
+          style={{
+            width: '33.3%',
+            textAlign: 'middle'
+          }}
+        />
+        <View
+          style={{
+            width: '33.3%',
+            textAlign: 'right'
+          }}
+        >
+          <Text style={{textAlign: 'right', marginRight: 10, marginTop: 15}}>
+            <Feather
+              name="x"
+              size={30}
+              color="#C7CAD4"
+              onPress={() => props.navigation.goBack()}
+              //helloWorld
             />
-            <Text
-              style={{fontFamily: 'yorkten', fontSize: 24, marginBottom: 12}}
-            >
-              {commonName}
-            </Text>
-            <Text
-              style={{fontFamily: 'yorkten', fontSize: 18, marginBottom: 12}}
-            >
-              {scientificName}
-            </Text>
-            <Text>{description}</Text>
-            <Text>{poisonous}</Text>
-            <Text style={styles.congratulations}>Congratulations!</Text>
-            <Text style={styles.congratsMessage}>
-              • You have identified your first plant!
-              {`\n \n`}• You have ranked up from Novice to Explorer!
-              {`\n \n`}• Increase your rank by earning more leaves
-            </Text>
-          </View>
-        </ScrollView>
+          </Text>
+        </View>
       </View>
-    )
-  }
+      {/* END UPPER-RIGHT X */}
+
+      <ScrollView contentContainerStyle={styles.contentContainer}>
+        {/* Welcome Container */}
+        <View style={styles.welcomeContainer}>
+          <Image
+            style={{
+              width: 100,
+              height: 100,
+              marginBottom: 20,
+              borderRadius: 50
+            }}
+            source={{
+              uri:
+                'https://www.petguide.com/wp-content/uploads/2019/03/poison-ivy-dogs-668x444.jpg'
+            }}
+            // TODO: unhardcode URL
+          />
+          <Text style={{fontFamily: 'yorkten', fontSize: 24, marginBottom: 12}}>
+            {plant.commonName}
+          </Text>
+          <Text style={{fontFamily: 'yorkten', fontSize: 18, marginBottom: 12}}>
+            {plant.scientificName}
+          </Text>
+          <Text>{plant.description}</Text>
+          <Text>{plant.poisonous}</Text>
+          <Text style={styles.congratulations}>Congratulations!</Text>
+          <Text style={styles.congratsMessage}>
+            • You have identified your first plant!
+            {`\n \n`}• You have ranked up from Novice to Explorer!
+            {`\n \n`}• Increase your rank by earning more leaves
+          </Text>
+        </View>
+      </ScrollView>
+    </View>
+  )
 }
 
 PlantInfo.navigationOptions = {
@@ -307,5 +273,3 @@ const styles = StyleSheet.create({
 })
 
 export default withApollo(PlantInfo)
-
-//you need to charge your emulator, the battery is low :)

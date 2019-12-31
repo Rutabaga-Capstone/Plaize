@@ -1,6 +1,8 @@
 const ApolloClient = require('apollo-boost').default
 const gql = require('graphql-tag')
 const fetch = require('node-fetch')
+const EXPRESS_SERVER_PORT = process.env.EXPRESS_SERVER_PORT
+
 const client = new ApolloClient({
   uri: 'http://plaze.herokuapp.com/graphql',
   fetch

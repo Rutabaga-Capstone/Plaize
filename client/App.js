@@ -9,8 +9,9 @@ import ApolloClient from 'apollo-boost'
 import {Provider} from 'react-redux'
 import store from './store/store'
 import AppNavigator from './navigation/AppNavigator'
+import {EXPRESS_SERVER_ADDRESS} from 'react-native-dotenv'
 
-const client = new ApolloClient({uri: 'http://plaze.herokuapp.com/'})
+const client = new ApolloClient({uri: EXPRESS_SERVER_ADDRESS})
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false)

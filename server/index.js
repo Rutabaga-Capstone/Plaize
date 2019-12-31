@@ -7,10 +7,11 @@ const {typeDefs, resolvers} = require('./schema')
 const neo4j = require('neo4j-driver').v1
 const {makeAugmentedSchema} = require('neo4j-graphql-js')
 require('dotenv').config()
-const PORT = process.env.PORT
-const GRAPHQL_PORT = process.env.GRAPHQL_PORT
+const EXPRESS_SERVER_PORT =
+  process.env.PORT || process.env.EXPRESS_SERVER_PORT || '1234'
+const EXPRESS_SERVER_ADDRESS = process.env.EXPRESS_SERVER_ADDRESS || 'localhost'
+
 const app = express()
-module.exports = app
 
 const graphqlPath = '/graphql'
 
@@ -20,8 +21,11 @@ const schema = makeAugmentedSchema({
 })
 
 const driver = neo4j.driver(
-  process.env.NEO4J_URI,
-  neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PASSWORD)
+  process.env.NEO4J_URI || process.env.GRAPHENEDB_BOLT_URL,
+  neo4j.auth.basic(
+    process.env.NEO4J_USER || process.env.GRAPHENEDB_BOLT_USER,
+    process.env.NEO4J_PASSWORD || process.env.GRAPHENEDB_BOLT_PASSWORD
+  )
 )
 const server = new ApolloServer({
   schema,
@@ -65,9 +69,10 @@ const createApp = () => {
 }
 
 const startListening = () => {
-  // start listening
-  app.listen(PORT, () =>
-    console.log(`Graphql at http://localhost:${PORT}${graphqlPath}`)
+  app.listen(EXPRESS_SERVER_PORT, () =>
+    console.log(
+      `Express server listening for API calls at http://${EXPRESS_SERVER_ADDRESS}:${EXPRESS_SERVER_PORT}`
+    )
   )
 }
 
@@ -76,3 +81,5 @@ async function bootApp() {
   await startListening()
 }
 bootApp()
+
+module.exports = app

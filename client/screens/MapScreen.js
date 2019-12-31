@@ -195,7 +195,7 @@ export default function MapScreen(props) {
     sortedPins = sortPins(pins)
     return (
       <>
-        <TopNavigation />
+        <TopNavigation {...props} />
         <View>
           {location &&
             sortedPins && (

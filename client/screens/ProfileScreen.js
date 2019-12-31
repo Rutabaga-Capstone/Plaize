@@ -70,16 +70,6 @@ class ProfileScreen extends React.Component {
     return result
   }
 
-  logoutUser = async () => {
-    const {navigate} = this.props.navigation
-    try {
-      await AsyncStorage.removeItem('LOGGED_IN_USER')
-      navigate('Home')
-    } catch (err) {
-      console.log('error removing item from storage', err)
-    }
-  }
-
   render() {
     const {navigate} = this.props.navigation
     const {userPlants} = this.props.plantsReducer
@@ -91,7 +81,7 @@ class ProfileScreen extends React.Component {
         <ScrollView contentContainerStyle={styles.contentContainer}>
           {/* Welcome Container */}
           <View style={styles.welcomeContainer}>
-            <TopNavigation />
+            <TopNavigation {...this.props} />
             <Image
               source={
                 __DEV__
