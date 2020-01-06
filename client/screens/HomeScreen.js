@@ -80,7 +80,7 @@ const HomeScreen = props => {
         await AsyncStorage.setItem('LOGGED_IN_USER', JSON.stringify(userData))
         navigation.navigate('Snap', userData)
       } catch (error) {
-        console.log('errrrr', JSON.stringify(error))
+        console.error(error)
         setShowAlert(true)
         setAlertMsg('Invalid username or password!')
       }

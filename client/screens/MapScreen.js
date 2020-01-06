@@ -39,9 +39,6 @@ import {
 import {ListItem} from 'react-native-elements'
 import {Ionicons, SimpleLineIcons} from '@expo/vector-icons'
 import TopNavigation from '../components/TopNavigation'
-// import styles from '../styles/MapScreenStyles'
-// import styles2 from '../styles/MapScreenStyles'
-// import styles99 from '../styles/Map'
 
 // import TouchableScale from 'react-native-touchable-scale' // https://github.com/kohver/react-native-touchable-scale
 // import ExpoLinearGradient from 'react-native-linear-gradient'
