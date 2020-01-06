@@ -4,7 +4,7 @@ const fetch = require('node-fetch')
 const EXPRESS_SERVER_PORT = process.env.EXPRESS_SERVER_PORT
 
 const client = new ApolloClient({
-  uri: `http://localhost:${EXPRESS_SERVER_PORT}/graphql`,
+  uri: 'http://plaze.herokuapp.com/graphql',
   fetch
 })
 

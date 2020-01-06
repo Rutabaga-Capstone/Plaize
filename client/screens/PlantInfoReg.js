@@ -36,16 +36,6 @@ class PlantInfo extends React.Component {
     }
   }
 
-  logoutUser = async () => {
-    const {navigate} = this.props.navigation
-    try {
-      await AsyncStorage.removeItem('LOGGED_IN_USER')
-      navigate('Home')
-    } catch (err) {
-      console.log('error removing item from storage', err)
-    }
-  }
-
   render() {
     let {
       commonName,
