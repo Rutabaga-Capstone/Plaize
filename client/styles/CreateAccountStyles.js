@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native'
+import {StyleSheet, Platform} from 'react-native'
 
 const styles = StyleSheet.create({
   login: {
@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
     paddingTop: '10%',
     flex: 1,
     marginHorizontal: '10%'
-    // marginHorizontal: 80,
   },
   homeScreenFilename: {
     marginVertical: 7
