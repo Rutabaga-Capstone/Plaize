@@ -59,37 +59,38 @@ export default function SnapScreen(props) {
 
   let camera = null
 
-  useEffect(() => getLocation(), [])
   useEffect(() => {
-    async function startUp() {
-      const {status} = await Permissions.askAsync(Permissions.CAMERA)
-      setHasCameraPermission('granted')
-      FileSystem.makeDirectoryAsync(FileSystem.cacheDirectory + 'photos').catch(
-        e => {
-          console.log(e, 'Directory exists')
+    ;(async () => {
+      try {
+        let {status} = await Permissions.askAsync(Permissions.LOCATION)
+        if (status !== 'granted') {
+          let errorMessage = 'Permission to access location was denied'
+          console.log(errorMessage)
         }
-      )
-    }
-    startUp()
+        let location = await Location.getCurrentPositionAsync({})
+        dispatch(setLocation(location))
+      } catch (err) {
+        console.log(err)
+      }
+    })()
   }, [])
 
-  const fetchLocationAsync = async () => {
-    try {
-      let {status} = await Permissions.askAsync(Permissions.LOCATION)
+  useEffect(() => {
+    ;(async () => {
+      const {status} = await Permissions.askAsync(Permissions.CAMERA)
       if (status !== 'granted') {
-        let errorMessage = 'Permission to access location was denied'
-        console.log(errorMessage)
+        console.log('Permission to access location was denied')
+      } else {
+        setHasCameraPermission('granted')
+        FileSystem.makeDirectoryAsync(
+          FileSystem.cacheDirectory + 'photos'
+        ).catch(e => {
+          console.log(e, 'Directory exists')
+        })
       }
-      let location = await Location.getCurrentPositionAsync({})
-      dispatch(setLocation(location))
-    } catch (err) {
-      console.log(err)
-    }
-  }
+    })()
+  }, [])
 
-  const getLocation = () => {
-    fetchLocationAsync() //use this indirect func because useEffect does not accept promises as callbacks directly
-  }
   const takePicture = () => {
     if (camera) {
       camera.takePictureAsync({onPictureSaved})
